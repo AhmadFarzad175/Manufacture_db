@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Party;
 use Illuminate\Http\Request;
 use App\Http\Requests\PartyRequest;
+use App\Http\Resources\PartyResource;
 use App\Http\Requests\StorePartyRequest;
 use App\Http\Requests\UpdatePartyRequest;
 
@@ -15,7 +16,7 @@ class PartyController extends Controller
      */
     public function index()
     {
-        return Party::all();
+        return new PartyResource(Party::paginate());
     }
 
     /**
@@ -33,7 +34,7 @@ class PartyController extends Controller
      */
     public function show(Party $party)
     {
-        return $party;
+        return new PartyResource($party);
     }
 
     /**

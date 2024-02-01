@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ExpenseCategory;
+use App\Http\Resources\ExpenseResource;
 use App\Http\Requests\ExpenseCategoryRequest;
 use App\Http\Requests\StoreExpenseCategoryRequest;
 use App\Http\Requests\UpdateExpenseCategoryRequest;
@@ -15,7 +16,7 @@ class ExpenseCategoryController extends Controller
      */
     public function index()
     {
-        return ExpenseCategory::all();
+        return new ExpenseResource(ExpenseCategory::paginate(10));
     }
 
     /**
@@ -33,7 +34,7 @@ class ExpenseCategoryController extends Controller
      */
     public function show(ExpenseCategory $expenseCategory)
     {
-        return $expenseCategory;
+        return new ExpenseResource($expenseCategory);
     }
 
     /**

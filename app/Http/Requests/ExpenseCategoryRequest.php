@@ -28,7 +28,7 @@ class ExpenseCategoryRequest extends FormRequest
         ];
 
         // CHECKING FOR THE UPDATE METHOD
-        if ($this->isMethod(method: 'put')) {
+        if ($this->isMethod('PUT')) {
             // Convert 'required' to 'sometimes' for all rules
             foreach ($rules as $key => $rule) {
                 $rules[$key] = str_replace('required', 'sometimes', $rule);
