@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\PaymentSend;
+use Illuminate\Http\Request;
+use App\Http\Requests\StorePaymentSendRequest;
+use App\Http\Requests\UpdatePaymentSendRequest;
+
+class PaymentSendController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        return PaymentSend::all();
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StorePaymentSendRequest $request)
+    {
+        $validated = $request->validated();
+        PaymentSend::create($validated);
+        return 'payment inserted successfully';
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(PaymentSend $paymentSend)
+    {
+        return $paymentSend;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdatePaymentSendRequest $request, PaymentSend $paymentSend)
+    {
+        $validated = $request->validated();
+        $paymentSend->update($validated);
+        return 'payment updated successfully';
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(PaymentSend $paymentSend)
+    {
+        $paymentSend->delete();
+        return 'payment send deleted successfully';
+    }
+}
