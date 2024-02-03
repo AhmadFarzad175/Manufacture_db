@@ -21,6 +21,7 @@ class Expense extends Model
         'party_id',
         'branch_id',
         'details',
+        'reference'
     ];
 
 

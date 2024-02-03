@@ -19,6 +19,7 @@ class ExpenseController extends Controller
         $search = $request->input('search');
         $expenses = Expense::query()->search($search);
         $expenses = $perPage ? $expenses->latest()->paginate($perPage) : $expenses->latest()->get();
+        info($expenses);
         return ExpenseResource::collection($expenses);
     }
 
