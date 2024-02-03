@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\PaymentSend;
+use App\Models\PaymentSent;
 use Illuminate\Http\Request;
 use App\Http\Requests\PaymentSentRequest;
+use App\Http\Resources\PaymentSentResource;
 use App\Http\Requests\StorePaymentSendRequest;
 use App\Http\Requests\UpdatePaymentSendRequest;
 
@@ -15,8 +17,7 @@ class PaymentSentController extends Controller
      */
     public function index()
     {
-        return PaymentSend::all();
-        return new PaymentSendResource(PaymentSent::paginate());
+        return new PaymentSentResource(PaymentSent::paginate());
     }
 
     /**

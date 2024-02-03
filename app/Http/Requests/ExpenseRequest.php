@@ -14,6 +14,23 @@ class ExpenseRequest extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+{
+    $dataToMerge = [];
+
+    // List of fields that can be updated
+    $updateableFields = ['expenseCategoryId', 'partyId', 'branchId', 'AddedById'];
+
+    foreach ($updateableFields as $field) {
+        if ($this->has($field)) {
+            $dataToMerge[Str::snake($field)] = $this->input($field);
+        }
+    }
+
+    $this->merge($dataToMerge);
+}
+
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -42,15 +59,5 @@ class ExpenseRequest extends FormRequest
         }
 
         return $rules;
-    }
-
-    public function prepareForValidation()
-    {
-        $this->merge([
-            'expense_category_id' => $this->input('expenseCategoryId'),
-            'party_id' => $this->input('partyId'),
-            'branch_id' => $this->input('branchId'),
-            'user_id' => $this->input('AddedById'),
-        ]);
     }
 }
