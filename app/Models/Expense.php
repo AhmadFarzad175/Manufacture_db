@@ -23,6 +23,25 @@ class Expense extends Model
         'details',
     ];
 
+
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+        return $query->where('name', 'like', '%' . $search . '%');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($expense) {
+            $expense->reference = 'EXP_' . (self::max('id') + 1);
+        });
+    }
+
+
     public function expenseCategory()
     {
         return $this->belongsTo(ExpenseCategory::class);

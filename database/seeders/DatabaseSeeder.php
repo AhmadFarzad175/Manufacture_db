@@ -7,25 +7,26 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Owner;
 use App\Models\Party;
+use PhpOption\Option;
 use App\Models\Branch;
 use App\Models\Expense;
 use App\Models\Holiday;
 use App\Models\Employee;
 use App\Models\Overtime;
+use App\Models\deduction;
 use App\Models\LeaveType;
 use App\Models\Attendance;
-use App\Models\deduction;
-use App\Models\deductionOption;
 use App\Models\Department;
 use App\Models\LoanOption;
 use App\Models\Designation;
 use App\Models\OfficeShift;
 use App\Models\OwnerPickup;
-use App\Models\PaymentSend;
 use App\Models\EmployeeLoan;
 use App\Models\LeaveRequest;
+use App\Models\deductionOption;
 use App\Models\ExpenseCategory;
 use App\Models\PaymentReceived;
+use App\Models\PaymentSent;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -35,6 +36,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
@@ -69,7 +71,7 @@ class DatabaseSeeder extends Seeder
 
         // Owner::factory(10)->create();
 
-        PaymentSend::factory(10)->create();
+        PaymentSent::factory(10)->create();
 
         PaymentReceived::factory(10)->create();
 

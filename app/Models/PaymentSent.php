@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PaymentSend extends Model
+class PaymentSent extends Model
 {
     protected $fillable = [
         'date',

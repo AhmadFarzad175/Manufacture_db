@@ -14,6 +14,16 @@ class ExpenseCategory extends Model
         'description',
     ];
 
+
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+        return $query->where('name', 'like', '%' . $search . '%');
+    }
+
+
     public function expenses()
     {
         return $this->hasMany(Expense::class);

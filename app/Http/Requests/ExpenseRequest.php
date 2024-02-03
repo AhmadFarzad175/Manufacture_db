@@ -43,4 +43,14 @@ class ExpenseRequest extends FormRequest
 
         return $rules;
     }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'expense_category_id' => $this->input('expenseCategoryId'),
+            'party_id' => $this->input('partyId'),
+            'branch_id' => $this->input('branchId'),
+            'user_id' => $this->input('AddedById'),
+        ]);
+    }
 }

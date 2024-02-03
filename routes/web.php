@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Expense;
+use App\Models\ExpenseCategory;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// GETTING THE RELATIONAL DATA IN TABLES:
+Route::get('/expenseCat/{expenseCategory}', function (ExpenseCategory $expenseCategory) {
+    return view(
+        'welcome',
+        [
+            'expense' => $expenseCategory->expenses->load(['expenseCategory'])
+
+        ]
+    );
 });

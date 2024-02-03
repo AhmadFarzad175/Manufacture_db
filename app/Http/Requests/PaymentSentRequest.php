@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PaymentSendRequest extends FormRequest
+class PaymentSentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -39,5 +39,14 @@ class PaymentSendRequest extends FormRequest
         }
 
         return $rules;
+    }
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'received_amount' => $this->input('receivedAmount'),
+            'party_id' => $this->input('partyId'),
+            'user_id' => $this->input('AddedById'),
+        ]);
     }
 }

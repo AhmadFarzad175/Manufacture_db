@@ -6,17 +6,21 @@ use Illuminate\Http\Request;
 use App\Models\ExpenseCategory;
 use App\Http\Resources\ExpenseResource;
 use App\Http\Requests\ExpenseCategoryRequest;
-use App\Http\Requests\StoreExpenseCategoryRequest;
-use App\Http\Requests\UpdateExpenseCategoryRequest;
+use App\Http\Resources\ExpenseCategoryResource;
+
 
 class ExpenseCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new ExpenseResource(ExpenseCategory::paginate(10));
+        $perPage = $request->input('perPage');
+        $search = $request->input('search');
+        $expCats = ExpenseCategory::query()->search($search);
+        $expCats = $perPage ? $expCats->latest()->paginate($perPage) : $expCats->latest()->get();
+        return ExpenseCategoryResource::collection($expCats);
     }
 
     /**
@@ -24,9 +28,8 @@ class ExpenseCategoryController extends Controller
      */
     public function store(ExpenseCategoryRequest $request)
     {
-        $validated = $request->validated();
-        ExpenseCategory::create($validated);
-        return 'Category inserted successfully';
+        $expCat = ExpenseCategory::create($request->validated());
+        return ExpenseCategoryResource::make($expCat);
     }
 
     /**
@@ -34,7 +37,7 @@ class ExpenseCategoryController extends Controller
      */
     public function show(ExpenseCategory $expenseCategory)
     {
-        return new ExpenseResource($expenseCategory);
+        return ExpenseCategoryResource::make($expenseCategory);
     }
 
     /**
@@ -42,9 +45,8 @@ class ExpenseCategoryController extends Controller
      */
     public function update(ExpenseCategoryRequest $request, ExpenseCategory $expenseCategory)
     {
-        $validated = $request->validated();
-        $expenseCategory->update($validated);
-        return $expenseCategory;
+        $expenseCategory->update($request->validated());
+        return ExpenseCategoryResource::make($expenseCategory);
     }
 
     /**
@@ -53,6 +55,12 @@ class ExpenseCategoryController extends Controller
     public function destroy(ExpenseCategory $expenseCategory)
     {
         $expenseCategory->delete();
-        return 'category deleted successfully';
+        return response()->noContent();
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $expCats = $request->input('expenseIds');
+        ExpenseCategory::destroy($expCats);
     }
 }

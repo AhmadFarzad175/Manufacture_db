@@ -6,17 +6,20 @@ use App\Models\Party;
 use Illuminate\Http\Request;
 use App\Http\Requests\PartyRequest;
 use App\Http\Resources\PartyResource;
-use App\Http\Requests\StorePartyRequest;
-use App\Http\Requests\UpdatePartyRequest;
+
 
 class PartyController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new PartyResource(Party::paginate());
+        $perPage = $request->input('perPage');
+        $search = $request->input('search');
+        $parties = Party::query()->search($search);
+        $parties = $perPage ? $parties->latest()->paginate($perPage) : $parties->latest()->get();
+        return PartyResource::collection($parties);
     }
 
     /**

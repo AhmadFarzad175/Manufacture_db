@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\PaymentSend;
 use Illuminate\Http\Request;
+use App\Http\Requests\PaymentSentRequest;
 use App\Http\Requests\StorePaymentSendRequest;
 use App\Http\Requests\UpdatePaymentSendRequest;
 
-class PaymentSendController extends Controller
+class PaymentSentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,12 +16,13 @@ class PaymentSendController extends Controller
     public function index()
     {
         return PaymentSend::all();
+        return new PaymentSendResource(PaymentSent::paginate());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePaymentSendRequest $request)
+    public function store(PaymentSentRequest $request)
     {
         $validated = $request->validated();
         PaymentSend::create($validated);
@@ -38,7 +40,7 @@ class PaymentSendController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePaymentSendRequest $request, PaymentSend $paymentSend)
+    public function update(PaymentSentRequest $request, PaymentSend $paymentSend)
     {
         $validated = $request->validated();
         $paymentSend->update($validated);

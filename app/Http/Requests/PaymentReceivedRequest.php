@@ -31,7 +31,7 @@ class PaymentReceivedRequest extends FormRequest
         ];
 
         // CHECKING FOR THE UPDATE METHOD
-        if ($this->isMethod(method: 'put')) {
+        if ($this->isMethod('PUT')) {
             // Convert 'required' to 'sometimes' for all rules
             foreach ($rules as $key => $rule) {
                 $rules[$key] = str_replace('required', 'sometimes', $rule);
@@ -39,5 +39,15 @@ class PaymentReceivedRequest extends FormRequest
         }
 
         return $rules;
+    }
+
+
+    public function prepareForValidation()
+    {
+        $this->merge([
+            'received_amount' => $this->input('receivedAmount'),
+            'party_id' => $this->input('partyId'),
+            'user_id' => $this->input('AddedById'),
+        ]);
     }
 }

@@ -12,12 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payment_sends', function (Blueprint $table) {
+        Schema::create('payment_sents', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->foreignIdFor(Party::class)->constrained()->unique(false)->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignIdFor(Party::class)->constrained()->unique(false);
             $table->integer('user_id');
-            $table->integer('send_amount');
+            $table->integer('sent_amount');
             $table->text('details');
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payment_sends');
+        Schema::dropIfExists('payment_sents');
     }
 };

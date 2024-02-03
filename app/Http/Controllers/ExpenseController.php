@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Expense;
+use Illuminate\Http\Request;
 use App\Http\Requests\ExpenseRequest;
 use App\Http\Resources\ExpenseResource;
 
@@ -12,9 +13,13 @@ class ExpenseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new ExpenseResource(Expense::paginate(10));
+        $perPage = $request->input('perPage');
+        $search = $request->input('search');
+        $expenses = Expense::query()->search($search);
+        $expenses = $perPage ? $expenses->latest()->paginate($perPage) : $expenses->latest()->get();
+        return ExpenseResource::collection($expenses);
     }
 
     /**
@@ -22,9 +27,8 @@ class ExpenseController extends Controller
      */
     public function store(ExpenseRequest $request)
     {
-        $validated = $request->validated();
-        $expense = Expense::create($validated);
-        return new ExpenseResource($expense);
+        $expense = Expense::create($request->validated());
+        return expenseResource::make($expense);
     }
 
     /**
@@ -32,7 +36,7 @@ class ExpenseController extends Controller
      */
     public function show(Expense $expense)
     {
-        return new ExpenseResource($expense);
+        return ExpenseResource::make($expense);
     }
 
     /**
@@ -40,9 +44,8 @@ class ExpenseController extends Controller
      */
     public function update(ExpenseRequest $request, Expense $expense)
     {
-        $validated = $request->validated();
-        $expense->update($validated);
-        return new ExpenseResource($expense);
+        $expense->update($request->validated());
+        return ExpenseResource::make($expense);
     }
 
     /**
@@ -51,6 +54,12 @@ class ExpenseController extends Controller
     public function destroy(Expense $expense)
     {
         $expense->delete();
-        return 'Expense deleted successfully';
+        return response()->noContent();
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $expenses = $request->input('expenseIds');
+        Expense::destroy($expenses);
     }
 }

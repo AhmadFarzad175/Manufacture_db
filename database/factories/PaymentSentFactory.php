@@ -3,12 +3,13 @@
 namespace Database\Factories;
 
 use App\Models\Party;
+use App\Models\PaymentSent;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PaymentSend>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<PaymentSent>
  */
-class PaymentSendFactory extends Factory
+class PaymentSentFactory extends Factory
 {
     /**
      * Define the model's default state.

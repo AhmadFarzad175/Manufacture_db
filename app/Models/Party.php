@@ -15,6 +15,16 @@ class Party extends Model
 
     use HasFactory;
 
+
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+        return $query->where('name', 'like', '%' . $search . '%');
+    }
+
+
     public function paymentSends()
     {
         return $this->hasMany(PaymentSend::class);

@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('payment_receiveds', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->foreignIdFor(Party::class)->constrained()->unique(false)->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignIdFor(Party::class)->constrained()->unique(false);
             $table->integer('user_id');
             $table->integer('received_amount');
             $table->text('details');
