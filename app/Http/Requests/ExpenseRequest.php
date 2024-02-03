@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Str;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ExpenseRequest extends FormRequest
@@ -14,21 +15,39 @@ class ExpenseRequest extends FormRequest
         return true;
     }
 
+    // public function prepareForValidation()
+    // {
+    //     $dataToMerge = [];
+
+    //     // List of fields that can be updated
+    //     $updateableFields = ['expenseCategoryId', 'partyId', 'branchId', 'AddedById'];
+
+    //     foreach ($updateableFields as $field) {
+    //         if ($this->has($field)) {
+    //             $dataToMerge[Str::snake($field)] = $this->input($field);
+    //         }
+    //     }
+
+    //     $this->merge($dataToMerge);
+    // }
+
     public function prepareForValidation()
-{
-    $dataToMerge = [];
+    {
+        $dataToMerge = [];
 
-    // List of fields that can be updated
-    $updateableFields = ['expenseCategoryId', 'partyId', 'branchId', 'AddedById'];
+        // List of fields that can be updated
+        $updateableFields = ['expenseCategoryId', 'partyId', 'branchId', 'AddedById'];
 
-    foreach ($updateableFields as $field) {
-        if ($this->has($field)) {
-            $dataToMerge[Str::snake($field)] = $this->input($field);
+        foreach ($updateableFields as $field) {
+            if ($this->has($field)) {
+                // If $field is 'AddedById', set 'user_id' in $dataToMerge
+                $dataToMerge[$field === 'AddedById' ? 'user_id' : Str::snake($field)] = $this->input($field);
+            }
         }
+
+        $this->merge($dataToMerge);
     }
 
-    $this->merge($dataToMerge);
-}
 
 
     /**
