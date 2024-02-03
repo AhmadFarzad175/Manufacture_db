@@ -27,9 +27,8 @@ class PartyController extends Controller
      */
     public function store(PartyRequest $request)
     {
-        $validated = $request->validated();
-        Party::create($validated);
-        return 'party inserted successfully';
+        $party = Party::create($request->validated());
+        return PartyResource::make($party);
     }
 
     /**
@@ -37,7 +36,7 @@ class PartyController extends Controller
      */
     public function show(Party $party)
     {
-        return new PartyResource($party);
+        return PartyResource::make($party);
     }
 
     /**
@@ -45,9 +44,8 @@ class PartyController extends Controller
      */
     public function update(PartyRequest $request, Party $party)
     {
-        $validated = $request->validated();
-        $party->update($validated);
-        return $party;
+        $party->update($request->validated());
+        return PartyResource::make($party);
     }
 
     /**
@@ -56,6 +54,12 @@ class PartyController extends Controller
     public function destroy(Party $party)
     {
         $party->delete();
-        return 'party deleted successfully';
+        return response()->noContent();
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $parties = $request->input('partyIds');
+        Party::destroy($parties);
     }
 }

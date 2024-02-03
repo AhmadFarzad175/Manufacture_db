@@ -20,16 +20,23 @@ class ExpenseResource extends JsonResource
             'id' => $this->id,
             'reference' => $this->reference,
             'date' => $this->date,
+            'amount' => $amount,
             'expenseCategory' => [
                 'id' => $this->expenseCategory->id,
                 'name' => $this->expenseCategory->name
             ],
-            'amount' => $amount,
-            'addedBy' => $this->user_id,
+            'addedBy' => [
+                'id' => $this->user_id,
+                'name' => $this->user->name,
+            ],
             'branch' => [
                 'id' => $this->branch->id,
                 'name' => $this->branch->name
-            ]
+            ],
+            'party' => [
+                'id' => $this->branch->id,
+                'name' => $this->branch->name,
+            ],
 
 
 

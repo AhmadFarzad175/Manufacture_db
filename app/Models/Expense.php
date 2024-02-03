@@ -56,4 +56,9 @@ class Expense extends Model
     {
         return $this->belongsTo(Party::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
