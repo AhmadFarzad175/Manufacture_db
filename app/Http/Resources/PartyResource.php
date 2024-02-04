@@ -17,6 +17,8 @@ class PartyResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'phone' => $this->phone,
+            'details' => $this->details,
         ];
     }
 }
