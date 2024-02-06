@@ -16,20 +16,19 @@ class PartyResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $paid = $this->paymentSents()->sum('sent_amount');
-        $receivable = $this->paymentReceiveds()->sum('received_amount');
-
-        $spend = $paid - $receivable;
-        $payable = ''; // You need to define how to get payable data
+        $paid = ($this->paymentSents()->sum('sent_amount')) - ($this->paymentReceiveds()->sum('received_amount'));
+        $spent = $this->expenses()->sum('amount');
+        $receivable = $paid > $spent ? $paid - $spent : 0;
+        $payable = $paid < $spent ? $spent - $paid : 0;
 
         return [
             'id' => $this->id,
             'name' => $this->name,
             'phone' => $this->phone,
             'paid' => $paid,
-            'spend' => $spend,
+            'spent' => $spent,
             'receivable' => $receivable,
-            // 'payable' => $payable,
+            'payable' => $payable,
         ];
     }
 }
