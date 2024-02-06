@@ -14,13 +14,12 @@ class ExpenseResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $amount = 20;
 
         return [
             'id' => $this->id,
             'reference' => $this->reference,
             'date' => $this->date,
-            'amount' => $amount,
+            'amount' => $this->amount,
             'expenseCategory' => [
                 'id' => $this->expenseCategory->id,
                 'name' => $this->expenseCategory->name

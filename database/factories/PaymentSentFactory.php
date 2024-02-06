@@ -24,7 +24,7 @@ class PaymentSentFactory extends Factory
             'date'        => $this->faker->date,
             'party_id'    => $this->faker->randomElement($partyIDs),
             'user_id'     => $this->faker->randomNumber(),
-            'send_amount' => $this->faker->randomElement([10000, 20000, 30000, 40000, 50000]),
+            'sent_amount' => $this->faker->randomElement([10000, 20000, 30000, 40000, 50000]),
             'details'     => $this->faker->paragraph,
         ];
     }

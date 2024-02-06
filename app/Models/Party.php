@@ -25,9 +25,9 @@ class Party extends Model
     }
 
 
-    public function paymentSends()
+    public function paymentSents()
     {
-        return $this->hasMany(PaymentSend::class);
+        return $this->hasMany(PaymentSent::class);
     }
 
     public function paymentReceiveds()

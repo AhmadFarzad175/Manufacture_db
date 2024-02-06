@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PartyController;
 use App\Http\Controllers\ExpenseController;
-use App\Http\Controllers\PaymentSendController;
+use App\Http\Controllers\PaymentSentController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\PaymentReceivedController;
 
@@ -28,5 +28,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('/expenseCategories', ExpenseCategoryController::class);
 Route::apiResource('/expenses', ExpenseController::class);
 Route::apiResource('/parties', PartyController::class);
-Route::apiResource('/paymentSends', PaymentSendController::class);
+Route::apiResource('/paymentSends', PaymentSentController::class);
 Route::apiResource('/paymentReceiveds', PaymentReceivedController::class);
