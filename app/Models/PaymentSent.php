@@ -11,7 +11,7 @@ class PaymentSent extends Model
         'date',
         'party_id',
         'user_id',
-        'send_amount',
+        'sent_amount',
         'details',
     ];
     use HasFactory;
