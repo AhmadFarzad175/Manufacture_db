@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Str;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PaymentReceivedRequest extends FormRequest
@@ -13,6 +14,26 @@ class PaymentReceivedRequest extends FormRequest
     {
         return true;
     }
+
+
+    public function prepareForValidation()
+    {
+        $dataToMerge = [];
+
+        // List of fields that can be updated
+        $updateableFields = ['partyId', 'AddedById'];
+
+        foreach ($updateableFields as $field) {
+            if ($this->has($field)) {
+                // If $field is 'AddedById', set 'user_id' in $dataToMerge
+                $dataToMerge[$field === 'AddedById' ? 'user_id' : Str::snake($field)] = $this->input($field);
+            }
+        }
+
+        $this->merge($dataToMerge);
+    }
+
+
 
     /**
      * Get the validation rules that apply to the request.
@@ -39,15 +60,5 @@ class PaymentReceivedRequest extends FormRequest
         }
 
         return $rules;
-    }
-
-
-    public function prepareForValidation()
-    {
-        $this->merge([
-            'received_amount' => $this->input('receivedAmount'),
-            'party_id' => $this->input('partyId'),
-            'user_id' => $this->input('AddedById'),
-        ]);
     }
 }

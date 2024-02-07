@@ -33,8 +33,8 @@ class ExpenseResource extends JsonResource
                 'name' => $this->branch->name
             ],
             'party' => [
-                'id' => $this->branch->id,
-                'name' => $this->branch->name,
+                'id' => $this->party->id,
+                'name' => $this->party->name,
             ],
 
 

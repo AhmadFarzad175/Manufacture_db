@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
+
 
 class PaymentSentRequest extends FormRequest
 {
@@ -12,6 +14,23 @@ class PaymentSentRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    public function prepareForValidation()
+    {
+        $dataToMerge = [];
+
+        // List of fields that can be updated
+        $updateableFields = ['partyId', 'AddedById'];
+
+        foreach ($updateableFields as $field) {
+            if ($this->has($field)) {
+                // If $field is 'AddedById', set 'user_id' in $dataToMerge
+                $dataToMerge[$field === 'AddedById' ? 'user_id' : Str::snake($field)] = $this->input($field);
+            }
+        }
+
+        $this->merge($dataToMerge);
     }
 
     /**
@@ -31,7 +50,7 @@ class PaymentSentRequest extends FormRequest
         ];
 
         // CHECKING FOR THE UPDATE METHOD
-        if ($this->isMethod(method: 'put')) {
+        if ($this->isMethod('PUT')) {
             // Convert 'required' to 'sometimes' for all rules
             foreach ($rules as $key => $rule) {
                 $rules[$key] = str_replace('required', 'sometimes', $rule);
@@ -39,14 +58,5 @@ class PaymentSentRequest extends FormRequest
         }
 
         return $rules;
-    }
-
-    public function prepareForValidation()
-    {
-        $this->merge([
-            'received_amount' => $this->input('receivedAmount'),
-            'party_id' => $this->input('partyId'),
-            'user_id' => $this->input('AddedById'),
-        ]);
     }
 }

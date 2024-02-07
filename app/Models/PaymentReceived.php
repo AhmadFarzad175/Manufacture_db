@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PaymentReceived extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'date',
         'party_id',
@@ -15,7 +16,24 @@ class PaymentReceived extends Model
         'details',
     ];
 
-    use HasFactory;
+
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+        return $query->where('name', 'like', '%' . $search . '%');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($expense) {
+            $expense->reference = 'EXP_' . (self::max('id') + 1);
+        });
+    }
+    
 
     public function party()
     {

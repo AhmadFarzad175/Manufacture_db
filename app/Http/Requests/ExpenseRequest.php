@@ -15,22 +15,6 @@ class ExpenseRequest extends FormRequest
         return true;
     }
 
-    // public function prepareForValidation()
-    // {
-    //     $dataToMerge = [];
-
-    //     // List of fields that can be updated
-    //     $updateableFields = ['expenseCategoryId', 'partyId', 'branchId', 'AddedById'];
-
-    //     foreach ($updateableFields as $field) {
-    //         if ($this->has($field)) {
-    //             $dataToMerge[Str::snake($field)] = $this->input($field);
-    //         }
-    //     }
-
-    //     $this->merge($dataToMerge);
-    // }
-
     public function prepareForValidation()
     {
         $dataToMerge = [];

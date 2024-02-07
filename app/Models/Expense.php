@@ -8,10 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Expense extends Model
 {
     use HasFactory;
-    protected $hidden = [
-        'created_at',
-        'updated_at'
-    ];
 
     protected $fillable = [
         'expense_category_id',
