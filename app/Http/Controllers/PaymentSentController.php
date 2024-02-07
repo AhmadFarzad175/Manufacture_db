@@ -7,17 +7,20 @@ use App\Models\PaymentSent;
 use Illuminate\Http\Request;
 use App\Http\Requests\PaymentSentRequest;
 use App\Http\Resources\PaymentSentResource;
-use App\Http\Requests\StorePaymentSendRequest;
-use App\Http\Requests\UpdatePaymentSendRequest;
+
 
 class PaymentSentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new PaymentSentResource(PaymentSent::paginate());
+        $perPage = $request->input('perPage');
+        $search = $request->input('search');
+        $paymentSent = PaymentSent::query()->search($search);
+        $paymentSent = $perPage ? $paymentSent->latest()->paginate($perPage) : $paymentSent->latest()->get();
+        return PaymentSentResource::collection($paymentSent);
     }
 
     /**
@@ -25,35 +28,39 @@ class PaymentSentController extends Controller
      */
     public function store(PaymentSentRequest $request)
     {
-        $validated = $request->validated();
-        PaymentSend::create($validated);
-        return 'payment inserted successfully';
+        $paymentSent = PaymentSent::create($request->validated());
+        return PaymentSentResource::make($paymentSent);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(PaymentSend $paymentSend)
+    public function show(PaymentSent $paymentSent)
     {
-        return $paymentSend;
+        return PaymentSentResource::make($paymentSent);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(PaymentSentRequest $request, PaymentSend $paymentSend)
+    public function update(PaymentSentRequest $request, PaymentSent $paymentSent)
     {
-        $validated = $request->validated();
-        $paymentSend->update($validated);
-        return 'payment updated successfully';
+        $paymentSent->update($request->validated());
+        return PaymentSentResource::make($paymentSent);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PaymentSend $paymentSend)
+    public function destroy(PaymentSent $paymentSent)
     {
-        $paymentSend->delete();
-        return 'payment send deleted successfully';
+        $paymentSent->delete();
+        return response()->noContent();
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $paymentSent = $request->input('paymentSentIds');
+        PaymentSent::destroy($paymentSent);
     }
 }

@@ -16,8 +16,34 @@ class PaymentSent extends Model
     ];
     use HasFactory;
 
+
+
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+        return $query->where('name', 'like', '%' . $search . '%');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($expense) {
+            $expense->reference = 'SENT_' . (self::max('id') + 1);
+        });
+    }
+
+
+
     public function party()
     {
         return $this->belongsTo(Party::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
