@@ -51,9 +51,10 @@ class DatabaseSeeder extends Seeder
 
         // OfficeShift::factory(10)->create();
 
+        Party::factory(10)->create();
         ExpenseCategory::factory(10)->create();
 
-        Party::factory(10)->create();
+        User::factory(10)->create();
 
         Expense::factory(10)->create();
 
@@ -61,7 +62,6 @@ class DatabaseSeeder extends Seeder
 
         // Employee::factory(10)->create();
 
-        User::factory(10)->create();
 
         // Attendance::factory(10)->create();
 
@@ -71,9 +71,9 @@ class DatabaseSeeder extends Seeder
 
         // Owner::factory(10)->create();
 
-        PaymentSent::factory(10)->create();
+        // PaymentSent::factory(10)->create();
 
-        PaymentReceived::factory(10)->create();
+        // PaymentReceived::factory(10)->create();
 
         // OwnerPickup::factory(10)->create();
 
