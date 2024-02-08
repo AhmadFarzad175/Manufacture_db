@@ -11,8 +11,9 @@ class PaymentSent extends Model
         'date',
         'party_id',
         'user_id',
-        'sent_amount',
+        'amount',
         'details',
+        'reference'
     ];
     use HasFactory;
 
@@ -30,8 +31,8 @@ class PaymentSent extends Model
     {
         parent::boot();
 
-        static::creating(function ($expense) {
-            $expense->reference = 'SENT_' . (self::max('id') + 1);
+        static::creating(function ($payment_sent) {
+            $payment_sent->reference = 'SENT_' . (self::max('id') + 1);
         });
     }
 

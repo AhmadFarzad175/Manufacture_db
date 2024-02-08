@@ -50,6 +50,11 @@ class User extends Authenticatable
 
     public function payment_sents()
     {
-        return $this->hasMany(Expense::class);
+        return $this->hasMany(PaymentSent::class);
+    }
+
+    public function payment_receiveds()
+    {
+        return $this->hasMany(PaymentReceived::class);
     }
 }

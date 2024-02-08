@@ -21,12 +21,12 @@ class PaymentSentRequest extends FormRequest
         $dataToMerge = [];
 
         // List of fields that can be updated
-        $updateableFields = ['partyId', 'AddedById'];
+        $fields = ['partyId', 'addedById'];
 
-        foreach ($updateableFields as $field) {
+        foreach ($fields as $field) {
             if ($this->has($field)) {
-                // If $field is 'AddedById', set 'user_id' in $dataToMerge
-                $dataToMerge[$field === 'AddedById' ? 'user_id' : Str::snake($field)] = $this->input($field);
+                // If $field is 'addedById', set 'user_id' in $dataToMerge
+                $dataToMerge[$field === 'addedById' ? 'user_id' : Str::snake($field)] = $this->input($field);
             }
         }
 
@@ -45,7 +45,7 @@ class PaymentSentRequest extends FormRequest
             'date'        => 'required|date',
             'party_id'    => 'required|exists:parties,id',
             'user_id'     => 'required|integer',
-            'send_amount' => 'required|integer',
+            'amount' => 'required|integer',
             'details'     => 'nullable|string',
         ];
 

@@ -20,12 +20,12 @@ class ExpenseRequest extends FormRequest
         $dataToMerge = [];
 
         // List of fields that can be updated
-        $updateableFields = ['expenseCategoryId', 'partyId', 'branchId', 'AddedById'];
+        $fields = ['expenseCategoryId', 'partyId', 'branchId', 'addedById'];
 
-        foreach ($updateableFields as $field) {
+        foreach ($fields as $field) {
             if ($this->has($field)) {
-                // If $field is 'AddedById', set 'user_id' in $dataToMerge
-                $dataToMerge[$field === 'AddedById' ? 'user_id' : Str::snake($field)] = $this->input($field);
+                // If $field is 'addedById', set 'user_id' in $dataToMerge
+                $dataToMerge[$field === 'addedById' ? 'user_id' : Str::snake($field)] = $this->input($field);
             }
         }
 

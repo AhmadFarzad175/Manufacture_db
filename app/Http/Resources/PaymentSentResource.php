@@ -16,6 +16,7 @@ class PaymentSentResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'date' => $this->date,
             'party' => [
                 'id' => $this->party->id,
                 'name' => $this->party->name,
@@ -24,8 +25,8 @@ class PaymentSentResource extends JsonResource
                 'id' => $this->user_id,
                 'name' => $this->user->name,
             ],
-            'sent_amount',
-            'details',
+            'amount' => $this->amount,
+            'reference' => $this->reference,
         ];
     }
 }

@@ -12,8 +12,9 @@ class PaymentReceived extends Model
         'date',
         'party_id',
         'user_id',
-        'received_amount',
+        'amount',
         'details',
+        'reference'
     ];
 
 
@@ -29,14 +30,19 @@ class PaymentReceived extends Model
     {
         parent::boot();
 
-        static::creating(function ($expense) {
-            $expense->reference = 'EXP_' . (self::max('id') + 1);
+        static::creating(function ($payment_Received) {
+            $payment_Received->reference = 'REC_' . (self::max('id') + 1);
         });
     }
-    
+
 
     public function party()
     {
         return $this->belongsTo(Party::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

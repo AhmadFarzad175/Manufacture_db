@@ -43,6 +43,8 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        User::factory(10)->create();
+
         Branch::factory(10)->create();
 
         // Department::factory(10)->create();
@@ -54,7 +56,6 @@ class DatabaseSeeder extends Seeder
         Party::factory(10)->create();
         ExpenseCategory::factory(10)->create();
 
-        User::factory(10)->create();
 
         Expense::factory(10)->create();
 
@@ -71,9 +72,9 @@ class DatabaseSeeder extends Seeder
 
         // Owner::factory(10)->create();
 
-        // PaymentSent::factory(10)->create();
+        PaymentSent::factory(10)->create();
 
-        // PaymentReceived::factory(10)->create();
+        PaymentReceived::factory(10)->create();
 
         // OwnerPickup::factory(10)->create();
 
