@@ -28,5 +28,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('/expenseCategories', ExpenseCategoryController::class);
 Route::apiResource('/expenses', ExpenseController::class);
 Route::apiResource('/parties', PartyController::class);
-Route::apiResource('/paymentSends', PaymentSentController::class);
+Route::apiResource('/paymentSents', PaymentSentController::class);
 Route::apiResource('/paymentReceiveds', PaymentReceivedController::class);

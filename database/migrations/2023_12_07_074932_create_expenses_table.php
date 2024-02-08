@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use App\Models\Party;
 use App\Models\Branch;
 use App\Models\Company;
@@ -22,7 +23,7 @@ return new class extends Migration
             $table->foreignIdFor(ExpenseCategory::class)->constrained()->unique(false);
             $table->integer('amount')->default(0);
             $table->foreignIdFor(Party::class)->constrained()->unique(false);
-            $table->integer('user_id');
+            $table->foreignIdFor(User::class)->constrained()->unique(false);
             $table->foreignIdFor(Branch::class)->constrained()->unique(false);
             $table->text('details')->nullable();
             $table->timestamps();

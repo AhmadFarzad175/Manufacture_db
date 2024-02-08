@@ -43,6 +43,8 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        User::factory(10)->create();
+
         Branch::factory(10)->create();
 
         // Department::factory(10)->create();
@@ -60,8 +62,6 @@ class DatabaseSeeder extends Seeder
         // Holiday::factory(10)->create();
 
         // Employee::factory(10)->create();
-
-        User::factory(10)->create();
 
         // Attendance::factory(10)->create();
 
