@@ -38,8 +38,6 @@ class ExpenseResource extends JsonResource
             ],
 
 
-
-
         ];
     }
 }

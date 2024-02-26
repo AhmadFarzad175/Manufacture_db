@@ -17,11 +17,16 @@ class ExpenseController extends Controller
     {
         $perPage = $request->input('perPage');
         $search = $request->input('search');
-        $expenses = Expense::query()->search($search);
+
+        // Eager load relationships and apply search
+        $expenses = Expense::with(['expenseCategory', 'user', 'branch', 'party'])
+            ->search($search);
+
         $expenses = $perPage ? $expenses->latest()->paginate($perPage) : $expenses->latest()->get();
-        info($expenses);
+
         return ExpenseResource::collection($expenses);
     }
+
 
     /**
      * Store a newly created resource in storage.
