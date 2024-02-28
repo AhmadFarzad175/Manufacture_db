@@ -1,13 +1,11 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Products;
 
-use App\Models\Unit;
-use App\Models\MaterialCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Material>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Products\Material>
  */
 class MaterialFactory extends Factory
 {
@@ -19,7 +17,8 @@ class MaterialFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word,
+            'code' => $this->faker->numberBetween(1, 100),
+            'name' => $this->faker->word(),
             'image' => $this->faker->imageUrl(),
             'material_category_id' => $this->faker->numberBetween(1, 10),
             'unit_id' => $this->faker->numberBetween(1, 10),

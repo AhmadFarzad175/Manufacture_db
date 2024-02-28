@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\product\Controllers;
+namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\MaterialCategory;
-use App\Http\Controllers\Controller;
+use App\Models\Purchases\Purchase;
+use App\Http\Requests\StorePurchaseRequest;
+use App\Http\Requests\UpdatePurchaseRequest;
 
-class MaterialCategoryController extends Controller
+class PurchaseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +19,7 @@ class MaterialCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePurchaseRequest $request)
     {
         //
     }
@@ -27,7 +27,7 @@ class MaterialCategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(MaterialCategory $materialCategory)
+    public function show(Purchase $purchase)
     {
         //
     }
@@ -35,7 +35,7 @@ class MaterialCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, MaterialCategory $materialCategory)
+    public function update(UpdatePurchaseRequest $request, Purchase $purchase)
     {
         //
     }
@@ -43,7 +43,7 @@ class MaterialCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MaterialCategory $materialCategory)
+    public function destroy(Purchase $purchase)
     {
         //
     }

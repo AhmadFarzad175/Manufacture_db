@@ -4,17 +4,18 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Unit;
 use App\Models\User;
 use App\Models\Party;
 use App\Models\Branch;
 use App\Models\Expense;
 use App\Models\PaymentSent;
+use App\Models\Products\Unit;
 use App\Models\ExpenseCategory;
-use App\Models\Material;
 use App\Models\PaymentReceived;
 use Illuminate\Database\Seeder;
-use App\Models\MaterialCategory;
+use App\Models\Products\Product;
+use App\Models\Products\Material;
+use App\Models\Products\MaterialCategory;
 
 class DatabaseSeeder extends Seeder
 {
@@ -46,5 +47,6 @@ class DatabaseSeeder extends Seeder
         MaterialCategory::factory(10)->create();
         Unit::factory(10)->create();
         Material::factory(10)->create();
+        Product::factory(10)->create();
     }
 }

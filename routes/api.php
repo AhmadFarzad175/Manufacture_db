@@ -3,14 +3,15 @@
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UnitController;
 use App\Http\Controllers\PartyController;
 use App\Http\Controllers\ExpenseController;
-use App\Http\Controllers\Product\MaterialController;
 use App\Http\Controllers\PaymentSentController;
+use App\Http\Controllers\Products\UnitController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\PaymentReceivedController;
-use App\Http\Controllers\product\MaterialCategoryController;
+use App\Http\Controllers\Products\ProductController;
+use App\Http\Controllers\Products\MaterialController;
+use App\Http\Controllers\Products\MaterialCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,10 +29,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 #PRODUCT MENU ROUTES
-// Route::apiResource('/materialCategories', MaterialCategoryController::class);
-// Route::apiResource('/units', UnitController::class);
+Route::apiResource('/materialCategories', MaterialCategoryController::class);
+Route::apiResource('/units', UnitController::class);
 Route::apiResource('/materials', MaterialController::class);
-// Route::apiResource('/products', ProductController::class);
+Route::apiResource('/products', ProductController::class);
+Route::post('/products/bulkDelete', [ProductController::class, 'bulkDelete']);
 
 
 #EXPENSE MENU ROUTES

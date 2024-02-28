@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Product;
+namespace App\Http\Controllers\Products;
 
-use App\Models\Product\Material;
 use Illuminate\Http\Request;
+use App\Models\Products\Material;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\MaterialResource;
+use App\Http\Requests\Products\MaterialRequest;
+use App\Http\Resources\Products\MaterialResource;
 
 class MaterialController extends Controller
 {
@@ -18,8 +19,7 @@ class MaterialController extends Controller
         $search = $request->input('search');
 
         // Eager load relationships and apply search
-        $materials = Material::with(['materialCategory', 'unit'])
-            ->search($search);
+        $materials = Material::with(['materialCategory', 'unit'])->search($search);
 
         $materials = $perPage ? $materials->latest()->paginate($perPage) : $materials->latest()->get();
 
@@ -29,7 +29,7 @@ class MaterialController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(MaterialRequest $request)
     {
         $material = Material::create($request->validated());
         return MaterialResource::make($material);
@@ -46,7 +46,7 @@ class MaterialController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Material $material)
+    public function update(MaterialRequest $request, Material $material)
     {
         $material->update($request->validated());
         return MaterialResource::make($material);
