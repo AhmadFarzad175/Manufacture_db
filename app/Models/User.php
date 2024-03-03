@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Purchases\Purchase;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -56,5 +58,10 @@ class User extends Authenticatable
     public function payment_receiveds()
     {
         return $this->hasMany(PaymentReceived::class);
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
     }
 }

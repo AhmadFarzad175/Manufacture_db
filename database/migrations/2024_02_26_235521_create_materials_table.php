@@ -23,6 +23,7 @@ return new class extends Migration
             $table->float('cost', 10, 0);
             $table->float('stock', 10, 0)->nullable()->default(0);
             $table->float('stock_alert', 10, 0)->nullable()->default(0);
+            $table->boolean('tax_type')->default(0);
             $table->text('description');
             $table->timestamps();
         });

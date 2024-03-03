@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('reference')->unique();
             $table->date('date');
             $table->foreignIdFor(ExpenseCategory::class)->constrained()->unique(false);
-            $table->integer('amount')->default(0);
+            $table->decimal('amount', 20, 2)->default(0.00);
             $table->foreignIdFor(Party::class)->constrained()->unique(false);
             $table->foreignIdFor(User::class)->constrained()->unique(false);
             $table->foreignIdFor(Branch::class)->constrained()->unique(false);

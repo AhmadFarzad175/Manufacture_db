@@ -30,6 +30,7 @@ class MaterialRequest extends FormRequest
             'cost' => 'required|numeric|min:0',
             'stock' => 'nullable|numeric|min:0',
             'stock_alert' => 'nullable|numeric|min:0',
+            'tax_type' => 'nullable|numeric',
             'description' => 'required|string',
         ];
 

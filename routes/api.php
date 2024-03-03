@@ -12,6 +12,7 @@ use App\Http\Controllers\PaymentReceivedController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Products\MaterialController;
 use App\Http\Controllers\Products\MaterialCategoryController;
+use App\Http\Controllers\Purchases\PurchaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,12 @@ Route::apiResource('/expenses', ExpenseController::class);
 Route::apiResource('/parties', PartyController::class);
 Route::apiResource('/paymentSents', PaymentSentController::class);
 Route::apiResource('/paymentReceiveds', PaymentReceivedController::class);
+
+
+#PURCHASE MENU ROUTES
+Route::apiResource('/purchases', PurchaseController::class);
+
+
 
 
 

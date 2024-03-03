@@ -18,6 +18,7 @@ class Product extends Model
         'price',
         'stock',
         'stock_alert',
+        'tax_type',
         'description',
     ];
 

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Party::class)->constrained()->unique(false);
             $table->foreignIdFor(User::class)->constrained()->unique(false);
             $table->string('reference')->unique();
-            $table->integer('amount');
+            $table->decimal('amount', 20, 2)->default(0.00);
             $table->text('details');
             $table->timestamps();
         });

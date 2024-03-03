@@ -20,9 +20,10 @@ return new class extends Migration
             $table->string('image');
             $table->foreignIdFor(MaterialCategory::class);
             $table->foreignIdFor(Unit::class);
-            $table->float('price', 10, 0);
-            $table->float('stock', 10, 0)->nullable()->default(0);
-            $table->float('stock_alert', 10, 0)->nullable()->default(0);
+            $table->decimal('price', 20, 2);
+            $table->decimal('stock', 10, 2)->nullable()->default(0.00);
+            $table->decimal('stock_alert', 10, 2)->nullable()->default(0.00);
+            $table->boolean('tax_type')->default(0);
             $table->text('description');
             $table->timestamps();
         });
