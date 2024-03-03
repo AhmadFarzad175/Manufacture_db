@@ -27,5 +27,7 @@ Route::get('/expenseCat/{expenseCategory}', function (ExpenseCategory $expenseCa
 });
 
 Route::get('/', function () {
+
     return view('welcome');
+    
 });
