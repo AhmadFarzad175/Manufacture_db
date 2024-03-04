@@ -11,8 +11,9 @@ use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\PaymentReceivedController;
 use App\Http\Controllers\Products\ProductController;
 use App\Http\Controllers\Products\MaterialController;
-use App\Http\Controllers\Products\MaterialCategoryController;
+use App\Http\Controllers\Settings\CurrencyController;
 use App\Http\Controllers\Purchases\PurchaseController;
+use App\Http\Controllers\Products\MaterialCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,12 @@ use App\Http\Controllers\Purchases\PurchaseController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+#SETTINGS MENU ROUTES
+Route::apiResource('/currencies', CurrencyController::class);
+
+
 
 #PRODUCT MENU ROUTES
 Route::apiResource('/materialCategories', MaterialCategoryController::class);

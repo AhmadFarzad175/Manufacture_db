@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Settings;
 
 use App\Models\Settings\Account;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 
 class AccountController extends Controller
 {
