@@ -23,10 +23,10 @@ return new class extends Migration
             $table->string('reference')->unique();
             $table->decimal('paid', 20, 2)->nullable()->default(0.00);
             $table->decimal('total', 20, 2)->nullable()->default(0.00);
+            $table->decimal('due', 20, 2)->nullable()->default(0.00);
             $table->string('status');
             $table->decimal('shipping', 10, 2)->nullable()->default(0.00);
             $table->decimal('discount', 10, 2)->nullable()->default(0.00);
-            $table->string('payment_type');
             $table->decimal('tax', 10, 2)->nullable()->default(0.00);
             $table->foreignIdFor(Currency::class);
             $table->text('note');

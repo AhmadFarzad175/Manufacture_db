@@ -13,13 +13,15 @@ use App\Models\Products\Unit;
 use App\Models\ExpenseCategory;
 use App\Models\PaymentReceived;
 use Illuminate\Database\Seeder;
+use App\Models\Peoples\Customer;
 use App\Models\Peoples\Supplier;
 use App\Models\Products\Product;
+use App\Models\Settings\Account;
 use App\Models\Products\Material;
 use App\Models\Settings\Currency;
 use App\Models\Purchases\Purchase;
-use App\Models\Products\MaterialCategory;
 use App\Models\Purchases\PurchaseDetail;
+use App\Models\Products\MaterialCategory;
 
 class DatabaseSeeder extends Seeder
 {
@@ -37,9 +39,11 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         Currency::factory(3)->create();
+        Account::factory(5)->create();
         User::factory(10)->create();
         Branch::factory(10)->create();
 
+        Customer::factory(10)->create();
         Supplier::factory(10)->create();
 
         //! EXPENSE

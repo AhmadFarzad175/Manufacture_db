@@ -39,7 +39,6 @@ class PurchaseRequest extends FormRequest
             'user_id' => $this->input('addedById'),
             'supplier_id' => $this->input('SupplierId'),
             'currency_id' => $this->input('currencyId'),
-            'payment_type' => $this->input('paymentType'),
         ]);
     }
 
@@ -62,7 +61,6 @@ class PurchaseRequest extends FormRequest
             'status' => 'required|in:received,pending,ordered',
             'shipping' => 'nullable|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
-            'payment_type' => 'required|string',
             'tax' => 'nullable|numeric|min:0',
             'currency_id' => 'required|exists:currencies,id',
             'note' => 'nullable',

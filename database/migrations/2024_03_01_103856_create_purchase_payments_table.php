@@ -1,8 +1,9 @@
 <?php
 
 use App\Models\User;
+use App\Models\Settings\Account;
+use App\Models\Settings\Currency;
 use App\Models\Purchases\Purchase;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -14,17 +15,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('shipments', function (Blueprint $table) {
+        Schema::create('purchase_payments', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class);
-            $table->timestamp('date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->date('date');
             $table->string('Reference', 192);
             $table->foreignIdFor(Purchase::class);
-            $table->string('delivered_to', 192)->nullable();
-            $table->text('address')->nullable();
-            $table->string('shipmentStatus', 192);
-            $table->text('details')->nullable();
-            $table->timestamps(6);
+            $table->string('payment_type');
+            $table->decimal('paid', 20, 2)->nullable()->default(0.00);
+            $table->foreignIdFor(Account::class);
+            $table->text('note')->nullable();
+
+            $table->timestamps();
         });
     }
 
@@ -33,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('shipments');
+        Schema::dropIfExists('purchase_payments');
     }
 };
