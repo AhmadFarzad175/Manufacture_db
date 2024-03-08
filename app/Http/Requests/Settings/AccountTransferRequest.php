@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests\Settings;
 
+use App\Traits\UpdateRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AccountTransferRequest extends FormRequest
 {
+    use UpdateRequestRules;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -21,7 +23,7 @@ class AccountTransferRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'from_account' => 'required|exists:accounts,id',
             'to_account' => 'required|exists:accounts,id',
             'user_id' => 'required|exists:users,id',
@@ -29,5 +31,9 @@ class AccountTransferRequest extends FormRequest
             'to_amount' => 'required|integer|min:0',
             'date' => 'required|date',
         ];
+
+        $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;
+
+        return $rules;
     }
 }

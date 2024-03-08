@@ -38,7 +38,6 @@ class ProductController extends Controller
             $validate['image'] = $validate['image']->store('product_images/', 'public');
         }
 
-
         Product::create($validate);
 
         return response()->json(['success' => 'product inserted successfully']);

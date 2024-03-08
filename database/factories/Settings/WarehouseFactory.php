@@ -18,7 +18,7 @@ class WarehouseFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'phone' => $this->faker->phoneNumber(),
+            'phone' => "0766343983",
             'email' => $this->faker->unique()->email(),
             'city' => $this->faker->city(),
             'country' => $this->faker->country(),

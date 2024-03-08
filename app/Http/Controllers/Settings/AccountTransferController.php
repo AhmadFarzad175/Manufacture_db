@@ -27,30 +27,25 @@ class AccountTransferController extends Controller
     {
         try {
             // Validate the request using the TransferRequest rules
-            $validatedData = $request->validated();
+            $validated = $request->validated();
 
             // Use a database transaction to ensure data integrity
             DB::beginTransaction();
+            return ($validated);
 
             // Check if from_account has sufficient balance
-            $fromAccount = Account::find($validatedData['from_account_id']);
-            if ($fromAccount->price < $validatedData['from_amount']) {
+            $fromAccount = Account::find($validated['from_account_id']);
+
+            if ($fromAccount->price < $validated['from_amount']) {
                 throw new \Exception('Insufficient funds in from_account');
             }
 
             // Update account balances using decrement and increment
-            Account::where('id', $validatedData['from_account_id'])->decrement('price', $validatedData['from_amount']);
-            Account::where('id', $validatedData['to_account_id'])->increment('price', $validatedData['to_amount']);
+            Account::where('id', $validated['from_account_id'])->decrement('price', $validated['from_amount']);
+            Account::where('id', $validated['to_account_id'])->increment('price', $validated['to_amount']);
 
             // Create a new transfer record
-            $transfer = AccountTransfer::create([
-                'from_account_id' => $validatedData['from_account_id'],
-                'to_account_id' => $validatedData['to_account_id'],
-                'user_id' => $validatedData['user_id'],
-                'from_amount' => $validatedData['from_amount'],
-                'to_amount' => $validatedData['to_amount'],
-                'date' => $validatedData['date'],
-            ]);
+            $transfer = AccountTransfer::create($validated);
 
             // Commit the transaction
             DB::commit();

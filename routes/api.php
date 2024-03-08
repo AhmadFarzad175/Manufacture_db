@@ -17,6 +17,7 @@ use App\Http\Controllers\Settings\MaterialController;
 use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Settings\WarehouseController;
 use App\Http\Controllers\Settings\SystemSettingController;
+use App\Http\Controllers\Settings\AccountTransferController;
 use App\Http\Controllers\Settings\MaterialCategoryController;
 
 /*
@@ -47,6 +48,7 @@ Route::post('warehousesBulkDelete', [WarehouseController::class, 'bulkDelete']);
 
 Route::apiResource('/accounts', AccountController::class);
 Route::post('accountsBulkDelete', [AccountController::class, 'bulkDelete']);
+Route::apiResource('/accountTransfer', AccountTransferController::class);
 
 Route::apiResource('/products', ProductController::class);
 Route::post('productsBulkDelete', [ProductController::class, 'bulkDelete']);

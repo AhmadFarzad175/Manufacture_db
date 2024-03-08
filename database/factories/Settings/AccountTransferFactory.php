@@ -17,8 +17,8 @@ class AccountTransferFactory extends Factory
     public function definition(): array
     {
         return [
-            'from_account' => rand(1, 5),
-            'to_account' => rand(1, 5),
+            'from_account_id' => rand(1, 5),
+            'to_account_id' => rand(1, 5),
             'user_id' => rand(1, 10),
             'from_amount' => $this->faker->numberBetween(100, 1000),
             'to_amount' => $this->faker->numberBetween(100, 1000),

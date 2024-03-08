@@ -10,12 +10,12 @@ class AccountTransfer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'from_account_id',
-        'to_account_id',
-        'user_id',
-        'from_amount',
-        'to_amount',
-        'date'
+        "from_account_id",
+        "to_account_id",
+        "user_id",
+        "from_amount",
+        "to_amount",
+        "date"
     ];
 
     public function scopeSearch($query, $search)

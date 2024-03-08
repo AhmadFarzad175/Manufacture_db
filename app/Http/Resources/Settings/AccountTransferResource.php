@@ -14,6 +14,13 @@ class AccountTransferResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "fromAccount" => $this->from_account_id,
+            "toAccount" => $this->to_account_id,
+            "userId" => $this->user_id,
+            "fromAmount" => $this->from_amount,
+            "toAmount" => $this->to_amount,
+            "date" => $this->date,
+        ];
     }
 }
