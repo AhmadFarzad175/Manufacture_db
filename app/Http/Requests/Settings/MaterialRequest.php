@@ -22,7 +22,7 @@ class MaterialRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'code' => 'required|integer',
+            'code' => 'required|string',
             'name' => 'required|string',
             'image' => 'required|string',
             'material_category_id' => 'required|exists:material_categories,id',

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('materials', function (Blueprint $table) {
             $table->id();
-            $table->integer('code');
+            $table->string('code');
             $table->string('name');
             $table->string('image');
             $table->foreignIdFor(MaterialCategory::class);

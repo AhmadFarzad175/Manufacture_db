@@ -30,45 +30,16 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        // return ($request);
-        $validate = $request->validate([
-            'code' => 'required',
-            'name' => 'required|string',
-            'image' => 'nullable|string|image',
-            'material_category_id' => 'required',
-            'unit_id' => 'required',
-            'price' => 'required',
-            'stock' => 'nullable',
-            'stock_alert' => 'nullable',
-            'description' => 'nullable|string',
-        ]);
-        Log::info('validate', [$validate]);
-        return ($validate);
-        $imagePath = null;
+        $validate = $request->validated();
+
         if ($validate['image']) {
             $validate['image'] = $validate['image']->store('product_images/', 'public');
         }
+
+
         Product::create($validate);
-
-
-        // $imagePath = null;
-        // if ($request->hasFile('image')) {
-        //     $imagePath = $request->file('image')->store('product_images/', 'public');
-        // }
-
-        // // Create the listing with the validated data
-        // Product::create([
-        //     'code' => $request->input('code'),
-        //     'price' => $request->input('price'),
-        //     'name' => $request->input('name'),
-        //     'stock_alert' => $request->input('stock_alert'),
-        //     'material_category_id' => $request->input('material_category_id'),
-        //     'unit_id' => $request->input('unit_id'),
-        //     'description' => $request->input('description'),
-        //     'image' => $imagePath
-        // ]);
 
         return response()->json(['success' => 'product inserted successfully']);
     }

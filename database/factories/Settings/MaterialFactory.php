@@ -17,7 +17,7 @@ class MaterialFactory extends Factory
     public function definition(): array
     {
         return [
-            'code' => $this->faker->numberBetween(1, 100),
+            'code' => $this->faker->countryCode(),
             'name' => $this->faker->word(),
             'image' => $this->faker->imageUrl(),
             'material_category_id' => $this->faker->numberBetween(1, 10),
@@ -25,7 +25,7 @@ class MaterialFactory extends Factory
             'cost' => $this->faker->randomNumber(5),
             'stock' => $this->faker->randomNumber(3),
             'stock_alert' => $this->faker->randomNumber(3),
-            'description' => $this->faker->paragraph,
+            'description' => $this->faker->paragraph(),
         ];
     }
 }

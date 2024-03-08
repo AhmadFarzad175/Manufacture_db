@@ -25,9 +25,9 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'code' => 'required|integer',
+            'code' => 'required|string',
             'name' => 'required|string',
-            'image' => 'nullable|string|image',
+            'image' => 'nullable|image',
             'material_category_id' => 'required|exists:material_categories,id',
             'unit_id' => 'required|exists:units,id',
             'price' => 'required|numeric|min:0',

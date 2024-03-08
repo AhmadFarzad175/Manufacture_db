@@ -23,6 +23,7 @@ use App\Models\Purchases\Purchase;
 use App\Models\Settings\Warehouse;
 use App\Models\Settings\SystemSetting;
 use App\Models\Purchases\PurchaseDetail;
+use App\Models\Settings\AccountTransfer;
 use App\Models\Settings\MaterialCategory;
 
 class DatabaseSeeder extends Seeder
@@ -43,6 +44,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SystemSettingsTableSeeder::class);
         Currency::factory(5)->create();
         Account::factory(5)->create();
+        AccountTransfer::factory(5)->create();
         Warehouse::factory(10)->create();
 
         User::factory(10)->create();
