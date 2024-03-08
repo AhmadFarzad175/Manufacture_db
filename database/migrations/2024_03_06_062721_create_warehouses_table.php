@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('currencies', function (Blueprint $table) {
+        Schema::create('warehouses', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 192);
-            $table->string('name', 192);
-            $table->string('symbol', 64);
-            $table->double('rate');
+            $table->string('name');
+            $table->string('email', 192)->unique();
+            $table->string('phone', 15);
+            $table->string('city');
+            $table->string('country');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('currencies');
+        Schema::dropIfExists('warehouses');
     }
 };

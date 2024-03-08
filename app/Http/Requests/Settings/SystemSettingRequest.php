@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Products;
+namespace App\Http\Requests\Settings;
 
+use App\Traits\UpdateRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UnitRequest extends FormRequest
+class SystemSettingRequest extends FormRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -22,8 +24,11 @@ class UnitRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'email' => 'sometimes|string|email|unique:system_settings,email|max:192',
+            'phone' => 'sometimes|string|max:15',
+            // 'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif', // adjust validation rules for image upload
+            'address' => 'sometimes|string',
+            'companyName' => 'sometimes|string',
         ];
     }
 }

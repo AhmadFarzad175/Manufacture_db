@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Products;
+namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
-use App\Models\Products\Material;
+use App\Models\Settings\Material;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Products\MaterialRequest;
-use App\Http\Resources\Products\MaterialResource;
+use App\Http\Requests\Settings\MaterialRequest;
+use App\Http\Resources\Settings\MaterialResource;
+
 
 class MaterialController extends Controller
 {

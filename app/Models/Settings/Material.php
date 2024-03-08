@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Models\Products;
+namespace App\Models\Settings;
 
+use App\Models\Purchases\Purchase;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Material extends Model
 {
     use HasFactory;
 
@@ -15,10 +16,9 @@ class Product extends Model
         'image',
         'material_category_id',
         'unit_id',
-        'price',
+        'cost',
         'stock',
         'stock_alert',
-        'tax_type',
         'description',
     ];
 
@@ -38,5 +38,10 @@ class Product extends Model
     public function unit()
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    public function purchases()
+    {
+        return $this->belongsToMany(Purchase::class, 'purchase_details')->withPivot(['quantity', 'unit_cost'])->withTimestamps();
     }
 }

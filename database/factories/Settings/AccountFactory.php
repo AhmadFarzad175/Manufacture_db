@@ -19,7 +19,7 @@ class AccountFactory extends Factory
         return [
             'name' => $this->faker->company,
             'currency_id' => rand(1, 3),
-            'amount' => $this->faker->randomFloat(2, 0, 100000),
+            'price' => $this->faker->randomFloat(2, 0, 100000),
         ];
     }
 }

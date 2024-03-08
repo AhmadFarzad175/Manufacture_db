@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Settings;
+namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AccountResource extends JsonResource
+class WarehouseResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,11 +17,10 @@ class AccountResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'currency_id' => [
-                'id' => $this->currency->id,
-                'name' => $this->currency->name,
-            ],
-            'price' => $this->price,
+            'phone' => $this->phone,
+            'email' => $this->email,
+            'city' => $this->city,
+            'country' => $this->country
         ];
     }
 }

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Products;
+namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
-use App\Models\Products\Unit;
+use App\Models\Settings\Unit;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Products\UnitRequest;
-use App\Http\Resources\Products\UnitResource;
+use App\Http\Requests\Settings\UnitRequest;
+use App\Http\Resources\Settings\UnitResource;
+
 
 class UnitController extends Controller
 {

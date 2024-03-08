@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\Products\Unit;
-use App\Models\Products\MaterialCategory;
+use App\Models\Settings\Unit;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Settings\MaterialCategory;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -23,7 +23,6 @@ return new class extends Migration
             $table->float('cost', 10, 0);
             $table->float('stock', 10, 0)->nullable()->default(0);
             $table->float('stock_alert', 10, 0)->nullable()->default(0);
-            $table->boolean('tax_type')->default(0);
             $table->text('description');
             $table->timestamps();
         });

@@ -5,10 +5,11 @@ namespace App\Models\Settings;
 use App\Models\Purchases\Purchase;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Currency extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'code',
         'name',
@@ -22,7 +23,10 @@ class Currency extends Model
         if (!$search) {
             return $query;
         }
-        return $query->where('name', 'like', '%' . $search . '%');
+        return $query->where('name', 'like', '%' . $search . '%')
+            ->orWhere('code', 'like', '%' . $search . '%')
+            ->orWhere('symbol', 'like', '%' . $search . '%')
+            ->orWhere('rate', 'like', '%' . $search . '%');
     }
 
 
@@ -30,5 +34,10 @@ class Currency extends Model
     public function purchases()
     {
         return $this->hasMany(Purchase::class);
+    }
+
+    public function accounts()
+    {
+        return $this->hasMany(Account::class);
     }
 }

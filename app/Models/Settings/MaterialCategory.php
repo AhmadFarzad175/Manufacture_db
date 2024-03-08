@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Products;
+namespace App\Models\Settings;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Unit extends Model
+class MaterialCategory extends Model
 {
     use HasFactory;
 
@@ -21,6 +21,7 @@ class Unit extends Model
         }
         return $query->where('name', 'like', '%' . $search . '%');
     }
+
 
     public function materials()
     {

@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('currencies', function (Blueprint $table) {
+        Schema::create('system_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 192);
-            $table->string('name', 192);
-            $table->string('symbol', 64);
-            $table->double('rate');
+            $table->string('companyName');
+            $table->string('email', 192)->unique();
+            $table->string('phone', 15);
+            // $table->string('logo')->nullable();
+            $table->text('address');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('currencies');
+        Schema::dropIfExists('system_settings');
     }
 };

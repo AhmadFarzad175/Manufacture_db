@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Requests\Products;
+namespace App\Http\Requests\Settings;
 
+use App\Traits\UpdateRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductRequest extends FormRequest
 {
+
+    use UpdateRequestRules;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -19,31 +22,23 @@ class ProductRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
         $rules = [
             'code' => 'required|integer',
             'name' => 'required|string',
-            'image' => 'required|string',
+            'image' => 'nullable|string|image',
             'material_category_id' => 'required|exists:material_categories,id',
             'unit_id' => 'required|exists:units,id',
             'price' => 'required|numeric|min:0',
             'stock' => 'nullable|numeric|min:0',
             'stock_alert' => 'nullable|numeric|min:0',
-            'tax_type' => 'nullable|numeric',
-
-            'description' => 'required|string',
+            'description' => 'nullable|string',
         ];
 
 
         // CHECKING FOR THE UPDATE METHOD
-        if ($this->isMethod('PUT')) {
-
-            // Convert 'required' to 'sometimes' for all rules
-            foreach ($rules as $key => $rule) {
-                $rules[$key] = str_replace('required', 'sometimes', $rule);
-            }
-        }
+        $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;
 
         return $rules;
     }

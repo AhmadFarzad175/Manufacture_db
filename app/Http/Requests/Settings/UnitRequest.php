@@ -2,12 +2,10 @@
 
 namespace App\Http\Requests\Settings;
 
-use App\Traits\UpdateRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CurrencyRequest extends FormRequest
+class UnitRequest extends FormRequest
 {
-    use UpdateRequestRules;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -23,15 +21,9 @@ class CurrencyRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = [
-            'code' => 'required|string|max:192',
-            'name' => 'required|string|max:192',
-            'symbol' => 'required|string|max:64',
-            'rate' => 'required|numeric',
+        return [
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
         ];
-
-        $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;
-
-        return $rules;
     }
 }

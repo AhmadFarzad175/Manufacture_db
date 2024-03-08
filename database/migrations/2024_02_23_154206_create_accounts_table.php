@@ -16,8 +16,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignIdFor(Currency::class);
-            $table->decimal('amount', 20, 2);
+            $table->decimal('price', 20, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

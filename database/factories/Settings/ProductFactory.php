@@ -1,13 +1,13 @@
 <?php
 
-namespace Database\Factories\Products;
+namespace Database\Factories\Settings;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Products\Material>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Products\Product>
  */
-class MaterialFactory extends Factory
+class ProductFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -22,10 +22,9 @@ class MaterialFactory extends Factory
             'image' => $this->faker->imageUrl(),
             'material_category_id' => $this->faker->numberBetween(1, 10),
             'unit_id' => $this->faker->numberBetween(1, 10),
-            'cost' => $this->faker->randomNumber(5),
+            'price' => $this->faker->randomNumber(5),
             'stock' => $this->faker->randomNumber(3),
             'stock_alert' => $this->faker->randomNumber(3),
-            'tax_type' => $this->faker->boolean(),
             'description' => $this->faker->paragraph,
         ];
     }

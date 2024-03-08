@@ -21,7 +21,7 @@ class CustomerRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             //
         ];
         $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;
