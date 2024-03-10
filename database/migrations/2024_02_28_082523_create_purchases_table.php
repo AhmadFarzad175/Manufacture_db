@@ -18,8 +18,8 @@ return new class extends Migration
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(Supplier::class)->constrained();
+            $table->foreignIdFor(User::class)->constrained()->constrained();
+            $table->foreignIdFor(Supplier::class)->constrained()->constrained();
             $table->string('reference')->unique();
             $table->decimal('paid', 20, 2)->nullable()->default(0.00);
             $table->decimal('total', 20, 2)->nullable()->default(0.00);
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->decimal('shipping', 10, 2)->nullable()->default(0.00);
             $table->decimal('discount', 10, 2)->nullable()->default(0.00);
             $table->decimal('tax', 10, 2)->nullable()->default(0.00);
-            $table->foreignIdFor(Currency::class);
+            $table->foreignIdFor(Currency::class)->constrained();
             $table->text('note');
             $table->timestamps();
         });

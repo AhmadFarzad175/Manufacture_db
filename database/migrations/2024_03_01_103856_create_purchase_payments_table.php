@@ -20,10 +20,10 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->date('date');
             $table->string('Reference', 192);
-            $table->foreignIdFor(Purchase::class);
+            $table->foreignIdFor(Purchase::class)->constrained();
             $table->string('payment_type');
             $table->decimal('paid', 20, 2)->nullable()->default(0.00);
-            $table->foreignIdFor(Account::class);
+            $table->foreignIdFor(Account::class)->constrained();
             $table->text('note')->nullable();
 
             $table->timestamps();

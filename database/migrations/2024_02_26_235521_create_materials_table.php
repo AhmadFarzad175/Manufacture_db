@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('code');
             $table->string('name');
             $table->string('image')->nullable();
-            $table->foreignIdFor(MaterialCategory::class);
-            $table->foreignIdFor(Unit::class);
+            $table->foreignIdFor(MaterialCategory::class)->constrained();
+            $table->foreignIdFor(Unit::class)->constrained();
             $table->decimal('cost', 20, 2);
             $table->integer('stock')->default(0);
             $table->integer('stock_alert');

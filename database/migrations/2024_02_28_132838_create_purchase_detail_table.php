@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('purchase_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Material::class);
-            $table->foreignIdFor(Purchase::class);
+            $table->foreignIdFor(Material::class)->constrained();
+            $table->foreignIdFor(Purchase::class)->constrained();
             $table->integer('quantity');
             $table->decimal('unit_cost', 20, 2);
             $table->timestamps();

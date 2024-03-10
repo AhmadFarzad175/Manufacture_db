@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('account_transfers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Account::class, 'from_account_id');
-            $table->foreignIdFor(Account::class, 'to_account_id');
-            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Account::class, 'from_account_id')->constrained();
+            $table->foreignIdFor(Account::class, 'to_account_id')->constrained();
+            $table->foreignIdFor(User::class)->constrained();
             $table->integer('from_amount');
             $table->integer('to_amount');
             $table->date('date');

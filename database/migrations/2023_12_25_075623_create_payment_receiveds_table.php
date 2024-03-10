@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('payment_receiveds', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->foreignIdFor(Party::class)->constrained()->unique(false);
-            $table->foreignIdFor(User::class)->constrained()->unique(false);
+            $table->foreignIdFor(Party::class)->constrained();
+            $table->foreignIdFor(User::class)->constrained();
             $table->string('reference')->unique();
             $table->decimal('amount', 20, 2)->default(0.00);
             $table->text('details');

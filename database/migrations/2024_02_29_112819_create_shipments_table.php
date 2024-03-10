@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->timestamp('date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('Reference', 192);
-            $table->foreignIdFor(Purchase::class);
+            $table->foreignIdFor(Purchase::class)->constrained();
             $table->string('delivered_to', 192)->nullable();
             $table->text('address')->nullable();
             $table->string('shipmentStatus', 192);
