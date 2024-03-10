@@ -3,15 +3,13 @@
 namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
-use App\Models\Settings\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
-use App\Http\Requests\Settings\ProductRequest;
-use App\Http\Resources\Settings\ProductResource;
-use App\Http\Requests\Settings\StoreProductRequest;
-use App\Http\Requests\Settings\UpdateProductRequest;
+use App\Models\Settings\ExpenseProduct;
+use App\Http\Resources\Settings\ExpenseProductResource;
 
-class ProductController extends Controller
+
+class ExpenseProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,56 +20,57 @@ class ProductController extends Controller
         $search = $request->input('search');
 
         // Eager load relationships and apply search
-        $products = Product::with(['materialCategory', 'unit'])->search($search);
+        $expenseProducts = ExpenseProduct::with(['expenseCategory', 'unit'])->search($search);
 
-        $products = $perPage ? $products->latest()->paginate($perPage) : $products->latest()->get();
+        $expenseProducts = $perPage ? $expenseProducts->latest()->paginate($perPage) : $expenseProducts->latest()->get();
 
-        return ProductResource::collection($products);
+        return ExpenseProductResource::collection($expenseProducts);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductRequest $request)
+    public function store(Request $request)
     {
         $validated = $request->validated();
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $validated['image']->store('product_images/', 'public');
+            $validated['image'] = $validated['image']->store('expense_images/', 'public');
         }
 
-        Product::create($validated);
+        ExpenseProduct::create($validated);
 
-        return response()->json(['success' => 'product inserted successfully']);
+        return response()->json(['success' => 'Product inserted successfully']);
+
+        //! MAKE A TRAIT FOR STORE AND UPDATE
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(ExpenseProduct $expenseProduct)
     {
-        return ProductResource::make($product);
+        return ExpenseProductResource::make($expenseProduct);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function updateProduct(UpdateProductRequest $request, Product $product)
+    public function update(Request $request, ExpenseProduct $expenseProduct)
     {
-
         $validated = $request->validated();
 
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $oldImagePath = public_path('storage/product_images/' . basename($product->image));
+            $oldImagePath = public_path('storage/expense_images/' . basename($expenseProduct->image));
 
             if (File::exists($oldImagePath)) {
                 File::delete($oldImagePath);
             }
-            $validated['image'] = $request['image']->store('product_images/', 'public');
+            $validated['image'] = $request['image']->store('expense_images/', 'public');
         }
         if (!isset($request['image'])) {
-            $oldImagePath = public_path('storage/product_images/' . basename($product->image));
+            $oldImagePath = public_path('storage/expense_images/' . basename($expenseProduct->image));
 
             if (File::exists($oldImagePath)) {
                 File::delete($oldImagePath);
@@ -79,9 +78,9 @@ class ProductController extends Controller
             $validated['image'] = $imagePath;
         }
         if (is_string($request['image'])) {
-            $validated['image'] = $product->image;
+            $validated['image'] = $expenseProduct->image;
         }
-        $product->update($validated);
+        $expenseProduct->update($validated);
 
         return response()->json(['success' => 'Product updated successfully']);
     }
@@ -89,20 +88,20 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(ExpenseProduct $expenseProduct)
     {
-        $imagePath = public_path('storage/product_images/' . basename($product->image));
+        $imagePath = public_path('storage/expense_images/' . basename($expenseProduct->image));
         if (File::exists($imagePath)) {
             File::delete($imagePath);
         }
-        $product->delete();
+        $expenseProduct->delete();
         return response()->noContent();
     }
 
     public function bulkDelete(Request $request)
     {
-        $products = $request->input('productIds');
-        Product::destroy($products);
+        $expenseProducts = $request->input('expenseProductIds');
+        ExpenseProduct::destroy($expenseProducts);
         return response()->json(['success', 'Products deleted successfully']);
     }
 }

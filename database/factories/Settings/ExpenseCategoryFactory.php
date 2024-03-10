@@ -1,11 +1,11 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Settings;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ExpenseCategory>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Settings\ExpenseCategory>
  */
 class ExpenseCategoryFactory extends Factory
 {

@@ -37,4 +37,9 @@ class Account extends Model
     {
         return $this->belongsTo(Currency::class);
     }
+
+    public function Accounts()
+    {
+        return $this->hasMany(Account::class);
+    }
 }

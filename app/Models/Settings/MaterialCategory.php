@@ -19,7 +19,8 @@ class MaterialCategory extends Model
         if (!$search) {
             return $query;
         }
-        return $query->where('name', 'like', '%' . $search . '%');
+        return $query->where('name', 'like', '%' . $search . '%')
+            ->orWhere('description', 'like', '%' . $search . '%');
     }
 
 

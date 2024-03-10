@@ -1,0 +1,55 @@
+<?php
+
+namespace App\Http\Requests\Settings;
+
+use App\Traits\UpdateRequestRules;
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreProductRequest extends FormRequest
+{
+
+    use UpdateRequestRules;
+    // use UpdateRequestRules;
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+
+    public function prepareForValidation()
+    {
+        return $this->merge([
+            'material_category_id' => $this->input('materialCategoryId'),
+            'unit_id' => $this->input('unitId'),
+            'stock_alert' => $this->input('stockAlert'),
+
+        ]);
+    }
+
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules()
+    {
+        $rules = [
+            'code' => 'required|string',
+            'name' => 'required|string',
+            'image' => 'nullable|image',
+            'material_category_id' => 'required',
+            'unit_id' => 'required',
+            'price' => 'required|min:0',
+            'stock' => 'nullable|min:0',
+            'stock_alert' => 'required|min:0',
+            'description' => 'nullable|string',
+        ];
+
+
+        return $rules;
+    }
+}

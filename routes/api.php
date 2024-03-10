@@ -8,7 +8,6 @@ use App\Http\Controllers\PartyController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\PaymentSentController;
 use App\Http\Controllers\Settings\UnitController;
-use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\PaymentReceivedController;
 use App\Http\Controllers\Settings\AccountController;
 use App\Http\Controllers\Settings\ProductController;
@@ -17,7 +16,9 @@ use App\Http\Controllers\Settings\MaterialController;
 use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Settings\WarehouseController;
 use App\Http\Controllers\Settings\SystemSettingController;
+use App\Http\Controllers\Settings\ExpenseProductController;
 use App\Http\Controllers\Settings\AccountTransferController;
+use App\Http\Controllers\Settings\ExpenseCategoryController;
 use App\Http\Controllers\Settings\MaterialCategoryController;
 
 /*
@@ -52,15 +53,24 @@ Route::apiResource('/accountTransfer', AccountTransferController::class);
 
 Route::apiResource('/products', ProductController::class);
 Route::post('productsBulkDelete', [ProductController::class, 'bulkDelete']);
-Route::apiResource('/materialCategories', MaterialCategoryController::class);
-Route::apiResource('/units', UnitController::class);
+Route::post('/products/update/{product}', [ProductController::class, 'updateProduct']);
+
 Route::apiResource('/materials', MaterialController::class);
-Route::post('/products/bulkDelete', [ProductController::class, 'bulkDelete']);
+Route::post('materialsBulkDelete', [MaterialController::class, 'bulkDelete']);
+Route::post('/materials/update/{material}', [MaterialController::class, 'updateMaterial']);
+
+Route::apiResource('/materialCategories', MaterialCategoryController::class);
+Route::post('materialCategoriesBulkDelete', [MaterialCategoryController::class, 'bulkDelete']);
+
+Route::apiResource('/expenseCategories', ExpenseCategoryController::class);
+Route::apiResource('/expenseProducts', ExpenseProductController::class);
+
+Route::apiResource('/units', UnitController::class);
+Route::post('unitsBulkDelete', [UnitController::class, 'bulkDelete']);
 
 
 
 #EXPENSE MENU ROUTES
-Route::apiResource('/expenseCategories', ExpenseCategoryController::class);
 Route::apiResource('/expenses', ExpenseController::class);
 Route::apiResource('/parties', PartyController::class);
 Route::apiResource('/paymentSents', PaymentSentController::class);

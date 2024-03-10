@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
-use App\Models\ExpenseCategory;
-use App\Http\Resources\ExpenseResource;
-use App\Http\Requests\ExpenseCategoryRequest;
-use App\Http\Resources\ExpenseCategoryResource;
-
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Settings\ExpenseCategoryRequest;
+use App\Models\Settings\ExpenseCategory;
+use App\Http\Resources\Settings\ExpenseCategoryResource;
 
 class ExpenseCategoryController extends Controller
 {
@@ -18,9 +17,13 @@ class ExpenseCategoryController extends Controller
     {
         $perPage = $request->input('perPage');
         $search = $request->input('search');
-        $expCats = ExpenseCategory::query()->search($search);
-        $expCats = $perPage ? $expCats->latest()->paginate($perPage) : $expCats->latest()->get();
-        return ExpenseCategoryResource::collection($expCats);
+
+        // Eager load relationships and apply search
+        $expenseCategories = ExpenseCategory::query()->search($search);
+
+        $expenseCategories = $perPage ? $expenseCategories->latest()->paginate($perPage) : $expenseCategories->latest()->get();
+
+        return ExpenseCategoryResource::collection($expenseCategories);
     }
 
     /**
@@ -28,8 +31,8 @@ class ExpenseCategoryController extends Controller
      */
     public function store(ExpenseCategoryRequest $request)
     {
-        $expCat = ExpenseCategory::create($request->validated());
-        return ExpenseCategoryResource::make($expCat);
+        $expenseCategory = ExpenseCategory::create($request->validated());
+        return ExpenseCategoryResource::make($expenseCategory);
     }
 
     /**
@@ -60,7 +63,7 @@ class ExpenseCategoryController extends Controller
 
     public function bulkDelete(Request $request)
     {
-        $expCats = $request->input('expenseIds');
-        ExpenseCategory::destroy($expCats);
+        $epxenseCategories = $request->input('expenseCategoryIds');
+        ExpenseCategory::destroy($epxenseCategories);
     }
 }

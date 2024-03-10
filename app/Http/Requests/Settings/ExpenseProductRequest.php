@@ -2,18 +2,16 @@
 
 namespace App\Http\Requests\Settings;
 
-use App\Traits\UpdateRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 
-class MaterialCategoryRequest extends FormRequest
+class ExpenseProductRequest extends FormRequest
 {
-    use UpdateRequestRules;
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -23,13 +21,8 @@ class MaterialCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
+        return [
+            //
         ];
-
-        $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;
-
-        return $rules;
     }
 }

@@ -2,7 +2,7 @@
 
 use App\Models\Settings\Unit;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Settings\MaterialCategory;
+use App\Models\Settings\ExpenseCategory;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('materials', function (Blueprint $table) {
+        Schema::create('expense_products', function (Blueprint $table) {
             $table->id();
             $table->string('code');
             $table->string('name');
             $table->string('image')->nullable();
-            $table->foreignIdFor(MaterialCategory::class);
+            $table->foreignIdFor(ExpenseCategory::class);
             $table->foreignIdFor(Unit::class);
-            $table->decimal('cost', 20, 2);
-            $table->integer('stock')->default(0);
+            $table->decimal('price', 20, 2);
+            // $table->decimal('stock', 10, 2)->nullable()->default(0.00);
+            $table->integer('stock')->nullable()->default(0);
             $table->integer('stock_alert');
             $table->text('description')->nullable();
             $table->timestamps();
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('materials');
+        Schema::dropIfExists('expense_products');
     }
 };

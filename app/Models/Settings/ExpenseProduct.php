@@ -5,7 +5,7 @@ namespace App\Models\Settings;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class ExpenseProduct extends Model
 {
     use HasFactory;
 
@@ -13,7 +13,7 @@ class Product extends Model
         'code',
         'name',
         'image',
-        'material_category_id',
+        'expense_category_id',
         'unit_id',
         'price',
         'stock',
@@ -36,7 +36,7 @@ class Product extends Model
                     $query->whereHas('unit', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%');
                     })
-                        ->orWhereHas('materialCategory', function ($query) use ($search) {
+                        ->orWhereHas('expenseCategory', function ($query) use ($search) {
                             $query->where('name', 'like', '%' . $search . '%');
                         });
                 });
@@ -44,18 +44,13 @@ class Product extends Model
     }
 
 
-    public function materialCategory()
+    public function expenseCategory()
     {
-        return $this->belongsTo(MaterialCategory::class);
+        return $this->belongsTo(ExpenseCategory::class);
     }
 
     public function unit()
     {
         return $this->belongsTo(Unit::class);
-    }
-
-    public function warehouseProducts()
-    {
-        return $this->hasMany(WarehouseProduct::class);
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Models\Purchases;
 
-use App\Models\Peoples\Supplier;
-use App\Models\Products\Material;
-use App\Models\Settings\Currency;
 use App\Models\User;
+use App\Models\Peoples\Supplier;
+use App\Models\Settings\Currency;
+use App\Models\Settings\Material;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 

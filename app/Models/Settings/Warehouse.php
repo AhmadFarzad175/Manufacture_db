@@ -30,4 +30,9 @@ class Warehouse extends Model
             ->orWhere('city', 'like', '%' . $search . '%')
             ->orWhere('country', 'like', '%' . $search . '%');
     }
+
+    public function warehouseProducts()
+    {
+        return $this->hasMany(WarehouseProduct::class);
+    }
 }

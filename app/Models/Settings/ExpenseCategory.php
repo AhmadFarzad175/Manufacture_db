@@ -2,17 +2,19 @@
 
 namespace App\Models\Settings;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Expense;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Unit extends Model
+class ExpenseCategory extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        "name",
-        "description"
+        'name',
+        'description',
     ];
+
 
     public function scopeSearch($query, $search)
     {
@@ -23,13 +25,9 @@ class Unit extends Model
             ->where('description', 'like', '%' . $search . '%');
     }
 
-    public function materials()
-    {
-        return $this->hasMany(Material::class);
-    }
 
-    public function products()
+    public function expenseProducts()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Expense::class);
     }
 }

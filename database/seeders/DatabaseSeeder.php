@@ -10,7 +10,6 @@ use App\Models\Branch;
 use App\Models\Expense;
 use App\Models\PaymentSent;
 use App\Models\Settings\Unit;
-use App\Models\ExpenseCategory;
 use App\Models\PaymentReceived;
 use Illuminate\Database\Seeder;
 use App\Models\Peoples\Customer;
@@ -22,9 +21,12 @@ use App\Models\Settings\Material;
 use App\Models\Purchases\Purchase;
 use App\Models\Settings\Warehouse;
 use App\Models\Settings\SystemSetting;
+use App\Models\Settings\ExpenseProduct;
 use App\Models\Purchases\PurchaseDetail;
 use App\Models\Settings\AccountTransfer;
+use App\Models\Settings\ExpenseCategory;
 use App\Models\Settings\MaterialCategory;
+use App\Models\Settings\WarehouseProduct;
 
 class DatabaseSeeder extends Seeder
 {
@@ -41,11 +43,19 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
+        //* SETTING
         $this->call(SystemSettingsTableSeeder::class);
         Currency::factory(5)->create();
         Account::factory(5)->create();
-        AccountTransfer::factory(5)->create();
+        AccountTransfer::factory(10)->create();
         Warehouse::factory(10)->create();
+        MaterialCategory::factory(10)->create();
+        Unit::factory(10)->create();
+        Product::factory(10)->create();
+        Material::factory(10)->create();
+        ExpenseCategory::factory(10)->create();
+        ExpenseProduct::factory(10)->create();
+
 
         User::factory(10)->create();
         Branch::factory(10)->create();
@@ -54,17 +64,11 @@ class DatabaseSeeder extends Seeder
         Supplier::factory(10)->create();
 
         //! EXPENSE
-        Party::factory(10)->create();
-        ExpenseCategory::factory(10)->create();
-        Expense::factory(10)->create();
-        PaymentSent::factory(10)->create();
-        PaymentReceived::factory(10)->create();
+        // Party::factory(10)->create();
+        // Expense::factory(10)->create();
+        // PaymentSent::factory(10)->create();
+        // PaymentReceived::factory(10)->create();
 
-        //! Product
-        MaterialCategory::factory(10)->create();
-        Unit::factory(10)->create();
-        Material::factory(10)->create();
-        Product::factory(10)->create();
 
         //! Purchase
         Purchase::factory(10)->create();

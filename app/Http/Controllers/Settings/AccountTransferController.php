@@ -31,7 +31,6 @@ class AccountTransferController extends Controller
 
             // Use a database transaction to ensure data integrity
             DB::beginTransaction();
-            return ($validated);
 
             // Check if from_account has sufficient balance
             $fromAccount = Account::find($validated['from_account_id']);
@@ -43,6 +42,7 @@ class AccountTransferController extends Controller
             // Update account balances using decrement and increment
             Account::where('id', $validated['from_account_id'])->decrement('price', $validated['from_amount']);
             Account::where('id', $validated['to_account_id'])->increment('price', $validated['to_amount']);
+
 
             // Create a new transfer record
             $transfer = AccountTransfer::create($validated);

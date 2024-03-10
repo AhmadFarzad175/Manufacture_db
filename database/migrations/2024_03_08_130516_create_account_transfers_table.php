@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('to_amount');
             $table->date('date');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

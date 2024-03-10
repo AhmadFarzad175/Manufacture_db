@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Settings;
 
+use App\Traits\UpdateRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ExpenseCategoryRequest extends FormRequest
 {
+    use UpdateRequestRules;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -27,13 +29,7 @@ class ExpenseCategoryRequest extends FormRequest
             'description' => 'nullable|string|max:255',
         ];
 
-        // CHECKING FOR THE UPDATE METHOD
-        if ($this->isMethod('PUT')) {
-            // Convert 'required' to 'sometimes' for all rules
-            foreach ($rules as $key => $rule) {
-                $rules[$key] = str_replace('required', 'sometimes', $rule);
-            }
-        }
+        $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;
 
         return $rules;
     }

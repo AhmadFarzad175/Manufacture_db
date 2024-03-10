@@ -15,13 +15,4 @@ class PurchaseDetail extends Model
         'quantity',
         'unit_cost',
     ];
-
-
-    public function scopeSearch($query, $search)
-    {
-        if (!$search) {
-            return $query;
-        }
-        return $query->where('name', 'like', '%' . $search . '%');
-    }
 }
