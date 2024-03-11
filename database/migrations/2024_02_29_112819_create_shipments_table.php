@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\Peoples\User;
 use App\Models\Purchases\Purchase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;

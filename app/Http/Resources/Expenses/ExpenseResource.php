@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Expenses;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -28,13 +28,9 @@ class ExpenseResource extends JsonResource
                 'id' => $this->user_id,
                 'name' => $this->user->name,
             ],
-            'branch' => [
-                'id' => $this->branch->id,
-                'name' => $this->branch->name
-            ],
-            'party' => [
-                'id' => $this->party->id,
-                'name' => $this->party->name,
+            'person' => [
+                'id' => $this->expensePeople->id,
+                'name' => $this->expensePeople->name,
             ],
 
 

@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Expenses;
 
-use Illuminate\Support\Str;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ExpenseRequest extends FormRequest
@@ -17,19 +16,12 @@ class ExpenseRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        $dataToMerge = [];
+        return $this->merge([
+            'expense_category_id' => $this->input('expenseCategoryId'),
+            'user_id' => $this->input('personId'),
+            'expense_people_id' => $this->input('personId'),
 
-        // List of fields that can be updated
-        $fields = ['expenseCategoryId', 'partyId', 'branchId', 'addedById'];
-
-        foreach ($fields as $field) {
-            if ($this->has($field)) {
-                // If $field is 'addedById', set 'user_id' in $dataToMerge
-                $dataToMerge[$field === 'addedById' ? 'user_id' : Str::snake($field)] = $this->input($field);
-            }
-        }
-
-        $this->merge($dataToMerge);
+        ]);
     }
 
 
@@ -45,10 +37,9 @@ class ExpenseRequest extends FormRequest
         $rules = [
             'date' => 'required|date',
             'expense_category_id' => 'required|exists:expense_categories,id',
-            'amount' => 'required|integer', // Add any other rules for the 'amount' field
-            'party_id' => 'required|exists:parties,id', // Add any other rules for the 'receiver_id' field
+            'expense_people_id' => 'required|exists:expense_peoples,id', // Add any other rules for the 'receiver_id' field
             'user_id' => 'required|integer', // Add any other rules for the 'added_by' field
-            'branch_id' => 'required|exists:branches,id',
+            'amount' => 'required', // Add any other rules for the 'amount' field
             'details' => 'nullable|string',
         ];
 

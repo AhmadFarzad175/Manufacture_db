@@ -17,7 +17,7 @@ class SystemSettingsTableSeeder extends Seeder
             'companyName' => 'Your Company',
             'email' => 'your@email.com',
             'phone' => '123-456-7890',
-            // 'logo' => 'images/softelino-logo.png', // Provide a default logo path
+            'logo' => null, // Provide a default logo path
             'address' => 'Your Company Address',
         ]);
     }

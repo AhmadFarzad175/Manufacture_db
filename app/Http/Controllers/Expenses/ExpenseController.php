@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Expenses;
 
-use App\Models\Expense;
 use Illuminate\Http\Request;
-use App\Http\Requests\ExpenseRequest;
-use App\Http\Resources\ExpenseResource;
+use App\Models\Expenses\Expense;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Expenses\ExpenseRequest;
+use App\Http\Resources\Expenses\ExpenseResource;
+
+
 
 
 class ExpenseController extends Controller
@@ -19,7 +22,7 @@ class ExpenseController extends Controller
         $search = $request->input('search');
 
         // Eager load relationships and apply search
-        $expenses = Expense::with(['expenseCategory', 'user', 'branch', 'party'])
+        $expenses = Expense::with(['expenseCategory', 'user', 'expensePeople'])
             ->search($search);
 
         $expenses = $perPage ? $expenses->latest()->paginate($perPage) : $expenses->latest()->get();

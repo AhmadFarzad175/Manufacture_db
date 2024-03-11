@@ -1,7 +1,6 @@
 <?php
 
-use App\Models\User;
-use App\Models\Party;
+use App\Models\Peoples\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -16,7 +15,6 @@ return new class extends Migration
         Schema::create('payment_sents', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->foreignIdFor(Party::class)->constrained();
             $table->foreignIdFor(User::class)->constrained();
             $table->string('reference')->unique();
             $table->decimal('amount', 20, 2)->default(0.00);

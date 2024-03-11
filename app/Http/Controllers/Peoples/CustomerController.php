@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\people;
+namespace App\Http\Controllers\Peoples;
 
 use App\Models\Peoples\Customer;
 use App\Http\Controllers\Controller;
@@ -18,13 +18,11 @@ class CustomerController extends Controller
         $perPage = $request->input('perPage');
         $search = $request->input('search');
 
-        // Eager load relationships and apply search
-        // $Customers = Customer::with(['sales', 'saleReturns'])->search($search);
-        $Customers = Customer::query()->search($search);
+        $customers = Customer::query()->search($search);
 
-        $Customers = $perPage ? $Customers->latest()->paginate($perPage) : $Customers->latest()->get();
+        $customers = $perPage ? $customers->latest()->paginate($perPage) : $customers->latest()->get();
 
-        return CustomerResource::collection($Customers);
+        return CustomerResource::collection($customers);
     }
 
     /**
@@ -33,7 +31,7 @@ class CustomerController extends Controller
     public function store(CustomerRequest $request)
     {
         Customer::create($request->validated());
-        return response()->json('success', 'Customer created successfully');
+        return response()->json(['success' => 'Customer created successfully']);
     }
 
     /**
@@ -50,7 +48,7 @@ class CustomerController extends Controller
     public function update(CustomerRequest $request, Customer $customer)
     {
         $customer->update($request->validated());
-        return response()->json('success', 'Customer updated successfully');
+        return response()->json(['success', 'Customer updated successfully']);
     }
 
     /**
@@ -59,7 +57,7 @@ class CustomerController extends Controller
     public function destroy(Customer $customer)
     {
         $customer->delete();
-        return response()->json('success', 'Customer deleted successfully');
+        return response()->json(['success', 'Customer deleted successfully']);
     }
 
     public function bulkDelete(Request $request)

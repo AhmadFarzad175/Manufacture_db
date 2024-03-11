@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Settings;
 
-use App\Traits\UpdateRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SystemSettingRequest extends FormRequest
@@ -24,9 +23,9 @@ class SystemSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'sometimes|string|email|unique:system_settings,email|max:192',
+            'email' => 'sometimes|string|email|max:192',
             'phone' => 'sometimes|string|max:15',
-            // 'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif', // adjust validation rules for image upload
+            'logo' => 'nullable',
             'address' => 'sometimes|string',
             'companyName' => 'sometimes|string',
         ];

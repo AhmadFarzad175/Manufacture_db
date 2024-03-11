@@ -2,7 +2,7 @@
 
 namespace App\Models\Settings;
 
-use App\Models\Expense;
+use App\Models\Expenses\Expense;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -27,6 +27,11 @@ class ExpenseCategory extends Model
 
 
     public function expenseProducts()
+    {
+        return $this->hasMany(ExpenseProduct::class);
+    }
+
+    public function expenses()
     {
         return $this->hasMany(Expense::class);
     }

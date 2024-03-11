@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\Peoples\User;
 use App\Models\Peoples\Supplier;
 use App\Models\Settings\Currency;
 use App\Models\Purchases\Shipment;

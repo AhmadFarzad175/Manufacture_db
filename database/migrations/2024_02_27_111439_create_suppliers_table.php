@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('email', 192)->unique();
+            $table->string('phone', 15);
             $table->timestamps();
         });
     }

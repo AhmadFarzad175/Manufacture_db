@@ -1,14 +1,17 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Peoples;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\PaymentSent;
+use App\Models\PaymentReceived;
+use App\Models\Expenses\Expense;
+use Laravel\Sanctum\HasApiTokens;
 use App\Models\Purchases\Purchase;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -21,8 +24,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'image',
         'email',
         'password',
+        'phone',
+        'status',
     ];
 
     /**
@@ -41,9 +47,24 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+
+    public function scopeSearch($query, $search)
+    {
+        if (!$search) {
+            return $query;
+        }
+
+        return $query->where(function ($query) use ($search) {
+            $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('email', 'like', '%' . $search . '%')
+                ->orWhere('phone', 'like', '%' . $search . '%');
+        });
+    }
+
 
     public function expenses()
     {

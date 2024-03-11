@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PaymentReceivedResource extends JsonResource
+class PaymentSentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,9 +17,9 @@ class PaymentReceivedResource extends JsonResource
         return [
             'id' => $this->id,
             'date' => $this->date,
-            'party' => [
-                'id' => $this->party->id,
-                'name' => $this->party->name,
+            'person' => [
+                'id' => $this->expensePeople->id,
+                'name' => $this->expensePeople->name,
             ],
             'addedBy' => [
                 'id' => $this->user_id,

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use App\Models\Settings\SystemSetting;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Settings\SystemSettingRequest;
 use App\Http\Resources\Settings\SystemSettingResource;
 
@@ -21,24 +21,6 @@ class SystemSettingController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(SystemSettingRequest $request)
-    {
-        // $validated = $request->validated();
-
-        // if ($request->hasFile('logo')) {
-        //     $imagePath = $request->file('logo')->store('images', 'public');
-        //     $validated['logo'] = $imagePath;
-        // }
-
-        // // Create the listing with the validated data
-        // SystemSetting::create($validated);
-
-        // return response()->json(['success' => 'Sytem information inserted successfully']);
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(SystemSetting $systemSetting)
@@ -49,30 +31,35 @@ class SystemSettingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function updateSystem(Request $request, $id)
+    public function updateSystem(SystemSettingRequest $request, SystemSetting $systemSetting)
     {
-        $systemSetting = SystemSetting::find($id);
 
-        $validated = $request->validate(
-            [
-                'email' => 'sometimes|string|email|unique:system_settings,email|max:192',
-                'phone' => 'sometimes|string|max:64',
-                // 'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif', // adjust validation rules for image upload
-                'address' => 'sometimes|string',
-                'companyName' => 'sometimes|string',
-            ]
-        );
+        $validated = $request->validated();
 
-        // if ($request->hasFile('logo')) {
-        //     $imagePath = $request->file('logo')->store('images', 'public');
-        //     $validated['logo'] = $imagePath;
-        // }
+        $logoPath = null;
+        if ($request->hasFile('logo')) {
+            $oldImagePath = public_path('storage/setting_logos/' . basename($systemSetting->logo));
 
-        // Update the listing with the validated data
+            if (File::exists($oldImagePath)) {
+                File::delete($oldImagePath);
+            }
+            $validated['logo'] = $request['logo']->store('setting_logos/', 'public');
+        }
+        if (!isset($request['logo'])) {
+            $oldImagePath = public_path('storage/setting_logos/' . basename($systemSetting->logo));
+
+            if (File::exists($oldImagePath)) {
+                File::delete($oldImagePath);
+            }
+            $validated['logo'] = $logoPath;
+        }
+        if (is_string($request['logo'])) {
+            // return ($systemSetting->logo);
+            $validated['logo'] = $systemSetting->logo;
+        }
         $systemSetting->update($validated);
 
-        // return response()->json(['success' => 'System information updated successfully']);
-        return SystemSettingResource::make($systemSetting);
+        return response()->json(['success' => 'Setting updated successfully']);
     }
 
 

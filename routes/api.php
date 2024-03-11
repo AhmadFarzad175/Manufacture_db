@@ -4,17 +4,20 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Settings\Warehouse;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PartyController;
-use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\Expenses\ExpenseController;
 use App\Http\Controllers\PaymentSentController;
+use App\Http\Controllers\Peoples\UserController;
 use App\Http\Controllers\Settings\UnitController;
 use App\Http\Controllers\PaymentReceivedController;
+use App\Http\Controllers\Peoples\CustomerController;
+use App\Http\Controllers\peoples\SupplierController;
 use App\Http\Controllers\Settings\AccountController;
 use App\Http\Controllers\Settings\ProductController;
 use App\Http\Controllers\Settings\CurrencyController;
 use App\Http\Controllers\Settings\MaterialController;
 use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Settings\WarehouseController;
+use App\Http\Controllers\Peoples\ExpensePeopleController;
 use App\Http\Controllers\Settings\SystemSettingController;
 use App\Http\Controllers\Settings\ExpenseProductController;
 use App\Http\Controllers\Settings\AccountTransferController;
@@ -37,9 +40,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-#SETTINGS MENU ROUTES
+#SETTINGS
 Route::apiResource('/systemSettings', SystemSettingController::class);
-Route::post('/system/update/{id}', [SystemSettingController::class, 'updateSystem']);
+Route::post('/systemSettings/update/{systemSetting}', [SystemSettingController::class, 'updateSystem']);
 
 Route::apiResource('/currencies', CurrencyController::class);
 Route::post('currenciesBulkDelete', [CurrencyController::class, 'bulkDelete']);
@@ -69,23 +72,18 @@ Route::apiResource('/units', UnitController::class);
 Route::post('unitsBulkDelete', [UnitController::class, 'bulkDelete']);
 
 
+#PEOPLE
+Route::apiResource('/customers', CustomerController::class);
+Route::apiResource('/suppliers', SupplierController::class);
+Route::apiResource('/expensePeoples', ExpensePeopleController::class);
+Route::apiResource('/users', UserController::class);
 
-#EXPENSE MENU ROUTES
+
+#EXPENSE
 Route::apiResource('/expenses', ExpenseController::class);
-Route::apiResource('/parties', PartyController::class);
 Route::apiResource('/paymentSents', PaymentSentController::class);
 Route::apiResource('/paymentReceiveds', PaymentReceivedController::class);
 
 
-#PURCHASE MENU ROUTES
+#PURCHASE
 Route::apiResource('/purchases', PurchaseController::class);
-
-
-
-
-
-Route::get('/user/{user}', function (User $user) {
-    return [
-        'post' => $user->expenses
-    ];
-});

@@ -26,7 +26,6 @@ class Account extends Model
         return $query->where(function ($query) use ($search) {
             $query->where('name', 'like', '%' . $search . '%')
                 ->orWhere('price', 'like', '%' . $search . '%')
-                ->orWhere('currency_id', 'like', '%' . $search . '%')
                 ->orWhereHas('currency', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 });
@@ -38,8 +37,14 @@ class Account extends Model
         return $this->belongsTo(Currency::class);
     }
 
-    public function Accounts()
+    public function sentTransfers()
     {
-        return $this->hasMany(Account::class);
+        return $this->hasMany(AccountTransfer::class, 'from_account_id');
+    }
+
+    // Relationship: account has many transfers where it is the receiver
+    public function receivedTransfers()
+    {
+        return $this->hasMany(AccountTransfer::class, 'to_account_id');
     }
 }

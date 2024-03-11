@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Party;
 use App\Models\PaymentSent;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,11 +17,10 @@ class PaymentSentFactory extends Factory
      */
     public function definition(): array
     {
-        $partyIDs = Party::pluck('id')->toArray();
 
         return [
             'date'        => $this->faker->date,
-            'party_id'    => $this->faker->randomElement($partyIDs),
+            'expense_people_id'    => rand(1, 10),
             'user_id' => $this->faker->numberBetween(1, 10),
             'amount' => $this->faker->randomElement([10000, 20000, 30000, 40000, 50000]),
             'details'     => $this->faker->paragraph,

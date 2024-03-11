@@ -10,10 +10,10 @@ class SystemSetting extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'companyName',
         'logo',
         'email',
-        'photo',
-        'companyName',
+        'phone',
+        'address',
     ];
 }

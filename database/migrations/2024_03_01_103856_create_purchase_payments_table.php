@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\Peoples\User;
 use App\Models\Settings\Account;
 use App\Models\Settings\Currency;
 use App\Models\Purchases\Purchase;
