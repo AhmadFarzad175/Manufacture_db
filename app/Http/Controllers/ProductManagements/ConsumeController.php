@@ -26,17 +26,17 @@ class ConsumeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ConsumeRequest $request)
-    {
-        $consume = Consume::create($request->validated());
+    // public function store(ConsumeRequest $request)
+    // {
+    //     $consume = Consume::create($request->validated());
 
-        foreach ($request->input('consumeDetails') as $consumeDetail) {
-            $consume->materials()->attach($consumeDetail['material_id'], [
-                'quantity' => $consumeDetail['quantity'],
-            ]);
-        }
-        return ConsumeResource::make($consume);
-    }
+    //     foreach ($request->input('consumeDetails') as $consumeDetail) {
+    //         $consume->materials()->attach($consumeDetail['material_id'], [
+    //             'quantity' => $consumeDetail['quantity'],
+    //         ]);
+    //     }
+    //     return ConsumeResource::make($consume);
+    // }
 
     /**
      * Display the specified resource.
