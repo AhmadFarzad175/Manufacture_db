@@ -2,17 +2,18 @@
 
 namespace App\Models\Purchases;
 
-use App\Models\User;
+use App\Models\Peoples\User;
 use App\Models\Peoples\Supplier;
 use App\Models\Settings\Currency;
 use App\Models\Settings\Material;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Purchase extends Model
 {
 
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'date',

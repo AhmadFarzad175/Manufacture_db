@@ -4,11 +4,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Settings\Warehouse;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Expenses\ExpenseController;
 use App\Http\Controllers\PaymentSentController;
 use App\Http\Controllers\Peoples\UserController;
 use App\Http\Controllers\Settings\UnitController;
 use App\Http\Controllers\PaymentReceivedController;
+use App\Http\Controllers\Expenses\ExpenseController;
 use App\Http\Controllers\Peoples\CustomerController;
 use App\Http\Controllers\peoples\SupplierController;
 use App\Http\Controllers\Settings\AccountController;
@@ -19,10 +19,14 @@ use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Settings\WarehouseController;
 use App\Http\Controllers\Peoples\ExpensePeopleController;
 use App\Http\Controllers\Settings\SystemSettingController;
+use App\Http\Controllers\Expenses\ExpensePaymentController;
 use App\Http\Controllers\Settings\ExpenseProductController;
+use App\Http\Controllers\Expenses\BillableExpenseController;
+use App\Http\Controllers\Expenses\BillablePaymentController;
 use App\Http\Controllers\Settings\AccountTransferController;
 use App\Http\Controllers\Settings\ExpenseCategoryController;
 use App\Http\Controllers\Settings\MaterialCategoryController;
+use App\Http\Controllers\ProductManagements\ConsumeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,8 +85,14 @@ Route::apiResource('/users', UserController::class);
 
 #EXPENSE
 Route::apiResource('/expenses', ExpenseController::class);
+Route::apiResource('/billablePayments', BillablePaymentController::class);
+Route::apiResource('/billableExpenses', BillableExpenseController::class);
 Route::apiResource('/paymentSents', PaymentSentController::class);
 Route::apiResource('/paymentReceiveds', PaymentReceivedController::class);
+
+
+#CONSUME
+Route::apiResource('/consumes', ConsumeController::class);
 
 
 #PURCHASE

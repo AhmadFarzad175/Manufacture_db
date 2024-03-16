@@ -28,7 +28,6 @@ class PurchaseRequest extends FormRequest
                 'material_id' => $purchaseDetail['materialId'],
                 'unit_cost' => $purchaseDetail['unitCost'],
                 'quantity' => $purchaseDetail['quantity'],
-                // Add other fields if necessary
             ];
         }
 

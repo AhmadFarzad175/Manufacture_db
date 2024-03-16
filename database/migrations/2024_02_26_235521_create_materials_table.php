@@ -25,6 +25,7 @@ return new class extends Migration
             $table->integer('stock_alert');
             $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

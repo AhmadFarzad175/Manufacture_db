@@ -7,10 +7,11 @@ use App\Models\Peoples\ExpensePeople;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Settings\ExpenseCategory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Expense extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'date',

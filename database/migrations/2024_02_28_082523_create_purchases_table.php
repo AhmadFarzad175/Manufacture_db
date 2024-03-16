@@ -31,6 +31,7 @@ return new class extends Migration
             $table->foreignIdFor(Currency::class)->constrained();
             $table->text('note');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

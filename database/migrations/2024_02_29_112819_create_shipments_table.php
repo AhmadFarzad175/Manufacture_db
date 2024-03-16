@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('shipmentStatus', 192);
             $table->text('details')->nullable();
             $table->timestamps(6);
+            $table->softDeletes();
         });
     }
 

@@ -17,7 +17,7 @@ class SystemSettingsTableSeeder extends Seeder
             'companyName' => 'Your Company',
             'email' => 'your@email.com',
             'phone' => '123-456-7890',
-            'logo' => null, // Provide a default logo path
+            'logo' => 'setting_logos//g9Jn7KFsWVQl1GkN0zo8y50JzWc4iNuSLR1wp5YT.png', // Provide a default logo path
             'address' => 'Your Company Address',
         ]);
     }

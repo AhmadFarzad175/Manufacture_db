@@ -19,6 +19,7 @@ return new class extends Migration
             $table->decimal('share', 10, 2);
             $table->decimal('asset', 20, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -25,8 +25,8 @@ return new class extends Migration
             $table->decimal('paid', 20, 2)->nullable()->default(0.00);
             $table->foreignIdFor(Account::class)->constrained();
             $table->text('note')->nullable();
-
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

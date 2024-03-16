@@ -22,13 +22,18 @@ use App\Models\Peoples\LoanPeople;
 use App\Models\Purchases\Purchase;
 use App\Models\Settings\Warehouse;
 use App\Models\Peoples\ExpensePeople;
-use App\Models\Settings\SystemSetting;
+use App\Models\Expenses\ExpensePayment;
 use App\Models\Settings\ExpenseProduct;
+use App\Models\Expenses\BillableExpense;
+use App\Models\Expenses\BillablePayment;
+use App\Models\Expenses\BillableProduct;
 use App\Models\Purchases\PurchaseDetail;
 use App\Models\Settings\AccountTransfer;
 use App\Models\Settings\ExpenseCategory;
 use App\Models\Settings\MaterialCategory;
 use App\Models\Settings\WarehouseProduct;
+use App\Models\ProductManagements\Consume;
+use App\Models\ProductManagements\ConsumeDetails;
 
 class DatabaseSeeder extends Seeder
 {
@@ -47,7 +52,7 @@ class DatabaseSeeder extends Seeder
 
         User::factory(10)->create();
         $this->call(SystemSettingsTableSeeder::class);
-        Currency::factory(5)->create();
+        Currency::factory(10)->create();
         Account::factory(10)->create();
         AccountTransfer::factory(10)->create();
         Warehouse::factory(10)->create();
@@ -67,10 +72,15 @@ class DatabaseSeeder extends Seeder
         LoanPeople::factory(10)->create();
         Owner::factory(10)->create();
 
-        //! EXPENSE
         Expense::factory(10)->create();
+        BillablePayment::factory(10)->create();
+        BillableExpense::factory(10)->create();
+        BillableProduct::factory(10)->create();
         // PaymentSent::factory(10)->create();
         // PaymentReceived::factory(10)->create();
+
+        Consume::factory(10)->create();
+        ConsumeDetails::factory(10)->create();
 
 
         //! Purchase

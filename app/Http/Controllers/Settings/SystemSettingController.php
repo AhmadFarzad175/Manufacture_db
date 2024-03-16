@@ -59,7 +59,10 @@ class SystemSettingController extends Controller
         }
         $systemSetting->update($validated);
 
-        return response()->json(['success' => 'Setting updated successfully']);
+        return SystemSettingResource::make($systemSetting);
+
+
+        // return response()->json(['success' => 'Setting updated successfully']);
     }
 
 

@@ -4,10 +4,11 @@ namespace App\Models\Peoples;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class LoanPeople extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = ['name', 'email', 'phone'];
     protected $table = 'loan_peoples';

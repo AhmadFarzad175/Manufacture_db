@@ -6,10 +6,11 @@ use App\Models\Peoples\User;
 use App\Models\Peoples\ExpensePeople;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PaymentReceived extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'date',
         'expense_people',

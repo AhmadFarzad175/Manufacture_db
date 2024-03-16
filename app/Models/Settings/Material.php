@@ -3,12 +3,14 @@
 namespace App\Models\Settings;
 
 use App\Models\Purchases\Purchase;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProductManagements\Consume;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Material extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'code',
@@ -52,6 +54,11 @@ class Material extends Model
     public function unit()
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    public function consumes()
+    {
+        return $this->belongsToMany(Consume::class, 'consume_details')->withPivot('quantity')->withTimestamps();
     }
 
     public function purchases()

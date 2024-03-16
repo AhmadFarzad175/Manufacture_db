@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('unit_cost', 20, 2);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

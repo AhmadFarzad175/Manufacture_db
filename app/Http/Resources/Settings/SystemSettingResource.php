@@ -19,7 +19,7 @@ class SystemSettingResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'address' => $this->address,
-            // 'logo' => $this->logo,
+            'logo' => $this->logo,
 
         ];
     }
