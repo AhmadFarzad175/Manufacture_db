@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\Purchases\Purchase;
 use App\Models\Expenses\BillableExpense;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Purchases\PurchaseExpense;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -91,5 +92,10 @@ class User extends Authenticatable
     public function billableExpenses()
     {
         return $this->hasMany(BillableExpense::class);
+    }
+
+    public function purchaseExpenses()
+    {
+        return $this->hasMany(PurchaseExpense::class);
     }
 }

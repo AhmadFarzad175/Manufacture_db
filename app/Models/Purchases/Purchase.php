@@ -6,9 +6,10 @@ use App\Models\Peoples\User;
 use App\Models\Peoples\Supplier;
 use App\Models\Settings\Currency;
 use App\Models\Settings\Material;
+use App\Models\Settings\Warehouse;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Purchase extends Model
 {
@@ -18,6 +19,8 @@ class Purchase extends Model
     protected $fillable = [
         'date',
         'user_id',
+        'warehouse_id',
+        'invoice_number',
         'supplier_id',
         'paid',
         'total',
@@ -26,14 +29,8 @@ class Purchase extends Model
         'discount',
         'tax',
         'currency_id',
-        'note',
+        'details',
     ];
-
-    //FINDING AND STORING THE DUE VALUE
-    public function getDueAttribute()
-    {
-        return $this->total - $this->paid;
-    }
 
 
     public function scopeSearch($query, $search)
@@ -41,7 +38,31 @@ class Purchase extends Model
         if (!$search) {
             return $query;
         }
-        return $query->where('name', 'like', '%' . $search . '%');
+
+        return $query->where(function ($query) use ($search) {
+            $query->where('date', 'like', '%' . $search . '%')
+                ->orWhere('supplier', 'like', '%' . $search . '%')
+                ->orWhere('invoice_number', 'like', '%' . $search . '%')
+                ->orWhere('paid', 'like', '%' . $search . '%')
+                ->orWhere('total', 'like', '%' . $search . '%')
+                ->orWhere('status', 'like', '%' . $search . '%')
+                ->orWhere('shipping', 'like', '%' . $search . '%')
+                ->orWhere('discount', 'like', '%' . $search . '%')
+                ->orWhere('tax', 'like', '%' . $search . '%')
+                ->orWhere('details', 'like', '%' . $search . '%')
+                ->orWhereHas('warehouse', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('supplier', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('user', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('currency', function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                });
+        });
     }
 
     protected static function boot()
@@ -51,6 +72,7 @@ class Purchase extends Model
         static::creating(function ($expense) {
             $expense->reference = 'PR_' . (self::max('id') + 1);
         });
+
     }
 
 
@@ -77,5 +99,15 @@ class Purchase extends Model
     public function shipments()
     {
         return $this->hasMany(Shipment::class);
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
+
+    public function purchasePayments()
+    {
+        return $this->hasMany(PurchasePayment::class);
     }
 }

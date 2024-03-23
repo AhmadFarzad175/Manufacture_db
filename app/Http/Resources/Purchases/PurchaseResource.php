@@ -13,25 +13,49 @@ class PurchaseResource extends JsonResource
      */
     public function toArray($request)
     {
+
+        $paymentStatus = '';
+
+        if ($this->total == $this->paid) {
+            $paymentStatus = 'paid';
+        } elseif ($this->paid == 0) {
+            $paymentStatus = 'pending';
+        } elseif ($this->paid > 0 && $this->paid < $this->total) {
+            $paymentStatus = 'partial';
+        }
+
         return [
             'id' => $this->id,
             'date' => $this->date,
             'reference' => $this->reference,
+            'invoice_number' => $this->invoice_number,
+            'supplier' => [
+                'id' => $this->supplier->id,
+                'name' => $this->supplier->name,
+                'email' => $this->supplier->email,
+                'phone' => $this->supplier->phone,
+            ],
             'addedBy' => [
                 'id' => $this->user->id,
                 'name' => $this->user->name,
             ],
+            'warehouse' => [
+                $this->warehouse_id,
+                $this->warehouse->name,
+            ],
+            'currency' => [
+                $this->currency_id,
+                $this->currency->name,
+            ],
             'grandTotal' => $this->total,
             'paid' => $this->paid,
+            'due' => $this->total - $this->paid,
             'discount' => $this->discount,
             'tax' => $this->tax,
             'status' => $this->status,
             'shipping' => $this->shipping,
-            'note' => $this->note,
-            'supplier' => [
-                'id' => $this->supplier->id,
-                'name' => $this->supplier->name,
-            ],
+            'paymentStatus' => $paymentStatus,
+            'details' => $this->note,
             'purchaseDetails' => $this->materials,
         ];
     }

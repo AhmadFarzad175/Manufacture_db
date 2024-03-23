@@ -1,30 +1,30 @@
 <?php
 
-namespace App\Http\Requests\ProductManagements;
+namespace App\Http\Requests\Purchases;
 
 use App\Traits\UpdateRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ConsumeRequest extends FormRequest
+class PurchaseExpenseRequest extends FormRequest
 {
     use UpdateRequestRules;
-
-    public function prepareForValidation()
-    {
-        return $this->merge([
-            'warehouse_id' => $this->input('warehouseId'),
-
-        ]);
-    }
-
-
-
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
         return true;
+    }
+
+
+    public function prepareForValidation()
+    {
+        return $this->merge([
+            'expense_category_id' => $this->input('expenseCategoryId'),
+            'user_id' => $this->input('addedById'),
+            'account_id' => $this->input('accountId'),
+
+        ]);
     }
 
     /**
@@ -36,10 +36,11 @@ class ConsumeRequest extends FormRequest
     {
         $rules = [
             'date' => 'required|date',
-            'warehouse_id' => 'required|exists:warehouses,id',
+            'expense_category_id' => 'required',
+            'account_id' => 'required|exists:accounts,id',
+            'user_id' => 'required|exists:users,id',
+            'amount' => 'required|numeric|min:0',
             'details' => 'nullable|string',
-            'consumeDetails.*.materialId' => 'required|exists:materials,id',
-            'consumeDetails.*.quantity' => 'required',
         ];
 
         $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;

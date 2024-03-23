@@ -61,6 +61,11 @@ class Material extends Model
         return $this->belongsToMany(Consume::class, 'consume_details')->withPivot('quantity')->withTimestamps();
     }
 
+    public function warehouseMaterials()
+    {
+        return $this->hasMany(WarehouseMaterial::class);
+    }
+
     public function purchases()
     {
         return $this->belongsToMany(Purchase::class, 'purchase_details')->withPivot(['quantity', 'unit_cost'])->withTimestamps();

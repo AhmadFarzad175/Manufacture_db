@@ -2,6 +2,7 @@
 
 namespace App\Models\Settings;
 
+use App\Models\Purchases\Purchase;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ProductManagements\Consume;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -35,5 +36,10 @@ class Warehouse extends Model
     public function consumes()
     {
         return $this->hasMany(Consume::class);
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
     }
 }

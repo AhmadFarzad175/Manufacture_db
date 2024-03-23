@@ -36,7 +36,6 @@ class BillableExpense extends Model
 
         return $query->where(function ($query) use ($search) {
             $query->where('date', 'like', '%' . $search . '%')
-                ->orWhere('supplier', 'like', '%' . $search . '%')
                 ->orWhere('invoice_number', 'like', '%' . $search . '%')
                 ->orWhere('paid', 'like', '%' . $search . '%')
                 ->orWhere('total', 'like', '%' . $search . '%')

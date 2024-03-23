@@ -5,10 +5,11 @@ namespace App\Models\Purchases;
 use App\Models\Peoples\User;
 use App\Models\Settings\Account;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Settings\ExpenseCategory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class PurchasePayment extends Model
+class PurchaseExpense extends Model
 {
 
     use HasFactory, SoftDeletes;
@@ -17,7 +18,7 @@ class PurchasePayment extends Model
         'date',
         'reference',
         'account_id',
-        'purchase_id',
+        'expense_category_id',
         'user_id',
         'amount',
         'details'
@@ -38,7 +39,7 @@ class PurchasePayment extends Model
                 ->orWhereHas('account', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 })
-                ->orWhereHas('account', function ($query) use ($search) {
+                ->orWhereHas('category', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 })
                 ->orWhereHas('user', function ($query) use ($search) {
@@ -47,10 +48,19 @@ class PurchasePayment extends Model
         });
     }
 
-
-    public function purchase()
+    protected static function boot()
     {
-        return $this->belongsTo(Purchase::class);
+        parent::boot();
+
+        static::creating(function ($purchaseExpense) {
+            $purchaseExpense->reference = 'PREX_' . (self::max('id') + 1);
+        });
+    }
+
+
+    public function expenseCategory()
+    {
+        return $this->belongsTo(ExpenseCategory::class);
     }
 
     public function account()
@@ -63,4 +73,3 @@ class PurchasePayment extends Model
         return $this->belongsTo(User::class);
     }
 }
-

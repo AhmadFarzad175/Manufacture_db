@@ -4,8 +4,9 @@ namespace App\Models\Settings;
 
 use App\Models\Expenses\Expense;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Purchases\PurchaseExpense;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ExpenseCategory extends Model
 {
@@ -35,5 +36,10 @@ class ExpenseCategory extends Model
     public function expenses()
     {
         return $this->hasMany(Expense::class);
+    }
+
+    public function purchaseExpenses()
+    {
+        return $this->hasMany(PurchaseExpense::class);
     }
 }

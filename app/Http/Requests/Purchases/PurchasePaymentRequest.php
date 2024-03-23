@@ -1,22 +1,23 @@
 <?php
 
-namespace App\Http\Requests\ProductManagements;
+namespace App\Http\Requests\Purchases;
 
 use App\Traits\UpdateRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ConsumeRequest extends FormRequest
+class PurchasePaymentRequest extends FormRequest
 {
     use UpdateRequestRules;
 
     public function prepareForValidation()
     {
         return $this->merge([
-            'warehouse_id' => $this->input('warehouseId'),
+            'purchase_id' => $this->input('purchaseId'),
+            'user_id' => $this->input('addedById'),
+            'account_id' => $this->input('accountId'),
 
         ]);
     }
-
 
 
     /**
@@ -27,6 +28,7 @@ class ConsumeRequest extends FormRequest
         return true;
     }
 
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -36,10 +38,12 @@ class ConsumeRequest extends FormRequest
     {
         $rules = [
             'date' => 'required|date',
-            'warehouse_id' => 'required|exists:warehouses,id',
+            'reference' => 'required|string|max:192',
+            'user_id' => 'required|exists:users,id',
+            'purchase_id' => 'required|exists:purchases,id',
+            'account_id' => 'required|exists:accounts,id',
+            'amount' => 'required|numeric|min:0',
             'details' => 'nullable|string',
-            'consumeDetails.*.materialId' => 'required|exists:materials,id',
-            'consumeDetails.*.quantity' => 'required',
         ];
 
         $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;

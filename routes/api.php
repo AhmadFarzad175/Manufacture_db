@@ -25,6 +25,8 @@ use App\Http\Controllers\Expenses\BillableExpenseController;
 use App\Http\Controllers\Expenses\BillablePaymentController;
 use App\Http\Controllers\Settings\AccountTransferController;
 use App\Http\Controllers\Settings\ExpenseCategoryController;
+use App\Http\Controllers\Purchases\PurchaseExpenseController;
+use App\Http\Controllers\Purchases\PurchasePaymentController;
 use App\Http\Controllers\Settings\MaterialCategoryController;
 use App\Http\Controllers\ProductManagements\ConsumeController;
 
@@ -97,3 +99,5 @@ Route::apiResource('/consumes', ConsumeController::class);
 
 #PURCHASE
 Route::apiResource('/purchases', PurchaseController::class);
+Route::apiResource('/purchaseExpenses', PurchaseExpenseController::class);
+Route::apiResource('/purchasePayments', PurchasePaymentController::class);

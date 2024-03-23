@@ -30,9 +30,12 @@ use App\Models\Expenses\BillableProduct;
 use App\Models\Purchases\PurchaseDetail;
 use App\Models\Settings\AccountTransfer;
 use App\Models\Settings\ExpenseCategory;
+use App\Models\Purchases\PurchaseExpense;
+use App\Models\Purchases\PurchasePayment;
 use App\Models\Settings\MaterialCategory;
 use App\Models\Settings\WarehouseProduct;
 use App\Models\ProductManagements\Consume;
+use App\Models\Settings\WarehouseMaterial;
 use App\Models\ProductManagements\ConsumeDetails;
 
 class DatabaseSeeder extends Seeder
@@ -82,9 +85,13 @@ class DatabaseSeeder extends Seeder
         Consume::factory(10)->create();
         ConsumeDetails::factory(10)->create();
 
+        WarehouseProduct::factory(10)->create();
+        WarehouseMaterial::factory(10)->create();
 
-        //! Purchase
+
         Purchase::factory(10)->create();
         PurchaseDetail::factory(10)->create();
+        PurchaseExpense::factory(10)->create();
+        PurchasePayment::factory(10)->create();
     }
 }

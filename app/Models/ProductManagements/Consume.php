@@ -21,14 +21,15 @@ class Consume extends Model
             return $query;
         }
         return $query->where('date', 'like', '%' . $search . '%')
-            ->orWhere('warehouse_id', 'like', '%' . $search . '%');
-        // ->where('details', 'like', '%' . $search . '%');
+            ->orWhereHas('warehouse', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            });
     }
 
 
     public function materials()
     {
-        return $this->belongsToMany(Material::class, 'consume_details')->withPivot('quantity');
+        return $this->belongsToMany(Material::class, 'consume_details')->withPivot('quantity')->withTimestamps();
     }
 
     public function warehouse()

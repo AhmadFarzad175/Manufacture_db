@@ -2,9 +2,8 @@
 
 use App\Models\Peoples\User;
 use App\Models\Settings\Account;
-use App\Models\Settings\Currency;
-use App\Models\Purchases\Purchase;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Settings\ExpenseCategory;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -15,13 +14,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('purchase_payments', function (Blueprint $table) {
+        Schema::create('purchase_expenses', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->string('Reference', 192);
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Purchase::class)->constrained();
+            $table->string('reference')->unique();
+            $table->foreignIdFor(ExpenseCategory::class)->constrained();
             $table->foreignIdFor(Account::class)->constrained();
+            $table->foreignIdFor(User::class)->constrained();
             $table->decimal('amount', 20, 2);
             $table->text('details')->nullable();
             $table->timestamps();
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('purchase_payments');
+        Schema::dropIfExists('purchase_expenses');
     }
 };
