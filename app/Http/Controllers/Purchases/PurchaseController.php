@@ -33,47 +33,46 @@ class PurchaseController extends Controller
      */
     public function store(PurchaseRequest $request)
     {
-        DB::beginTransaction();
+        // DB::beginTransaction();
 
-        try {
-            $validated = $request->validated();
-            $purchase = Purchase::create($validated);
+        // try {
+        $validated = $request->validated();
+        $purchase = Purchase::create($validated);
 
-            foreach ($request->input('purchaseDetails') as $purchaseDetail) {
-                $purchaseDetail['material_id'] = $purchaseDetail['materialId'];
-                $purchaseDetail['unit_cost'] = $purchaseDetail['unitCost'];
+        foreach ($request->input('purchaseDetails') as $purchaseDetail) {
+            $purchaseDetail['material_id'] = $purchaseDetail['materialId'];
+            $purchaseDetail['unit_cost'] = $purchaseDetail['unitCost'];
 
-                $purchase->materials()->attach($purchaseDetail['material_id'], [
+            $purchase->materials()->attach($purchaseDetail['material_id'], [
+                'quantity' => $purchaseDetail['quantity'],
+                'unit_cost' => $purchaseDetail['unit_cost'],
+            ]);
+
+            $warehouseMaterial = WarehouseMaterial::where('warehouse_id', $request->input('warehouse_id'))
+                ->where('material_id', $purchaseDetail['material_id'])
+                ->first();
+
+            if ($warehouseMaterial) {
+                // Update existing record
+                $warehouseMaterial->quantity += $purchaseDetail['quantity'];
+                $warehouseMaterial->save();
+            } else {
+                // Create new record
+                WarehouseMaterial::create([
+                    'warehouse_id' => $request->input('warehouse_id'),
+                    'material_id' => $purchaseDetail['material_id'],
                     'quantity' => $purchaseDetail['quantity'],
-                    'unit_cost' => $purchaseDetail['unit_cost'],
                 ]);
-
-                $warehouseMaterial = WarehouseMaterial::where('warehouse_id', $request->input('warehouse_id'))
-                    ->where('material_id', $purchaseDetail['material_id'])
-                    ->first();
-
-                if ($warehouseMaterial) {
-                    // Update existing record
-                    $warehouseMaterial->amount += $purchaseDetail['quantity'];
-                    $warehouseMaterial->save();
-                } else {
-                    // Create new record
-                    WarehouseMaterial::create([
-                        'warehouse_id' => $request->input('warehouse_id'),
-                        'material_id' => $purchaseDetail['material_id'],
-                        'amount' => $purchaseDetail['quantity'],
-                    ]);
-                }
-
             }
-
-            DB::commit();
-            return PurchaseResource::make($purchase);
-        } catch (\Exception $e) {
-            DB::rollback();
-            // Handle the exception, log it, or return an error response
-            return response()->json(['message' => 'An error occurred while processing the request.'], 500);
         }
+
+        DB::commit();
+        return PurchaseResource::make($purchase);
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+        //     // Handle the exception, log it, or return an error response
+        //     return response()->json(['message' => 'An error occurred while processing the request.'], 500);
+        // }
     }
 
     /**
