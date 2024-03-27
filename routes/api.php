@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Settings\Warehouse;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Sales\SaleController;
 use App\Http\Controllers\PaymentSentController;
 use App\Http\Controllers\Peoples\UserController;
 use App\Http\Controllers\Settings\UnitController;
@@ -101,3 +102,9 @@ Route::apiResource('/consumes', ConsumeController::class);
 Route::apiResource('/purchases', PurchaseController::class);
 Route::apiResource('/purchaseExpenses', PurchaseExpenseController::class);
 Route::apiResource('/purchasePayments', PurchasePaymentController::class);
+
+
+#SALES
+Route::apiResource('/sales', SaleController::class);
+// Route::apiResource('/purchaseExpenses', PurchaseExpenseController::class);
+// Route::apiResource('/purchasePayments', PurchasePaymentController::class);

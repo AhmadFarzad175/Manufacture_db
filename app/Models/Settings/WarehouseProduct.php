@@ -18,22 +18,6 @@ class WarehouseProduct extends Model
     ];
 
 
-    public function scopeSearch($query, $search)
-    {
-        if (!$search) {
-            return $query;
-        }
-        return $query->where('name', 'like', '%' . $search . '%')
-            ->orWhere(function ($query) use ($search) {
-                $query->whereHas('product', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                })
-                    ->orWhereHas('warehouse', function ($query) use ($search) {
-                        $query->where('name', 'like', '%' . $search . '%');
-                    });
-            });
-    }
-
     // public function consumes()
     // {
     //     return $this->hasMany(Produce::class);

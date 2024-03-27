@@ -2,6 +2,7 @@
 
 namespace App\Models\Peoples;
 
+use App\Models\Sales\Sale;
 use App\Models\Purchases\Purchase;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Expenses\BillableExpense;
@@ -29,6 +30,8 @@ class Supplier extends Model
     {
         return $this->hasMany(Purchase::class);
     }
+
+    
 
     public function billableExpenses()
     {

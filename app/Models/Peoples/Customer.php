@@ -2,9 +2,10 @@
 
 namespace App\Models\Peoples;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Sales\Sale;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Customer extends Model
 {
@@ -23,9 +24,10 @@ class Customer extends Model
             ->where('phone', 'like', '%' . $search . '%');
     }
 
-    // public function sales(){
-    //     return $this->hasMany(Sale::class);
-    // }
+    public function sales()
+    {
+        return $this->hasMany(Sale::class);
+    }
 
     // public function saleReturns(){
     //     return $this->hasMany(SaleReturn::class);

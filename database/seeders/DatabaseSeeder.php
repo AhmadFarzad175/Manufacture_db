@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Branch;
+use App\Models\Sales\Sale;
 use App\Models\PaymentSent;
 use App\Models\Peoples\User;
 use App\Models\Peoples\Owner;
@@ -16,6 +17,7 @@ use App\Models\Peoples\Customer;
 use App\Models\Peoples\Supplier;
 use App\Models\Settings\Account;
 use App\Models\Settings\Product;
+use App\Models\Sales\SaleDetails;
 use App\Models\Settings\Currency;
 use App\Models\Settings\Material;
 use App\Models\Peoples\LoanPeople;
@@ -93,5 +95,9 @@ class DatabaseSeeder extends Seeder
         PurchaseDetail::factory(10)->create();
         PurchaseExpense::factory(10)->create();
         PurchasePayment::factory(10)->create();
+
+
+        Sale::factory(10)->create();
+        SaleDetails::factory(10)->create();
     }
 }

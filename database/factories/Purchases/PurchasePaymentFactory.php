@@ -19,7 +19,7 @@ class PurchasePaymentFactory extends Factory
         return [
             'date' => $this->faker->date(),
             'user_id' => rand(1,10),
-            'reference' => $this->faker->rand(1,10),
+            'reference' => rand(1,10),
             'purchase_id' => rand(1,10),
             'account_id' => rand(1,10),
             'amount' => $this->faker->randomFloat(2, 0, 10000),

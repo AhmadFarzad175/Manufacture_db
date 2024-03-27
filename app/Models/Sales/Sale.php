@@ -1,17 +1,20 @@
 <?php
 
-namespace App\Models\Purchases;
+namespace App\Models\Sales;
 
 use App\Models\Peoples\User;
+use App\Models\Peoples\Customer;
 use App\Models\Peoples\Supplier;
+use App\Models\Settings\Product;
 use App\Models\Settings\Currency;
 use App\Models\Settings\Material;
+use App\Models\Purchases\Shipment;
 use App\Models\Settings\Warehouse;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Purchase extends Model
+class Sale extends Model
 {
 
     use HasFactory, SoftDeletes;
@@ -21,7 +24,7 @@ class Purchase extends Model
         'user_id',
         'warehouse_id',
         'invoice_number',
-        'supplier_id',
+        'customer_id',
         'paid',
         'total',
         'status',
@@ -53,7 +56,7 @@ class Purchase extends Model
                 ->orWhereHas('warehouse', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 })
-                ->orWhereHas('supplier', function ($query) use ($search) {
+                ->orWhereHas('customer', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 })
                 ->orWhereHas('user', function ($query) use ($search) {
@@ -69,21 +72,21 @@ class Purchase extends Model
     {
         parent::boot();
 
-        static::creating(function ($purchase) {
-            $purchase->reference = 'PR_' . (self::max('id') + 1);
+        static::creating(function ($sale) {
+            $sale->reference = 'SEL_' . (self::max('id') + 1);
         });
 
     }
 
 
-    public function supplier()
+    public function customer()
     {
-        return $this->belongsTo(Supplier::class);
+        return $this->belongsTo(Customer::class);
     }
 
-    public function materials()
+    public function products()
     {
-        return $this->belongsToMany(Material::class, 'purchase_details')->withPivot(['quantity', 'unit_cost'])->withTimestamps();
+        return $this->belongsToMany(Product::class, 'sale_details')->withPivot(['quantity', 'unit_cost'])->withTimestamps();
     }
 
     public function currency()
@@ -106,8 +109,8 @@ class Purchase extends Model
         return $this->belongsTo(Warehouse::class);
     }
 
-    public function purchasePayments()
-    {
-        return $this->hasMany(PurchasePayment::class);
-    }
+    // public function purchasePayments()
+    // {
+    //     return $this->hasMany(PurchasePayment::class);
+    // }
 }

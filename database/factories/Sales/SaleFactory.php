@@ -1,13 +1,13 @@
 <?php
 
-namespace Database\Factories\Purchases;
+namespace Database\Factories\Sales;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Purchases\Purchase>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Sales\Sale>
  */
-class PurchaseFactory extends Factory
+class SaleFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -21,7 +21,7 @@ class PurchaseFactory extends Factory
             'user_id' => rand(1, 10),
             'warehouse_id' => rand(1, 10),
             'invoice_number' => rand(1000, 10000),
-            'supplier_id' => rand(1, 10),
+            'customer_id' => rand(1, 10),
             'paid' => rand(100, 10000),
             'total' => rand(10000, 200000),
             'status' => $this->faker->randomElement(['received', 'pending', 'ordered']),
