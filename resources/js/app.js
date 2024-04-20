@@ -1,7 +1,6 @@
 import { createApp } from "vue";
-import App from "./app.vue";
 import "../css/app.css";
-import router from "./router.js";
+import router from "./router";
 
 // Vuetify
 import "@mdi/font/css/materialdesignicons.css";
@@ -10,7 +9,7 @@ import { createVuetify } from "vuetify";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { createPinia } from "pinia";
-
+import axios from "axios";
 const myCustomLightTheme = {
     dark: false,
     colors: {
@@ -62,6 +61,8 @@ const vuetify = createVuetify({
     components,
     directives,
 });
+import App from "./app.vue";
+
 const app = createApp(App);
 app.use(router);
 app.use(vuetify);
