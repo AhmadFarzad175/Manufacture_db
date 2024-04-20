@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\Products\Unit;
+use App\Models\Settings\Unit;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Products\MaterialCategory;
+use App\Models\Settings\MaterialCategory;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -15,16 +15,15 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->integer('code');
+            $table->string('code');
             $table->string('name');
             $table->string('image');
             $table->foreignIdFor(MaterialCategory::class);
             $table->foreignIdFor(Unit::class);
             $table->decimal('price', 20, 2);
             $table->decimal('stock', 10, 2)->nullable()->default(0.00);
-            $table->decimal('stock_alert', 10, 2)->nullable()->default(0.00);
-            $table->boolean('tax_type')->default(0);
-            $table->text('description');
+            $table->decimal('stock_alert', 10, 2)->default(0.00);
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class);
             $table->timestamp('date')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->string('Ref', 192);
+            $table->string('Reference', 192);
             $table->foreignIdFor(Purchase::class);
             $table->string('delivered_to', 192)->nullable();
             $table->text('address')->nullable();

@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('code', 192);
             $table->string('name', 192);
-            $table->string('symbol', 192);
+            $table->string('symbol', 64);
             $table->double('rate');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -9,17 +9,22 @@ use App\Models\Party;
 use App\Models\Branch;
 use App\Models\Expense;
 use App\Models\PaymentSent;
-use App\Models\Products\Unit;
+use App\Models\Settings\Unit;
 use App\Models\ExpenseCategory;
 use App\Models\PaymentReceived;
 use Illuminate\Database\Seeder;
+use App\Models\Peoples\Customer;
 use App\Models\Peoples\Supplier;
-use App\Models\Products\Product;
-use App\Models\Products\Material;
+use App\Models\Settings\Account;
+use App\Models\Settings\Product;
 use App\Models\Settings\Currency;
+use App\Models\Settings\Material;
 use App\Models\Purchases\Purchase;
-use App\Models\Products\MaterialCategory;
+use App\Models\Settings\Warehouse;
+use App\Models\Settings\SystemSetting;
 use App\Models\Purchases\PurchaseDetail;
+use App\Models\Settings\AccountTransfer;
+use App\Models\Settings\MaterialCategory;
 
 class DatabaseSeeder extends Seeder
 {
@@ -36,10 +41,16 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        Currency::factory(3)->create();
+        $this->call(SystemSettingsTableSeeder::class);
+        Currency::factory(5)->create();
+        Account::factory(5)->create();
+        AccountTransfer::factory(5)->create();
+        Warehouse::factory(10)->create();
+
         User::factory(10)->create();
         Branch::factory(10)->create();
 
+        Customer::factory(10)->create();
         Supplier::factory(10)->create();
 
         //! EXPENSE

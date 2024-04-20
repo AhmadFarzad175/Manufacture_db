@@ -15,7 +15,6 @@ class PurchaseIndexResource extends JsonResource
     public function toArray(Request $request): array
     {
         $paymentStatus = '';
-        $due = $this->total - $this->paid;
 
         if ($this->total == $this->paid) {
             $paymentStatus = 'paid';
@@ -34,7 +33,7 @@ class PurchaseIndexResource extends JsonResource
             ],
             'grandTotal' => $this->total,
             'paid' => $this->paid,
-            'due' => $due,
+            'due' => $this->due,
             'status' => $this->status,
             'paymentStatus' => $paymentStatus,
             'shippingStatus' => isset($this->shipments->status) ? $this->shipments->status : null,

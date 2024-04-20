@@ -2,17 +2,23 @@
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Settings\Warehouse;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PartyController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\PaymentSentController;
-use App\Http\Controllers\Products\UnitController;
+use App\Http\Controllers\Settings\UnitController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\PaymentReceivedController;
-use App\Http\Controllers\Products\ProductController;
-use App\Http\Controllers\Products\MaterialController;
-use App\Http\Controllers\Products\MaterialCategoryController;
+use App\Http\Controllers\Settings\AccountController;
+use App\Http\Controllers\Settings\ProductController;
+use App\Http\Controllers\Settings\CurrencyController;
+use App\Http\Controllers\Settings\MaterialController;
 use App\Http\Controllers\Purchases\PurchaseController;
+use App\Http\Controllers\Settings\WarehouseController;
+use App\Http\Controllers\Settings\SystemSettingController;
+use App\Http\Controllers\Settings\AccountTransferController;
+use App\Http\Controllers\Settings\MaterialCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,12 +35,28 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-#PRODUCT MENU ROUTES
+
+#SETTINGS MENU ROUTES
+Route::apiResource('/systemSettings', SystemSettingController::class);
+Route::post('/system/update/{id}', [SystemSettingController::class, 'updateSystem']);
+
+Route::apiResource('/currencies', CurrencyController::class);
+Route::post('currenciesBulkDelete', [CurrencyController::class, 'bulkDelete']);
+
+Route::apiResource('/warehouses', WarehouseController::class);
+Route::post('warehousesBulkDelete', [WarehouseController::class, 'bulkDelete']);
+
+Route::apiResource('/accounts', AccountController::class);
+Route::post('accountsBulkDelete', [AccountController::class, 'bulkDelete']);
+Route::apiResource('/accountTransfer', AccountTransferController::class);
+
+Route::apiResource('/products', ProductController::class);
+Route::post('productsBulkDelete', [ProductController::class, 'bulkDelete']);
 Route::apiResource('/materialCategories', MaterialCategoryController::class);
 Route::apiResource('/units', UnitController::class);
 Route::apiResource('/materials', MaterialController::class);
-Route::apiResource('/products', ProductController::class);
 Route::post('/products/bulkDelete', [ProductController::class, 'bulkDelete']);
+
 
 
 #EXPENSE MENU ROUTES

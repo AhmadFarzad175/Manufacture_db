@@ -23,11 +23,16 @@ class Purchase extends Model
         'status',
         'shipping',
         'discount',
-        'payment_type',
         'tax',
         'currency_id',
         'note',
     ];
+
+    //FINDING AND STORING THE DUE VALUE
+    public function getDueAttribute()
+    {
+        return $this->total - $this->paid;
+    }
 
 
     public function scopeSearch($query, $search)

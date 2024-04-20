@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Products\Material;
+use App\Models\Settings\Material;
 use App\Models\Purchases\Purchase;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
