@@ -36,6 +36,18 @@ class Sale extends Model
     ];
 
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($sale) {
+            $sale->reference = 'SEL_' . (self::max('id') + 1);
+        });
+
+    }
+    
+
+
     public function scopeSearch($query, $search)
     {
         if (!$search) {
@@ -68,15 +80,6 @@ class Sale extends Model
         });
     }
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($sale) {
-            $sale->reference = 'SEL_' . (self::max('id') + 1);
-        });
-
-    }
 
 
     public function customer()
@@ -109,8 +112,8 @@ class Sale extends Model
         return $this->belongsTo(Warehouse::class);
     }
 
-    // public function purchasePayments()
-    // {
-    //     return $this->hasMany(PurchasePayment::class);
-    // }
+    public function salePayments()
+    {
+        return $this->hasMany(SalePayment::class);
+    }
 }

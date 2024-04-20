@@ -46,7 +46,7 @@ class PurchasePaymentController extends Controller
 
                 $account->decrement('price', $validated['amount']);
 
-                $expense = PurchasePayment::create($validated);
+                $payment = PurchasePayment::create($validated);
 
                 // Update the paid column of the purchase
                 $purchase = Purchase::findOrFail($validated['purchase_id']);
@@ -54,7 +54,7 @@ class PurchasePaymentController extends Controller
 
                 DB::commit();
 
-                return PurchasePaymentResource::make($expense);
+                return PurchasePaymentResource::make($payment);
             } else {
                 return response()->json(['message' => 'Insufficient balance.'], 403);
             }

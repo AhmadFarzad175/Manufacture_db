@@ -11,8 +11,8 @@ class SaleDetails extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'material_id',
-        'purchase_id',
+        'product_id',
+        'sale_id',
         'quantity',
         'unit_cost',
     ];

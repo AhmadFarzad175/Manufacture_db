@@ -4,6 +4,7 @@ namespace App\Models\Settings;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Purchases\PurchaseExpense;
+use App\Models\Sales\SalePayment;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -52,5 +53,10 @@ class Account extends Model
     public function purchaseExpenses()
     {
         return $this->hasMany(PurchaseExpense::class);
+    }
+    
+    public function salePayment()
+    {
+        return $this->hasMany(SalePayment::class);
     }
 }

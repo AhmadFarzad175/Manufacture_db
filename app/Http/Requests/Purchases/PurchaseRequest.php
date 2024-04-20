@@ -21,7 +21,7 @@ class PurchaseRequest extends FormRequest
         $this->merge([
             'user_id' => $this->input('addedById'),
             'warehouse_id' => $this->input('warehouseId'),
-            'supplier_id' => $this->input('SupplierId'),
+            'supplier_id' => $this->input('supplierId'),
             'currency_id' => $this->input('currencyId'),
             'invoice_number' => $this->input('invoiceNumber'),
         ]);

@@ -105,7 +105,7 @@ class ConsumeController extends Controller
                 // Find the corresponding warehouse material for this consume detail
                 $warehouseMaterial = WarehouseMaterial::where('warehouse_id', $request->warehouseId)
                     ->where('material_id', $consumeDetail['material_id'])
-                    ->firstOrFail();
+                    ->first();
 
                 // Calculate the difference in quantity
                 $newQuantity = $consumeDetail['quantity'];

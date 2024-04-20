@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreignIdFor(Customer::class)->constrained();
             $table->string('reference')->unique();
             $table->decimal('total', 20, 2);
-            $table->decimal('paid', 20, 2)->nullable()->default(0.00);
+            $table->decimal('paid', 20, 2);
             $table->string('status');
             $table->decimal('shipping', 10, 2);
             $table->decimal('discount', 10, 2);
