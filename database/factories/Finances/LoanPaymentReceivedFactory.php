@@ -5,9 +5,9 @@ namespace Database\Factories\Finances;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Finances\LoanPaymentSent>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Finances\LoanPaymentReceived>
  */
-class LoanPaymentSentFactory extends Factory
+class LoanPaymentReceivedFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +18,7 @@ class LoanPaymentSentFactory extends Factory
     {
         return [
             'date' => $this->faker->date,
-            'expense_people_id' => rand(1,10),
+            'loan_people_id' => rand(1,10),
             'account_id' => rand(1,10),
             'user_id' => rand(1,10),
             'amount' => $this->faker->randomFloat(2, 0, 1000),
