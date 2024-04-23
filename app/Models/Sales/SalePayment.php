@@ -30,7 +30,7 @@ class SalePayment extends Model
         parent::boot();
 
         static::creating(function ($sale) {
-            $sale->reference = 'SEP_' . (self::max('id') + 1);
+            $sale->reference = 'SPAY_' . (self::max('id') + 1);
         });
 
     }

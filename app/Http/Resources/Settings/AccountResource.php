@@ -17,10 +17,6 @@ class AccountResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'currency_id' => [
-                'id' => $this->currency->id,
-                'name' => $this->currency->name,
-            ],
             'price' => $this->price,
         ];
     }

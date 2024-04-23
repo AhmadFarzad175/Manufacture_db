@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Purchases;
+namespace App\Http\Resources\Finances;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PurchasePaymentResource extends JsonResource
+class ExpensePaymentSentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,12 +18,20 @@ class PurchasePaymentResource extends JsonResource
             'id' => $this->id,
             'reference' => $this->reference,
             'date' => $this->date,
-            'amount' => $this->amount,
+            'paid' => $this->amount,
+            'details' => $this->details,
             'account' => [
                 'id' => $this->account->id,
                 'name' => $this->account->name,
+            ],
+            'addedBy' => [
+                'id' => $this->user_id,
+                'name' => $this->user->name,
+            ],
+            'people' => [
+                'id' => $this->expense_people_id,
+                'name' => $this->expensePeople->name,
             ]
         ];
-
     }
 }

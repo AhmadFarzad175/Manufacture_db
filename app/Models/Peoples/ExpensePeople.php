@@ -6,6 +6,7 @@ use App\Models\Expenses\Expense;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Expenses\BillableExpense;
 use App\Models\Expenses\BillablePayment;
+use App\Models\Finances\ExpensePaymentSent;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -39,5 +40,10 @@ class ExpensePeople extends Model
     public function billableExpenses()
     {
         return $this->hasMany(BillableExpense::class);
+    }
+
+    public function expensePaymentSents()
+    {
+        return $this->hasMany(ExpensePaymentSent::class);
     }
 }

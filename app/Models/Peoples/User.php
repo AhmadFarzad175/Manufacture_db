@@ -12,6 +12,7 @@ use App\Models\Purchases\Purchase;
 use App\Models\Expenses\BillableExpense;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Purchases\PurchaseExpense;
+use App\Models\Finances\ExpensePaymentSent;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -97,5 +98,10 @@ class User extends Authenticatable
     public function purchaseExpenses()
     {
         return $this->hasMany(PurchaseExpense::class);
+    }
+
+    public function expensePaymentSents()
+    {
+        return $this->hasMany(ExpensePaymentSent::class);
     }
 }

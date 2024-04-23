@@ -6,11 +6,9 @@ namespace Database\Seeders;
 
 use App\Models\Branch;
 use App\Models\Sales\Sale;
-use App\Models\PaymentSent;
 use App\Models\Peoples\User;
 use App\Models\Peoples\Owner;
 use App\Models\Settings\Unit;
-use App\Models\PaymentReceived;
 use Illuminate\Database\Seeder;
 use App\Models\Expenses\Expense;
 use App\Models\Peoples\Customer;
@@ -18,17 +16,21 @@ use App\Models\Peoples\Supplier;
 use App\Models\Settings\Account;
 use App\Models\Settings\Product;
 use App\Models\Sales\SaleDetails;
+use App\Models\Sales\SaleExpense;
+use App\Models\Sales\SalePayment;
 use App\Models\Settings\Currency;
 use App\Models\Settings\Material;
 use App\Models\Peoples\LoanPeople;
 use App\Models\Purchases\Purchase;
 use App\Models\Settings\Warehouse;
 use App\Models\Peoples\ExpensePeople;
-use App\Models\Expenses\ExpensePayment;
+use App\Models\Settings\SystemSetting;
 use App\Models\Settings\ExpenseProduct;
 use App\Models\Expenses\BillableExpense;
 use App\Models\Expenses\BillablePayment;
 use App\Models\Expenses\BillableProduct;
+use App\Models\Finances\ExpensePaymentReceived;
+use App\Models\Finances\ExpensePaymentSent;
 use App\Models\Purchases\PurchaseDetail;
 use App\Models\Settings\AccountTransfer;
 use App\Models\Settings\ExpenseCategory;
@@ -56,7 +58,14 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         User::factory(10)->create();
-        $this->call(SystemSettingsTableSeeder::class);
+        SystemSetting::create([
+            'companyName' => 'Your Company',
+            'email' => 'your@email.com',
+            'phone' => '123-456-7890',
+            'logo' => 'setting_logos//g9Jn7KFsWVQl1GkN0zo8y50JzWc4iNuSLR1wp5YT.png', // Provide a default logo path
+            'address' => 'Your Company Address',
+        ]);
+        // $this->call(SystemSettingsTableSeeder::class);
         Currency::factory(10)->create();
         Account::factory(10)->create();
         AccountTransfer::factory(10)->create();
@@ -95,9 +104,14 @@ class DatabaseSeeder extends Seeder
         PurchaseDetail::factory(10)->create();
         PurchaseExpense::factory(10)->create();
         PurchasePayment::factory(10)->create();
-
-
+        
+        
         Sale::factory(10)->create();
         SaleDetails::factory(10)->create();
+        SaleExpense::factory(10)->create();
+        SalePayment::factory(10)->create();
+
+        ExpensePaymentSent::factory(10)->create();
+        ExpensePaymentReceived::factory(10)->create();
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Resources\Purchases;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PurchasePaymentResource extends JsonResource
+class SalePaymentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -23,7 +23,5 @@ class PurchasePaymentResource extends JsonResource
                 'id' => $this->account->id,
                 'name' => $this->account->name,
             ]
-        ];
-
-    }
+        ];    }
 }

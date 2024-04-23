@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Settings\Warehouse;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AllController;
 use App\Http\Controllers\Sales\SaleController;
 use App\Http\Controllers\PaymentSentController;
 use App\Http\Controllers\Peoples\UserController;
@@ -14,6 +15,8 @@ use App\Http\Controllers\Peoples\CustomerController;
 use App\Http\Controllers\peoples\SupplierController;
 use App\Http\Controllers\Settings\AccountController;
 use App\Http\Controllers\Settings\ProductController;
+use App\Http\Controllers\Sales\SaleExpenseController;
+use App\Http\Controllers\Sales\SalePaymentController;
 use App\Http\Controllers\Settings\CurrencyController;
 use App\Http\Controllers\Settings\MaterialController;
 use App\Http\Controllers\Purchases\PurchaseController;
@@ -30,6 +33,7 @@ use App\Http\Controllers\Purchases\PurchaseExpenseController;
 use App\Http\Controllers\Purchases\PurchasePaymentController;
 use App\Http\Controllers\Settings\MaterialCategoryController;
 use App\Http\Controllers\ProductManagements\ConsumeController;
+use App\Http\Controllers\Finances\ExpensePaymentSentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +57,7 @@ Route::post('/systemSettings/update/{systemSetting}', [SystemSettingController::
 
 Route::apiResource('/currencies', CurrencyController::class);
 Route::post('currenciesBulkDelete', [CurrencyController::class, 'bulkDelete']);
+Route::post('curriencyAccount',[AllController::class, 'currencyAccount'] );
 
 Route::apiResource('/warehouses', WarehouseController::class);
 Route::post('warehousesBulkDelete', [WarehouseController::class, 'bulkDelete']);
@@ -106,5 +111,10 @@ Route::apiResource('/purchasePayments', PurchasePaymentController::class);
 
 #SALES
 Route::apiResource('/sales', SaleController::class);
-// Route::apiResource('/purchaseExpenses', PurchaseExpenseController::class);
-// Route::apiResource('/purchasePayments', PurchasePaymentController::class);
+Route::apiResource('/SaleExpenses', SaleExpenseController::class);
+Route::apiResource('/SalePayments', SalePaymentController::class);
+
+
+#Finance
+Route::apiResource('/expensePaymentSents', ExpensePaymentSentController::class);
+

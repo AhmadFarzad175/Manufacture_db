@@ -108,40 +108,45 @@ class SaleController extends Controller
         $oldPrice = $sale->paid;
         $sale->update($validated);
 
-        $sale->products()->detach();
-
-        // Insert new products into the sale
+        $syncData = [];
         foreach ($request->input('saleDetails') as $saleDetail) {
             $saleDetail['product_id'] = $saleDetail['productId'];
             $saleDetail['unit_cost'] = $saleDetail['unitCost'];
 
-            $sale->products()->attach($saleDetail['product_id'], [
-                'quantity' => $saleDetail['quantity'],
-                'unit_cost' => $saleDetail['unit_cost'],
-            ]);
+            // 1_ old quantity update for warehouse product 
+            $quantity = SaleDetails::where('sale_id', $sale->id)->where('product_id', $saleDetail['product_id'])
+                ->pluck('quantity')->first();
 
-            // Update the warehouse product table
             $warehouseProduct = WarehouseProduct::where('warehouse_id', $validated['warehouse_id'])
                 ->where('product_id', $saleDetail['product_id'])
                 ->first();
 
-            $quantity = SaleDetails::where('sale_id', $sale->id)
-                ->where('product_id', $saleDetail['product_id']);
-            return $quantity;
+            $qtyDiff = $quantity - $saleDetail['quantity'];
 
-            if ($warehouseProduct && $warehouseProduct->quantity >= $saleDetail['quantity']) {
+            if ($warehouseProduct && $warehouseProduct->quantity >= $qtyDiff) {
                 // Update existing record
-                $warehouseProduct->decrement('quantity', $saleDetail['quantity']);
+                $warehouseProduct->increment('quantity', $qtyDiff);
             }
-        }
 
-        // Update the account
+            // 2_ Insert new products into the sale
+            $syncData[$saleDetail['product_id']] = [
+                'quantity' => $saleDetail['quantity'],
+                'unit_cost' => $saleDetail['unit_cost'],
+            ];
+        }
+        $sale->products()->sync($syncData);
+
+        // 3_ Update the account
         $account = Account::findOrFail($validated['account_id']);
-        $account->decrement('price', $oldPrice); // Decrement old payment
-        $account->increment('price', $validated['paid']); // Increment new payment
+        $amountDiff = $oldPrice - $validated['paid'];
+        if ($amountDiff > 0 && $account->price < $amountDiff) {
+            DB::rollback();
+            return response()->json(['message' => 'Insufficient balance.'], 403);
+        }
+        $account->decrement('price', $amountDiff); // Increment new payment
 
         //! it may be an error while we also inserted another payments after initialization
-        // Update the sale payment record
+        // 5_ Update the sale payment record
         $salePayment = SalePayment::firstWhere('sale_id', $sale->id);
         $salePayment->update([
             'date' => $validated['date'],
@@ -165,6 +170,10 @@ class SaleController extends Controller
      */
     public function destroy(Sale $sale)
     {
-        //
+        // Detach all associated product before deleting the sales
+        $sale->products()->detach();
+
+        // Delete the sale record
+        $sale->delete();
     }
 }

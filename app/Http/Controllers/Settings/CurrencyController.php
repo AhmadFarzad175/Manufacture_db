@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Models\Settings\Currency;
 use Illuminate\Http\Request;
+use App\Models\Settings\Account;
+use App\Models\Settings\Currency;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\CurrencyRequest;
 use App\Http\Resources\Settings\CurrencyResource;
@@ -67,4 +68,6 @@ class CurrencyController extends Controller
         Currency::destroy($currencies);
         return response()->json(['success', 'Currencies deleted successfully']);
     }
+
+    
 }
