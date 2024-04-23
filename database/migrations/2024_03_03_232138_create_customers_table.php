@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email', 192)->unique();
-            $table->string('phone', 64)->unique();
-            // $table->foreignIdFor(Role::class);
-            $table->boolean('status')->default(true);
+            $table->string('phone', 15);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

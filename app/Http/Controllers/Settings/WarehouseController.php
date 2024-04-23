@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Settings;
 use Illuminate\Http\Request;
 use App\Models\Settings\Warehouse;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\WarehouseResource;
 use App\Http\Requests\Settings\WarehouseRequest;
+use App\Http\Resources\Settings\WarehouseResource;
 
 
 class WarehouseController extends Controller

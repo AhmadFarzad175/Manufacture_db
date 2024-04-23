@@ -2,9 +2,12 @@
 
 namespace App\Models\Settings;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Sales\SalePayment;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Purchases\PurchaseExpense;
+use App\Models\Finances\ExpensePaymentSent;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Account extends Model
 {
@@ -26,7 +29,6 @@ class Account extends Model
         return $query->where(function ($query) use ($search) {
             $query->where('name', 'like', '%' . $search . '%')
                 ->orWhere('price', 'like', '%' . $search . '%')
-                ->orWhere('currency_id', 'like', '%' . $search . '%')
                 ->orWhereHas('currency', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 });
@@ -36,5 +38,31 @@ class Account extends Model
     public function currency()
     {
         return $this->belongsTo(Currency::class);
+    }
+
+    public function sentTransfers()
+    {
+        return $this->hasMany(AccountTransfer::class, 'from_account_id');
+    }
+
+    // Relationship: account has many transfers where it is the receiver
+    public function receivedTransfers()
+    {
+        return $this->hasMany(AccountTransfer::class, 'to_account_id');
+    }
+
+    public function purchaseExpenses()
+    {
+        return $this->hasMany(PurchaseExpense::class);
+    }
+    
+    public function salePayment()
+    {
+        return $this->hasMany(SalePayment::class);
+    }
+
+    public function expensePaymentSents()
+    {
+        return $this->hasMany(ExpensePaymentSent::class);
     }
 }

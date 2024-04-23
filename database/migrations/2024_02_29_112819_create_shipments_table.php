@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\Peoples\User;
 use App\Models\Purchases\Purchase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -19,12 +19,13 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->timestamp('date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('Reference', 192);
-            $table->foreignIdFor(Purchase::class);
+            $table->foreignIdFor(Purchase::class)->constrained();
             $table->string('delivered_to', 192)->nullable();
             $table->text('address')->nullable();
             $table->string('shipmentStatus', 192);
             $table->text('details')->nullable();
             $table->timestamps(6);
+            $table->softDeletes();
         });
     }
 

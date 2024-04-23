@@ -2,12 +2,14 @@
 
 namespace App\Models\Settings;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Sales\Sale;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'code',
@@ -53,4 +55,15 @@ class Product extends Model
     {
         return $this->belongsTo(Unit::class);
     }
+
+    public function warehouseProducts()
+    {
+        return $this->hasMany(WarehouseProduct::class);
+    }
+
+    public function sales()
+    {
+        return $this->belongsToMany(Sale::class, 'sale_details')->withPivot(['quantity', 'unit_cost'])->withTimestamps();
+    }
 }
+

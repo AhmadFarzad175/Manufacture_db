@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\Peoples\User;
 use App\Models\Settings\Account;
 use App\Models\Settings\Currency;
 use App\Models\Purchases\Purchase;
@@ -17,16 +17,15 @@ return new class extends Migration
     {
         Schema::create('purchase_payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class);
             $table->date('date');
             $table->string('Reference', 192);
-            $table->foreignIdFor(Purchase::class);
-            $table->string('payment_type');
-            $table->decimal('paid', 20, 2)->nullable()->default(0.00);
-            $table->foreignIdFor(Account::class);
-            $table->text('note')->nullable();
-
+            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Purchase::class)->constrained();
+            $table->foreignIdFor(Account::class)->constrained();
+            $table->decimal('amount', 20, 2);
+            $table->text('details')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

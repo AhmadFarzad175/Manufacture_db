@@ -18,27 +18,12 @@ class PurchaseRequest extends FormRequest
 
     public function prepareForValidation()
     {
-        $purchaseDetails = $this->input('purchaseDetails');
-
-        $transformedPurchaseDetails = [];
-
-        // Inside prepareForValidation method
-        foreach ($purchaseDetails as $key => $purchaseDetail) {
-            $transformedPurchaseDetails[] = [
-                'material_id' => $purchaseDetail['materialId'],
-                'unit_cost' => $purchaseDetail['unitCost'],
-                'quantity' => $purchaseDetail['quantity'],
-                // Add other fields if necessary
-            ];
-        }
-
-
-        // Merge the transformed purchaseDetails array into the request data
         $this->merge([
-            'purchaseDetails' => $transformedPurchaseDetails,
             'user_id' => $this->input('addedById'),
-            'supplier_id' => $this->input('SupplierId'),
+            'warehouse_id' => $this->input('warehouseId'),
+            'supplier_id' => $this->input('supplierId'),
             'currency_id' => $this->input('currencyId'),
+            'invoice_number' => $this->input('invoiceNumber'),
         ]);
     }
 
@@ -54,22 +39,22 @@ class PurchaseRequest extends FormRequest
     {
         $rules =  [
             'date' => 'required|date',
+            'invoice_number' => 'required|integer',
+            'warehouse_id' => 'required|exists:warehouses,id',
             'user_id' => 'required|exists:users,id',
             'supplier_id' => 'required|exists:suppliers,id',
             'paid' => 'nullable|numeric|min:0',
-            'total' => 'nullable|numeric|min:0',
+            'total' => 'required|numeric|min:0',
             'status' => 'required|in:received,pending,ordered',
             'shipping' => 'nullable|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
             'tax' => 'nullable|numeric|min:0',
             'currency_id' => 'required|exists:currencies,id',
             'note' => 'nullable',
-
-
-            'materialDetails.*.material_id' => 'required|exists:materials,id',
+            'materialDetails.*.materialId' => 'required|exists:materials,id',
             'materialDetails.*.purchase_id' => 'required|exists:purchases,id',
             'materialDetails.*.quantity' => 'required|integer|min:1',
-            'materialDetails.*.unit_cost' => 'required|numeric|min:0',
+            'materialDetails.*.unitCost' => 'required|numeric|min:0',
         ];
 
         $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;

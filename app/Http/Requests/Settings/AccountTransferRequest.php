@@ -24,8 +24,8 @@ class AccountTransferRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'from_account' => 'required|exists:accounts,id',
-            'to_account' => 'required|exists:accounts,id',
+            'from_account_id' => 'required|exists:accounts,id',
+            'to_account_id' => 'required|exists:accounts,id',
             'user_id' => 'required|exists:users,id',
             'from_amount' => 'required|integer|min:0',
             'to_amount' => 'required|integer|min:0',

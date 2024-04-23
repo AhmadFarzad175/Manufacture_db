@@ -2,20 +2,22 @@
 
 namespace App\Models\Settings;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Peoples\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AccountTransfer extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        "from_account_id",
-        "to_account_id",
-        "user_id",
-        "from_amount",
-        "to_amount",
-        "date"
+        'from_account_id',
+        'to_account_id',
+        'user_id',
+        'from_amount',
+        'to_amount',
+        'date'
     ];
 
     public function scopeSearch($query, $search)
@@ -43,13 +45,21 @@ class AccountTransfer extends Model
     }
 
 
-    public function FromAccount()
+    public function fromAccount()
     {
         return $this->belongsTo(Account::class, 'from_account_id');
     }
 
-    public function ToAccount()
+
+    public function toAccount()
     {
         return $this->belongsTo(Account::class, 'to_account_id');
+    }
+
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

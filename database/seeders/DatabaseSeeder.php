@@ -4,27 +4,43 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\User;
-use App\Models\Party;
 use App\Models\Branch;
-use App\Models\Expense;
-use App\Models\PaymentSent;
+use App\Models\Sales\Sale;
+use App\Models\Peoples\User;
+use App\Models\Peoples\Owner;
 use App\Models\Settings\Unit;
-use App\Models\ExpenseCategory;
-use App\Models\PaymentReceived;
 use Illuminate\Database\Seeder;
+use App\Models\Expenses\Expense;
 use App\Models\Peoples\Customer;
 use App\Models\Peoples\Supplier;
 use App\Models\Settings\Account;
 use App\Models\Settings\Product;
+use App\Models\Sales\SaleDetails;
+use App\Models\Sales\SaleExpense;
+use App\Models\Sales\SalePayment;
 use App\Models\Settings\Currency;
 use App\Models\Settings\Material;
+use App\Models\Peoples\LoanPeople;
 use App\Models\Purchases\Purchase;
 use App\Models\Settings\Warehouse;
+use App\Models\Peoples\ExpensePeople;
 use App\Models\Settings\SystemSetting;
+use App\Models\Settings\ExpenseProduct;
+use App\Models\Expenses\BillableExpense;
+use App\Models\Expenses\BillablePayment;
+use App\Models\Expenses\BillableProduct;
+use App\Models\Finances\ExpensePaymentReceived;
+use App\Models\Finances\ExpensePaymentSent;
 use App\Models\Purchases\PurchaseDetail;
 use App\Models\Settings\AccountTransfer;
+use App\Models\Settings\ExpenseCategory;
+use App\Models\Purchases\PurchaseExpense;
+use App\Models\Purchases\PurchasePayment;
 use App\Models\Settings\MaterialCategory;
+use App\Models\Settings\WarehouseProduct;
+use App\Models\ProductManagements\Consume;
+use App\Models\Settings\WarehouseMaterial;
+use App\Models\ProductManagements\ConsumeDetails;
 
 class DatabaseSeeder extends Seeder
 {
@@ -41,33 +57,70 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
+<<<<<<< HEAD
         $this->call(SystemSettingsTableSeeder::class);
         Currency::factory(5)->create();
         Account::factory(50)->create();
         AccountTransfer::factory(5)->create();
         Warehouse::factory(10)->create();
 
+=======
+>>>>>>> 1b65e075ec44ba7adeedd9a4eb713aa099f2f526
         User::factory(10)->create();
+        SystemSetting::create([
+            'companyName' => 'Your Company',
+            'email' => 'your@email.com',
+            'phone' => '123-456-7890',
+            'logo' => 'setting_logos//g9Jn7KFsWVQl1GkN0zo8y50JzWc4iNuSLR1wp5YT.png', // Provide a default logo path
+            'address' => 'Your Company Address',
+        ]);
+        // $this->call(SystemSettingsTableSeeder::class);
+        Currency::factory(10)->create();
+        Account::factory(10)->create();
+        AccountTransfer::factory(10)->create();
+        Warehouse::factory(10)->create();
+        MaterialCategory::factory(10)->create();
+        Unit::factory(10)->create();
+        Product::factory(10)->create();
+        Material::factory(10)->create();
+        ExpenseCategory::factory(10)->create();
+        ExpenseProduct::factory(10)->create();
+
+
         Branch::factory(10)->create();
 
         Customer::factory(10)->create();
         Supplier::factory(10)->create();
+        ExpensePeople::factory(10)->create();
+        LoanPeople::factory(10)->create();
+        Owner::factory(10)->create();
 
-        //! EXPENSE
-        Party::factory(10)->create();
-        ExpenseCategory::factory(10)->create();
         Expense::factory(10)->create();
-        PaymentSent::factory(10)->create();
-        PaymentReceived::factory(10)->create();
+        BillablePayment::factory(10)->create();
+        BillableExpense::factory(10)->create();
+        BillableProduct::factory(10)->create();
+        // PaymentSent::factory(10)->create();
+        // PaymentReceived::factory(10)->create();
 
-        //! Product
-        MaterialCategory::factory(10)->create();
-        Unit::factory(10)->create();
-        Material::factory(10)->create();
-        Product::factory(10)->create();
+        Consume::factory(10)->create();
+        ConsumeDetails::factory(10)->create();
 
-        //! Purchase
+        WarehouseProduct::factory(10)->create();
+        WarehouseMaterial::factory(10)->create();
+
+
         Purchase::factory(10)->create();
         PurchaseDetail::factory(10)->create();
+        PurchaseExpense::factory(10)->create();
+        PurchasePayment::factory(10)->create();
+        
+        
+        Sale::factory(10)->create();
+        SaleDetails::factory(10)->create();
+        SaleExpense::factory(10)->create();
+        SalePayment::factory(10)->create();
+
+        ExpensePaymentSent::factory(10)->create();
+        ExpensePaymentReceived::factory(10)->create();
     }
 }

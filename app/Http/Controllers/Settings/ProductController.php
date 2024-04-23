@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Settings;
 use Illuminate\Http\Request;
 use App\Models\Settings\Product;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use App\Http\Requests\Settings\ProductRequest;
 use App\Http\Resources\Settings\ProductResource;
-use Illuminate\Support\Facades\Log;
+use App\Http\Requests\Settings\StoreProductRequest;
+use App\Http\Requests\Settings\UpdateProductRequest;
 
 class ProductController extends Controller
 {
@@ -30,15 +32,15 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProductRequest $request)
+    public function store(StoreProductRequest $request)
     {
-        $validate = $request->validated();
+        $validated = $request->validated();
 
-        if ($validate['image']) {
-            $validate['image'] = $validate['image']->store('product_images/', 'public');
+        if ($request->hasFile('image')) {
+            $validated['image'] = $validated['image']->store('product_images/', 'public');
         }
 
-        Product::create($validate);
+        Product::create($validated);
 
         return response()->json(['success' => 'product inserted successfully']);
     }
@@ -54,10 +56,34 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProductRequest $request, Product $product)
+    public function updateProduct(UpdateProductRequest $request, Product $product)
     {
-        $product->update($request->validated());
-        return ProductResource::make($product);
+
+        $validated = $request->validated();
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $oldImagePath = public_path('storage/product_images/' . basename($product->image));
+
+            if (File::exists($oldImagePath)) {
+                File::delete($oldImagePath);
+            }
+            $validated['image'] = $request['image']->store('product_images/', 'public');
+        }
+        if (!isset($request['image'])) {
+            $oldImagePath = public_path('storage/product_images/' . basename($product->image));
+
+            if (File::exists($oldImagePath)) {
+                File::delete($oldImagePath);
+            }
+            $validated['image'] = $imagePath;
+        }
+        if (is_string($request['image'])) {
+            $validated['image'] = $product->image;
+        }
+        $product->update($validated);
+
+        return response()->json(['success' => 'Product updated successfully']);
     }
 
     /**
@@ -65,6 +91,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        $imagePath = public_path('storage/product_images/' . basename($product->image));
+        if (File::exists($imagePath)) {
+            File::delete($imagePath);
+        }
         $product->delete();
         return response()->noContent();
     }

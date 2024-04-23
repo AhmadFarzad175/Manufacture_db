@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Purchases;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Purchases\Purchase;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Settings\WarehouseMaterial;
 use App\Http\Requests\Purchases\PurchaseRequest;
 use App\Http\Resources\Purchases\PurchaseResource;
-use App\Http\Resources\Purchases\PurchaseIndexResource;
 
 class PurchaseController extends Controller
 {
@@ -25,7 +25,7 @@ class PurchaseController extends Controller
 
         $purchases = $perPage ? $purchases->latest()->paginate($perPage) : $purchases->latest()->get();
 
-        return PurchaseIndexResource::collection($purchases);
+        return PurchaseResource::collection($purchases);
     }
 
     /**
@@ -33,15 +33,46 @@ class PurchaseController extends Controller
      */
     public function store(PurchaseRequest $request)
     {
-        $purchase = Purchase::create($request->validated());
+        DB::beginTransaction();
+
+        try {
+        $validated = $request->validated();
+        $purchase = Purchase::create($validated);
 
         foreach ($request->input('purchaseDetails') as $purchaseDetail) {
+            $purchaseDetail['material_id'] = $purchaseDetail['materialId'];
+            $purchaseDetail['unit_cost'] = $purchaseDetail['unitCost'];
+
             $purchase->materials()->attach($purchaseDetail['material_id'], [
                 'quantity' => $purchaseDetail['quantity'],
                 'unit_cost' => $purchaseDetail['unit_cost'],
             ]);
+
+            $warehouseMaterial = WarehouseMaterial::where('warehouse_id', $request->input('warehouse_id'))
+                ->where('material_id', $purchaseDetail['material_id'])
+                ->first();
+
+            if ($warehouseMaterial) {
+                // Update existing record
+                $warehouseMaterial->quantity += $purchaseDetail['quantity'];
+                $warehouseMaterial->save();
+            } else {
+                // Create new record
+                WarehouseMaterial::create([
+                    'warehouse_id' => $request->input('warehouse_id'),
+                    'material_id' => $purchaseDetail['material_id'],
+                    'quantity' => $purchaseDetail['quantity'],
+                ]);
+            }
         }
+
+        DB::commit();
         return PurchaseResource::make($purchase);
+        } catch (\Exception $e) {
+            DB::rollback();
+            // Handle the exception, log it, or return an error response
+            return response()->json(['message' => 'An error occurred while processing the request.'], 500);
+        }
     }
 
     /**
@@ -66,6 +97,8 @@ class PurchaseController extends Controller
 
             $syncData = [];
             foreach ($purchaseDetails as $purchaseDetail) {
+                $purchaseDetail['material_id'] = $purchaseDetail['materialId'];
+                $purchaseDetail['unit_cost'] = $purchaseDetail['unitCost'];
                 $syncData[$purchaseDetail['material_id']] = [
                     'quantity' => $purchaseDetail['quantity'],
                     'unit_cost' => $purchaseDetail['unit_cost'],

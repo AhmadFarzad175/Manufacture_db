@@ -4,16 +4,17 @@ namespace App\Models\Settings;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SystemSetting extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'companyName',
         'logo',
         'email',
-        'photo',
-        'companyName',
+        'phone',
+        'address',
     ];
 }

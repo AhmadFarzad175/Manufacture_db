@@ -21,7 +21,7 @@ class PaymentSentRequest extends FormRequest
         $dataToMerge = [];
 
         // List of fields that can be updated
-        $fields = ['partyId', 'addedById'];
+        $fields = ['addedById'];
 
         foreach ($fields as $field) {
             if ($this->has($field)) {
@@ -43,7 +43,7 @@ class PaymentSentRequest extends FormRequest
 
         $rules = [
             'date'        => 'required|date',
-            'party_id'    => 'required|exists:parties,id',
+            'expense_people_id'    => 'required|exists:parties,id',
             'user_id'     => 'required|integer',
             'amount' => 'required|integer',
             'details'     => 'nullable|string',

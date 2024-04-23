@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Peoples\User;
+use App\Models\Peoples\ExpensePeople;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PaymentReceived extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'date',
-        'party_id',
+        'expense_people',
         'user_id',
         'amount',
         'details',
@@ -36,9 +39,9 @@ class PaymentReceived extends Model
     }
 
 
-    public function party()
+    public function expensePeople()
     {
-        return $this->belongsTo(Party::class);
+        return $this->belongsTo(ExpensePeople::class);
     }
 
     public function user()

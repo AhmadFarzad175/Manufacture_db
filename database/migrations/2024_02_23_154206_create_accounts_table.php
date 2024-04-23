@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignIdFor(Currency::class);
+            $table->foreignIdFor(Currency::class)->constrained();
             $table->decimal('price', 20, 2);
             $table->timestamps();
             $table->softDeletes();

@@ -1,11 +1,10 @@
 <?php
 
-use App\Models\User;
-use App\Models\Party;
-use App\Models\Branch;
-use App\Models\Company;
-use App\Models\ExpenseCategory;
+
+use App\Models\Peoples\User;
+use App\Models\Peoples\ExpensePeople;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Settings\ExpenseCategory;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -20,13 +19,13 @@ return new class extends Migration
             $table->id();
             $table->string('reference')->unique();
             $table->date('date');
-            $table->foreignIdFor(ExpenseCategory::class)->constrained()->unique(false);
+            $table->foreignIdFor(ExpenseCategory::class)->constrained();
+            $table->foreignIdFor(ExpensePeople::class)->constrained();
+            $table->foreignIdFor(User::class)->constrained();
             $table->decimal('amount', 20, 2)->default(0.00);
-            $table->foreignIdFor(Party::class)->constrained()->unique(false);
-            $table->foreignIdFor(User::class)->constrained()->unique(false);
-            $table->foreignIdFor(Branch::class)->constrained()->unique(false);
             $table->text('details')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

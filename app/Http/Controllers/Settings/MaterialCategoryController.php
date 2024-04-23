@@ -64,7 +64,7 @@ class MaterialCategoryController extends Controller
 
     public function bulkDelete(Request $request)
     {
-        $materials = $request->input('materialCategoryIds');
-        MaterialCategory::destroy($materials);
+        $materialCategories = $request->input('materialCategoryIds');
+        MaterialCategory::destroy($materialCategories);
     }
 }

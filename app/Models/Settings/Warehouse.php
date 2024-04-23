@@ -2,9 +2,11 @@
 
 namespace App\Models\Settings;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Purchases\Purchase;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProductManagements\Consume;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Warehouse extends Model
 {
@@ -29,5 +31,15 @@ class Warehouse extends Model
             ->orWhere('email', 'like', '%' . $search . '%')
             ->orWhere('city', 'like', '%' . $search . '%')
             ->orWhere('country', 'like', '%' . $search . '%');
+    }
+
+    public function consumes()
+    {
+        return $this->hasMany(Consume::class);
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
     }
 }

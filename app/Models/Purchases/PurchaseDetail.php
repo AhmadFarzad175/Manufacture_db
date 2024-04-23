@@ -4,10 +4,11 @@ namespace App\Models\Purchases;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PurchaseDetail extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'material_id',
@@ -15,13 +16,4 @@ class PurchaseDetail extends Model
         'quantity',
         'unit_cost',
     ];
-
-
-    public function scopeSearch($query, $search)
-    {
-        if (!$search) {
-            return $query;
-        }
-        return $query->where('name', 'like', '%' . $search . '%');
-    }
 }

@@ -36,6 +36,12 @@ class Currency extends Model
         return $this->hasMany(Purchase::class);
     }
 
+    public function billableExpense()
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
+
     public function accounts()
     {
         return $this->hasMany(Account::class);
