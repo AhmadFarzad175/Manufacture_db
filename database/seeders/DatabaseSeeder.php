@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(SystemSettingsTableSeeder::class);
         Currency::factory(5)->create();
-        Account::factory(5)->create();
+        Account::factory(50)->create();
         AccountTransfer::factory(5)->create();
         Warehouse::factory(10)->create();
 

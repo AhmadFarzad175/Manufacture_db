@@ -46,6 +46,7 @@ Route::post('currenciesBulkDelete', [CurrencyController::class, 'bulkDelete']);
 Route::apiResource('/warehouses', WarehouseController::class);
 Route::post('warehousesBulkDelete', [WarehouseController::class, 'bulkDelete']);
 
+
 Route::apiResource('/accounts', AccountController::class);
 Route::post('accountsBulkDelete', [AccountController::class, 'bulkDelete']);
 Route::apiResource('/accountTransfer', AccountTransferController::class);

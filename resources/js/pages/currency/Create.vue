@@ -5,7 +5,9 @@ let SettingRepository = useSettingRepository();
 const formRef = ref(null);
 const formData = reactive({
     name: "",
-    description: "",
+    code: "",
+    symbol: "",
+    rate: "",
 });
 
 const createCurrency = async () => {
@@ -17,7 +19,7 @@ const createCurrency = async () => {
 };
 
 const rules = {
-    required: (value) => !!value || "Category Name is Required.",
+    required: (value) => !!value || "Required.",
     counter: (value) => value.length >= 1 || "Min 1 characters",
 };
 </script>
@@ -38,19 +40,39 @@ const rules = {
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
-                    <v-form ref="formRef">
-                        <v-text-field
-                            v-model="formData.name"
-                            variant="outlined"
-                            label="Name *"
-                            :rules="[rules.required, rules.counter]"
-                            class="pb-4"
-                        ></v-text-field>
-                        <v-textarea
-                            v-model="formData.description"
-                            variant="outlined"
-                            label="Details"
-                        ></v-textarea>
+                    <v-form ref="formRef" class="d-flex gap-4">
+                        <div class="w-1/2">
+                            <v-text-field
+                                v-model="formData.code"
+                                variant="outlined"
+                                label="Currency Code*"
+                                :rules="[rules.required, rules.counter]"
+                                class="pb-4"
+                            ></v-text-field>
+                            <v-text-field
+                                v-model="formData.name"
+                                variant="outlined"
+                                label="Currency Name *"
+                                :rules="[rules.required, rules.counter]"
+                                class="pb-4"
+                            ></v-text-field>
+                        </div>
+                        <div class="w-1/2">
+                            <v-text-field
+                                v-model="formData.symbol"
+                                variant="outlined"
+                                label="Symbol*"
+                                :rules="[rules.required, rules.counter]"
+                                class="pb-4"
+                            ></v-text-field>
+                            <v-text-field
+                                v-model="formData.rate"
+                                variant="outlined"
+                                label="Rate*"
+                                :rules="[rules.required, rules.counter]"
+                                class="pb-4"
+                            ></v-text-field>
+                        </div>
                     </v-form>
                 </v-card-text>
                 <div class="justify-start pl-6 pb-6">

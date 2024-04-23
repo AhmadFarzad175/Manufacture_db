@@ -5,11 +5,11 @@ import { reactive, ref } from "vue";
 import { axios, setContentType } from "../axios";
 // import { toast } from "vue3-toastify";
 import { useRouter } from "vue-router";
-export let useSettingRepository = defineStore("SettingRepository", {
+export let useMoneyAccountRepository = defineStore("MoneyAccountRepository", {
     state() {
         return {
-            currencies: reactive([]),
-            currency: reactive([]),
+            accounts: reactive([]),
+            account: reactive([]),
 
             isLoading: false,
             error: null,
@@ -17,7 +17,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
             createDailog: false,
             updateDailog: false,
             page: 1,
-            itemsPerPage: 10,
+            itemsPerPage: 5,
             selectedItems: [],
             selectAll: false,
             showSelect: true,
@@ -29,25 +29,27 @@ export let useSettingRepository = defineStore("SettingRepository", {
         };
     },
     actions: {
-        async FetchCurrensiesData({ page, itemsPerPage }) {
+        async FetchAccountsData({ page, itemsPerPage }) {
             this.loading = true;
             setContentType("application/json");
 
             const response = await axios.get(
-                `/currencies?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
+                `/accounts?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
             );
-            this.currencies = response.data.data;
+            this.accounts = response.data.data;
+            console.log(response.data.data);
             this.totalItems = response.data.meta.total;
             this.loading = false;
         },
-        async CreateCurrency(formData) {
+
+        async CreateAccounts(formData) {
             console.log(formData);
             // Adding a custom header to the Axios request
             setContentType("application/json");
 
             const config = {
                 method: "POST",
-                url: "/currencies",
+                url: "/accounts",
                 data: formData,
             };
 
@@ -57,7 +59,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
             //     autoClose: 1000,
             // });
             this.createDailog = false;
-            this.FetchCurrensiesData({
+            this.FetchAccountsData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });
@@ -91,7 +93,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
 
             const config = {
                 method: "PUT",
-                url: "/currencies/" + id,
+                url: "/currencies" + id,
                 data: data,
             };
 

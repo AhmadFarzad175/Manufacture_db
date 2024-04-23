@@ -7,7 +7,7 @@
 
         <v-form @submit.prevent="submitForm">
             <div class="flex w-full justify-between gap-4 mt-8">
-                <div class="w-4/5">
+                <div class="w-full">
                     <v-text-field
                         label="Company Name*"
                         variant="outlined"

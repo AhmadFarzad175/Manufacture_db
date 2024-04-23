@@ -1,5 +1,5 @@
 <template>
-    <div class="search w-full py-8 ml-4">
+    <div class="search w-full py-8 ml-8">
         <v-card max-width="262" class="border">
             <v-text-field
                 class="w-full"

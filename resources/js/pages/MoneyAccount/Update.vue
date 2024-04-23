@@ -1,7 +1,7 @@
 <script setup>
-import { useSettingRepository } from "../../store/SettingRepository";
+import { useMoneyAccountRepository } from "../../store/MoneyAccountRepository ";
 import { reactive, ref } from "vue";
-let SettingRepository = useSettingRepository();
+let MoneyAccountRepository = useMoneyAccountRepository();
 const formRef = ref(null);
 
 // this the validtaion rules
@@ -13,21 +13,21 @@ const rules = {
 async function updateCurrency() {
     formRef.value.validate().then((validate) => {
         if (validate.valid) {
-            // SettingRepository.UpdateCurrency(
-            // SettingRepository.currency.id,
-            // SettingRepository.currency
+            // MoneyAccountRepository.UpdateCurrency(
+            // MoneyAccountRepository.currency.id,
+            // MoneyAccountRepository.currency
             // );
             const UpdateData = reactive({
-                name: SettingRepository.currency.name,
-                code: SettingRepository.currency.code,
-                rate: SettingRepository.currency.rate,
-                symbol: SettingRepository.currency.symbol,
+                name: MoneyAccountRepository.currency.name,
+                code: MoneyAccountRepository.currency.code,
+                rate: MoneyAccountRepository.currency.rate,
+                symbol: MoneyAccountRepository.currency.symbol,
             });
-            SettingRepository.UpdateCurrency(
-                SettingRepository.currency.id,
-                // SettingRepository.currency.name,
-                // SettingRepository.currency.rate,
-                // SettingRepository.currency.symbl,
+            MoneyAccountRepository.UpdateCurrency(
+                MoneyAccountRepository.currency.id,
+                // MoneyAccountRepository.currency.name,
+                // MoneyAccountRepository.currency.rate,
+                // MoneyAccountRepository.currency.symbl,
                 UpdateData
             );
         }
@@ -36,7 +36,7 @@ async function updateCurrency() {
 </script>
 <template>
     <v-dialog
-        v-model="SettingRepository.updateDailog"
+        v-model="MoneyAccountRepository.updateDailog"
         transition="dialog-top-transition"
         width="600px"
     >
@@ -46,7 +46,7 @@ async function updateCurrency() {
                     <h2>Update</h2>
                     <v-btn
                         variant="text"
-                        @click="SettingRepository.updateDailog = false"
+                        @click="MoneyAccountRepository.updateDailog = false"
                         ><v-icon> mdi-close </v-icon></v-btn
                     >
                 </v-card-title>
@@ -55,14 +55,14 @@ async function updateCurrency() {
                     <v-form ref="formRef" class="d-flex gap-4">
                         <div class="w-1/2">
                             <v-text-field
-                                v-model="SettingRepository.currency.code"
+                                v-model="MoneyAccountRepository.currency.code"
                                 variant="outlined"
                                 label="CODE"
                                 :rules="[rules.required, rules.counter]"
                                 class="pb-4"
                             ></v-text-field>
                             <v-text-field
-                                v-model="SettingRepository.currency.symbol"
+                                v-model="MoneyAccountRepository.currency.symbol"
                                 variant="outlined"
                                 label="SYMBOL"
                                 :rules="[rules.required, rules.counter]"
@@ -71,14 +71,14 @@ async function updateCurrency() {
                         </div>
                         <div class="w-1/2">
                             <v-text-field
-                                v-model="SettingRepository.currency.name"
+                                v-model="MoneyAccountRepository.currency.name"
                                 variant="outlined"
                                 label="Name"
                                 :rules="[rules.required, rules.counter]"
                                 class="pb-4"
                             ></v-text-field>
                             <v-text-field
-                                v-model="SettingRepository.currency.rate"
+                                v-model="MoneyAccountRepository.currency.rate"
                                 variant="outlined"
                                 label="Rate"
                                 class="pb-4"

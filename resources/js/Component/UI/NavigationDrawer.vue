@@ -73,11 +73,13 @@
                     </v-list-group>
                     <v-list-group value="Moneyaccount">
                         <template v-slot:activator="{ props }">
-                            <v-list-item
-                                :append-icon="null"
-                                v-bind="props"
-                                title="Mpney Acount"
-                            ></v-list-item>
+                            <router-link to="/moneyAccount">
+                                <v-list-item
+                                    :append-icon="null"
+                                    v-bind="props"
+                                    title="Money Acount"
+                                ></v-list-item>
+                            </router-link>
                         </template>
                     </v-list-group>
                     <v-list-group value="Role Permission">

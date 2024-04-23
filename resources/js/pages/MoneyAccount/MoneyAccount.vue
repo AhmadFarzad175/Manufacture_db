@@ -1,13 +1,13 @@
 <template>
-    <Create v-if="SettingRepository.createDailog" />
-    <Update v-if="SettingRepository.updateDailog" />
+    <Update v-if="MoneyAccountRepository.updateDailog" />
+    <Create v-if="MoneyAccountRepository.createDailog" />
     <div class="w-full">
-        <toolbar title="Setting-" subtitle="currency" />
+        <toolbar title="Setting-" subtitle="Money Account" />
         <v-layout class="py-5">
             <v-row class="justify-space-between">
                 <v-col cols="12" sm="3">
                     <v-text-field
-                        v-model="SettingRepository.Search"
+                        v-model="MoneyAccountRepository.Search"
                         label="Search"
                         prepend-inner-icon="mdi-magnify"
                         variant="outlined"
@@ -35,18 +35,20 @@
                         <v-col>
                             <v-data-table-server
                                 v-model:items-per-page="
-                                    SettingRepository.itemsPerPage
+                                    MoneyAccountRepository.itemsPerPage
                                 "
                                 :headers="headers"
-                                :items-length="SettingRepository.totalItems"
-                                :items="SettingRepository.currencies"
-                                :loading="SettingRepository.loading"
-                                :search="SettingRepository.ServiceSearch"
+                                :items-length="
+                                    MoneyAccountRepository.totalItems
+                                "
+                                :items="MoneyAccountRepository.accounts"
+                                :loading="MoneyAccountRepository.loading"
+                                :search="MoneyAccountRepository.ServiceSearch"
                                 item-value="id"
                                 @update:options="
-                                    SettingRepository.FetchCurrensiesData
+                                    MoneyAccountRepository.FetchAccountsData
                                 "
-                                :item-key="SettingRepository.currencies"
+                                :item-key="MoneyAccountRepository.accounts"
                                 itemKey="id"
                                 hover
                             >
@@ -98,35 +100,34 @@
 </template>
 
 <script setup>
-import { useSettingRepository } from "../../store/SettingRepository";
+import { useMoneyAccountRepository } from "../../store/MoneyAccountRepository ";
 import Create from "./Create.vue";
 import Update from "./Update.vue";
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
 import CreateButton from "../../Component/UI/CreateButton.vue";
-let SettingRepository = useSettingRepository();
+let MoneyAccountRepository = useMoneyAccountRepository();
 
 const headers = [
-    { title: "CURRENCY", key: "name", sortable: false },
-    { title: "RATE", key: "rate", sortable: false },
-    { title: "CODE", key: "code", sortable: false },
-    { title: "SYMBOL", key: "symbol", sortable: false },
+    { title: "MONEY ACCOUNT", key: "name", sortable: false },
+    { title: "AMOUNT", key: "price", sortable: false },
+
     { title: "Action", key: "actions", sortable: false, align: "end" },
 ];
 
 const createPopUp = () => {
-    SettingRepository.createDailog = true;
+    MoneyAccountRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    SettingRepository.DeleteCurrency(id);
+    MoneyAccountRepository.DeleteCurrency(id);
 };
 const editItem = (id) => {
-    SettingRepository.currency = {};
-    if (Object.keys(SettingRepository.currency).length === 0) {
-        SettingRepository.FetchCurrencyData(id)
+    MoneyAccountRepository.currency = {};
+    if (Object.keys(MoneyAccountRepository.currency).length === 0) {
+        MoneyAccountRepository.FetchCurrencyData(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
-                SettingRepository.updateDailog = true;
+                MoneyAccountRepository.updateDailog = true;
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
