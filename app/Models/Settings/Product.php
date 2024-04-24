@@ -4,6 +4,7 @@ namespace App\Models\Settings;
 
 use App\Models\Sales\Sale;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ProductManagements\Produce;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -64,6 +65,11 @@ class Product extends Model
     public function sales()
     {
         return $this->belongsToMany(Sale::class, 'sale_details')->withPivot(['quantity', 'unit_cost'])->withTimestamps();
+    }
+
+    public function produces()
+    {
+        return $this->belongsToMany(Produce::class, 'produce_details')->withPivot('quantity')->withTimestamps();
     }
 }
 

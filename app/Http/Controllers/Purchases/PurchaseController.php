@@ -99,6 +99,7 @@ class PurchaseController extends Controller
             foreach ($purchaseDetails as $purchaseDetail) {
                 $purchaseDetail['material_id'] = $purchaseDetail['materialId'];
                 $purchaseDetail['unit_cost'] = $purchaseDetail['unitCost'];
+                
                 $syncData[$purchaseDetail['material_id']] = [
                     'quantity' => $purchaseDetail['quantity'],
                     'unit_cost' => $purchaseDetail['unit_cost'],

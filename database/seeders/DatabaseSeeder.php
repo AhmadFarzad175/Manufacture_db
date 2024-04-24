@@ -29,18 +29,24 @@ use App\Models\Settings\ExpenseProduct;
 use App\Models\Expenses\BillableExpense;
 use App\Models\Expenses\BillablePayment;
 use App\Models\Expenses\BillableProduct;
-use App\Models\Finances\ExpensePaymentReceived;
-use App\Models\Finances\ExpensePaymentSent;
+use App\Models\Finances\LoanPaymentSent;
 use App\Models\Purchases\PurchaseDetail;
 use App\Models\Settings\AccountTransfer;
 use App\Models\Settings\ExpenseCategory;
+use App\Models\Finances\OwnerPaymentSent;
 use App\Models\Purchases\PurchaseExpense;
 use App\Models\Purchases\PurchasePayment;
 use App\Models\Settings\MaterialCategory;
 use App\Models\Settings\WarehouseProduct;
 use App\Models\ProductManagements\Consume;
+use App\Models\ProductManagements\Produce;
 use App\Models\Settings\WarehouseMaterial;
+use App\Models\Finances\ExpensePaymentSent;
+use App\Models\Finances\LoanPaymentReceived;
+use App\Models\Finances\OwnerPaymentReceived;
+use App\Models\Finances\ExpensePaymentReceived;
 use App\Models\ProductManagements\ConsumeDetails;
+use App\Models\ProductManagements\ProduceDetails;
 
 class DatabaseSeeder extends Seeder
 {
@@ -65,7 +71,6 @@ class DatabaseSeeder extends Seeder
             'logo' => 'setting_logos//g9Jn7KFsWVQl1GkN0zo8y50JzWc4iNuSLR1wp5YT.png', // Provide a default logo path
             'address' => 'Your Company Address',
         ]);
-        // $this->call(SystemSettingsTableSeeder::class);
         Currency::factory(10)->create();
         Account::factory(10)->create();
         AccountTransfer::factory(10)->create();
@@ -96,6 +101,9 @@ class DatabaseSeeder extends Seeder
         Consume::factory(10)->create();
         ConsumeDetails::factory(10)->create();
 
+        Produce::factory(10)->create();
+        ProduceDetails::factory(10)->create();
+
         WarehouseProduct::factory(10)->create();
         WarehouseMaterial::factory(10)->create();
 
@@ -113,5 +121,9 @@ class DatabaseSeeder extends Seeder
 
         ExpensePaymentSent::factory(10)->create();
         ExpensePaymentReceived::factory(10)->create();
+        LoanPaymentSent::factory(10)->create();
+        LoanPaymentReceived::factory(10)->create();
+        OwnerPaymentSent::factory(10)->create();
+        OwnerPaymentReceived::factory(10)->create();
     }
 }
