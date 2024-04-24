@@ -10,6 +10,8 @@ export let useMoneyAccountRepository = defineStore("MoneyAccountRepository", {
         return {
             accounts: reactive([]),
             account: reactive([]),
+            currency: reactive([]),
+            symbol: ref(""),
 
             isLoading: false,
             error: null,
@@ -29,6 +31,12 @@ export let useMoneyAccountRepository = defineStore("MoneyAccountRepository", {
         };
     },
     actions: {
+        GetCurrency(currency, id) {
+            const currArr = currency.filter((curr) => curr.id == id);
+            this.symbol = currArr[0].symbol;
+            console.log(currArr[0].symbol);
+        },
+
         async FetchAccountsData({ page, itemsPerPage }) {
             this.loading = true;
             setContentType("application/json");
@@ -42,50 +50,66 @@ export let useMoneyAccountRepository = defineStore("MoneyAccountRepository", {
             this.loading = false;
         },
 
-        async CreateAccounts(formData) {
-            console.log(formData);
-            // Adding a custom header to the Axios request
+        async GetAccounts() {
+            this.loading = true;
             setContentType("application/json");
 
-            const config = {
-                method: "POST",
-                url: "/accounts",
-                data: formData,
-            };
-
-            // Using Axios to make a GET request with async/await and custom headers
-            const response = await axios(config);
-            // toast.success("Customer Succesfully Created", {
-            //     autoClose: 1000,
-            // });
-            this.createDailog = false;
-            this.FetchAccountsData({
-                page: this.page,
-                itemsPerPage: this.itemsPerPage,
-            });
+            const response = await axios.get(`/currencyAccounts`);
+            this.currency = response.data.data;
+            console.log(response.data.data, "man");
+            this.loading = false;
         },
-        async DeleteCurrency(id) {
+        async CreateAccount(formData) {
+            console.log(formData);
+
+            try {
+                // Assuming setContentType and axios are defined somewhere
+                setContentType("application/json");
+
+                const config = {
+                    method: "POST",
+                    url: "/accounts",
+                    data: formData,
+                };
+
+                const response = await axios(config);
+                console.log("Account created successfully:", response.data);
+
+                // Close dialog after successful creation
+                this.createDailog = false;
+
+                // Fetch updated account data
+                this.FetchAccountsData({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (error) {
+                console.error("Error creating account:", error);
+                // Handle error here (e.g., show error message to the user)
+            }
+        },
+        async DeleteAccount(id) {
             const config = {
                 method: "DELETE",
-                url: "/currencies/" + id,
+                url: "/accounts/" + id,
             };
 
             const response = await axios(config);
             // toast.success("Customer Succesfully Deleted", {
             //     autoClose: 1000,
             // });
-            this.FetchCurrensiesData({
+            this.FetchAccountsData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });
         },
         async FetchCurrencyData(id) {
             setContentType("application/json");
-            const response = await axios.get(`/currencies/${id}`);
+            const response = await axios.get(`/accounts/${id}`);
 
             this.currency = response.data.data; // Assign the fetched data directly to this.people
         },
-        async UpdateCurrency(id, data) {
+        async UpdateAccount(id, data) {
             console.log(data);
 
             // Adding a custom header to the Axios request
@@ -93,7 +117,7 @@ export let useMoneyAccountRepository = defineStore("MoneyAccountRepository", {
 
             const config = {
                 method: "PUT",
-                url: "/currencies" + id,
+                url: "/accounts/" + id,
                 data: data,
             };
 
@@ -103,8 +127,8 @@ export let useMoneyAccountRepository = defineStore("MoneyAccountRepository", {
             //     autoClose: 1000,
             // });
 
-            this.updateDailog = false;
-            this.FetchCurrensiesData({
+            this.updateDialog = false;
+            this.FetchAccountsData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });

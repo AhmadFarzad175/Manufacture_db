@@ -29,6 +29,11 @@ export let useSettingRepository = defineStore("SettingRepository", {
         };
     },
     actions: {
+        GetCurrency(currency, id) {
+            const currArr = currency.filter((curr) => curr.id == id);
+            this.symbol = currArr[0].symbol;
+            console.log(currArr[0].symbol);
+        },
         async FetchCurrensiesData({ page, itemsPerPage }) {
             this.loading = true;
             setContentType("application/json");

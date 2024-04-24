@@ -119,12 +119,12 @@ const createPopUp = () => {
     MoneyAccountRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    MoneyAccountRepository.DeleteCurrency(id);
+    MoneyAccountRepository.DeleteAccount(id);
 };
 const editItem = (id) => {
     MoneyAccountRepository.currency = {};
     if (Object.keys(MoneyAccountRepository.currency).length === 0) {
-        MoneyAccountRepository.FetchCurrencyData(id)
+        MoneyAccountRepository.FetchAccountsData(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
                 MoneyAccountRepository.updateDailog = true;

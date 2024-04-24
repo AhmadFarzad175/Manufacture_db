@@ -2,34 +2,39 @@
 import { useMoneyAccountRepository } from "../../store/MoneyAccountRepository ";
 
 import { reactive, ref } from "vue";
+const formRef = ref(null);
 
 let MoneyAccountRepository = useMoneyAccountRepository();
+MoneyAccountRepository.GetAccounts();
 
+console.log(MoneyAccountRepository.currency.currency, "man of the much");
 const formData = reactive({
+    id: "",
     name: "",
-    currency_id: "",
+    currencyId: "",
     price: "",
+    // accounts: "",
 });
+const createAccount = async () => {
+    const isValid = formRef.value.validate();
+    if (isValid) {
+        MoneyAccountRepository.CreateAccount(formData);
+    }
+};
 
 const rules = {
     required: (value) => !!value || "Required.",
     counter: (value) => value.length >= 1 || "Min 1 characters",
-};
-
-// Example currency options
-
-const createAccount = async () => {
-    MoneyAccountRepository.CreateAccounts(formData);
 };
 </script>
 <template>
     <v-dialog
         transition="dialog-top-transition"
         v-model="MoneyAccountRepository.createDailog"
-        width="600px"
+        width="700px"
     >
         <template v-slot:default="{ isActive }">
-            <v-card class="px-3">
+            <v-card class="px-3 w-full">
                 <v-card-title class="px-6 py-4 d-flex justify-space-between">
                     <h2>Create</h2>
                     <v-btn variant="text" @click="isActive.value = false">
@@ -47,23 +52,40 @@ const createAccount = async () => {
                             class="pb-4"
                             fullWidth
                         ></v-text-field>
-                        <v-select
-                            v-model="formData.currency_id"
-                            :items="currencyOptions"
-                            label="Currency*"
-                            :rules="[rules.required]"
-                            class="pb-4"
-                        ></v-select>
-                        <div class="d-flex align-center pb-4">
+
+                        <div class="d-flex align-center pb-4 gap-4">
+                            <v-autocomplete
+                                v-model="formData.currencyId"
+                                @update:modelValue="
+                                    MoneyAccountRepository.GetCurrency(
+                                        MoneyAccountRepository.currency
+                                            .currency,
+                                        formData.currencyId
+                                    )
+                                "
+                                :items="
+                                    MoneyAccountRepository.currency.currency
+                                "
+                                label="Currency*"
+                                :rules="[rules.required]"
+                                :return-object="false"
+                                variant="outlined"
+                                item-title="symbol"
+                                item-value="id"
+                            ></v-autocomplete>
                             <v-text-field
                                 v-model="formData.price"
                                 variant="outlined"
                                 label="Price*"
                                 :rules="[rules.required, rules.counter]"
-                            ></v-text-field
-                            ><span class="mb-5 bg-slate-100 p-4 rounded-md">{{
-                                formData.currency
-                            }}</span>
+                                class="relative"
+                            >
+                                <span
+                                    class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
+                                >
+                                    {{ MoneyAccountRepository.symbol }}
+                                </span>
+                            </v-text-field>
                         </div>
                     </v-form>
                 </v-card-text>

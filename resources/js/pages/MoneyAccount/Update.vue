@@ -10,7 +10,7 @@ const rules = {
     counter: (value) => value.length >= 1 || "Min 1 characters",
 };
 // functions
-async function updateCurrency() {
+async function updateAccount() {
     formRef.value.validate().then((validate) => {
         if (validate.valid) {
             // MoneyAccountRepository.UpdateCurrency(
@@ -18,13 +18,12 @@ async function updateCurrency() {
             // MoneyAccountRepository.currency
             // );
             const UpdateData = reactive({
-                name: MoneyAccountRepository.currency.name,
-                code: MoneyAccountRepository.currency.code,
-                rate: MoneyAccountRepository.currency.rate,
-                symbol: MoneyAccountRepository.currency.symbol,
+                name: MoneyAccountRepository.account.name,
+                currency: MoneyAccountRepository.account.currency,
+                price: MoneyAccountRepository.account.currency,
             });
-            MoneyAccountRepository.UpdateCurrency(
-                MoneyAccountRepository.currency.id,
+            MoneyAccountRepository.UpdateAccount(
+                MoneyAccountRepository.account.id,
                 // MoneyAccountRepository.currency.name,
                 // MoneyAccountRepository.currency.rate,
                 // MoneyAccountRepository.currency.symbl,
@@ -38,7 +37,7 @@ async function updateCurrency() {
     <v-dialog
         v-model="MoneyAccountRepository.updateDailog"
         transition="dialog-top-transition"
-        width="600px"
+        width="700px"
     >
         <template v-slot:default>
             <v-card class="px-3">
@@ -52,42 +51,48 @@ async function updateCurrency() {
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
-                    <v-form ref="formRef" class="d-flex gap-4">
-                        <div class="w-1/2">
+                    <v-form ref="formRef" class="d-flex gap-4 flex-col">
+                        <div class="w-full">
                             <v-text-field
-                                v-model="MoneyAccountRepository.currency.code"
+                                v-model="MoneyAccountRepository.currency.name"
                                 variant="outlined"
-                                label="CODE"
-                                :rules="[rules.required, rules.counter]"
-                                class="pb-4"
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="MoneyAccountRepository.currency.symbol"
-                                variant="outlined"
-                                label="SYMBOL"
+                                label="Name*"
                                 :rules="[rules.required, rules.counter]"
                                 class="pb-4"
                             ></v-text-field>
                         </div>
-                        <div class="w-1/2">
-                            <v-text-field
-                                v-model="MoneyAccountRepository.currency.name"
+                        <div class="gap-6 w-full d-flex">
+                            <v-autocomplete
+                                class="w-1/2"
+                                v-model="
+                                    MoneyAccountRepository.currency.currency
+                                "
+                                label="Currency*"
+                                :rules="[rules.required]"
+                                :return-object="false"
                                 variant="outlined"
-                                label="Name"
+                                item-title="symbol"
+                                item-value="id"
+                            ></v-autocomplete>
+
+                            <v-text-field
+                                v-model="MoneyAccountRepository.currency.price"
+                                variant="outlined"
+                                label="Price*"
                                 :rules="[rules.required, rules.counter]"
-                                class="pb-4"
-                            ></v-text-field>
-                            <v-text-field
-                                v-model="MoneyAccountRepository.currency.rate"
-                                variant="outlined"
-                                label="Rate"
-                                class="pb-4"
-                            ></v-text-field>
+                                class="relative w-1/2"
+                            >
+                                <span
+                                    class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
+                                >
+                                    {{ MoneyAccountRepository.symbol }}
+                                </span>
+                            </v-text-field>
                         </div>
                     </v-form>
                 </v-card-text>
                 <div class="justify-start pl-6 pb-6">
-                    <v-btn color="light-blue-darken-1" @click="updateCurrency"
+                    <v-btn color="light-blue-darken-1" @click="updateAccount"
                         >Update</v-btn
                     >
                 </div>
