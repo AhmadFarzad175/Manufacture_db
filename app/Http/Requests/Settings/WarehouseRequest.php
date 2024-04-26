@@ -25,7 +25,7 @@ class WarehouseRequest extends FormRequest
     {
         $rules = [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:192|unique:warehouses',
+            'email' => 'required|string|email|max:192',
             'phone' => 'required|string|max:15',
             'city' => 'required|string|max:255',
             'country' => 'required|string|max:255',

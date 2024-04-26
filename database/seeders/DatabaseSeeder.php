@@ -20,6 +20,7 @@ use App\Models\Sales\SaleExpense;
 use App\Models\Sales\SalePayment;
 use App\Models\Settings\Currency;
 use App\Models\Settings\Material;
+use App\Models\Settings\Transfer;
 use App\Models\Peoples\LoanPeople;
 use App\Models\Purchases\Purchase;
 use App\Models\Settings\Warehouse;
@@ -33,6 +34,7 @@ use App\Models\Finances\LoanPaymentSent;
 use App\Models\Purchases\PurchaseDetail;
 use App\Models\Settings\AccountTransfer;
 use App\Models\Settings\ExpenseCategory;
+use App\Models\Settings\TransferDetails;
 use App\Models\Finances\OwnerPaymentSent;
 use App\Models\Purchases\PurchaseExpense;
 use App\Models\Purchases\PurchasePayment;
@@ -125,5 +127,8 @@ class DatabaseSeeder extends Seeder
         LoanPaymentReceived::factory(10)->create();
         OwnerPaymentSent::factory(10)->create();
         OwnerPaymentReceived::factory(10)->create();
+
+        Transfer::factory(10)->create();
+        TransferDetails::factory(10)->create();
     }
 }

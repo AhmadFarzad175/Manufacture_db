@@ -17,6 +17,7 @@ use App\Http\Controllers\Sales\SaleExpenseController;
 use App\Http\Controllers\Sales\SalePaymentController;
 use App\Http\Controllers\Settings\CurrencyController;
 use App\Http\Controllers\Settings\MaterialController;
+use App\Http\Controllers\Settings\TransferController;
 use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Settings\WarehouseController;
 use App\Http\Controllers\Peoples\ExpensePeopleController;
@@ -63,6 +64,9 @@ Route::post('currenciesBulkDelete', [CurrencyController::class, 'bulkDelete']);
 
 Route::apiResource('/warehouses', WarehouseController::class);
 Route::post('warehousesBulkDelete', [WarehouseController::class, 'bulkDelete']);
+
+Route::apiResource('/transfers', TransferController::class);
+
 
 Route::apiResource('/accounts', AccountController::class);
 Route::post('accountsBulkDelete', [AccountController::class, 'bulkDelete']);
