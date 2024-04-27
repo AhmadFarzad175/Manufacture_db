@@ -57,15 +57,12 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-<<<<<<< HEAD
-        $this->call(SystemSettingsTableSeeder::class);
         Currency::factory(5)->create();
         Account::factory(50)->create();
         AccountTransfer::factory(5)->create();
         Warehouse::factory(10)->create();
 
-=======
->>>>>>> 1b65e075ec44ba7adeedd9a4eb713aa099f2f526
+
         User::factory(10)->create();
         SystemSetting::create([
             'companyName' => 'Your Company',
@@ -78,7 +75,7 @@ class DatabaseSeeder extends Seeder
         Currency::factory(10)->create();
         Account::factory(10)->create();
         AccountTransfer::factory(10)->create();
-        Warehouse::factory(10)->create();
+        Warehouse::factory(30)->create();
         MaterialCategory::factory(10)->create();
         Unit::factory(10)->create();
         Product::factory(10)->create();

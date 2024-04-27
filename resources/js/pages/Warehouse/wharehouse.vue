@@ -1,13 +1,13 @@
 <template>
-    <Update v-if="MoneyAccountRepository.updateDailog" />
-    <Create v-if="MoneyAccountRepository.createDailog" />
+    <Create v-if="SettingRepository.createDailog" />
+    <Update v-if="SettingRepository.updateDailog" />
     <div class="w-full">
-        <toolbar title="Setting-" subtitle="Money Account" />
+        <toolbar title="Setting-" subtitle="wharehouse" />
         <v-layout class="py-5">
             <v-row class="justify-space-between">
                 <v-col cols="12" sm="3">
                     <v-text-field
-                        v-model="MoneyAccountRepository.Search"
+                        v-model="SettingRepository.Search"
                         label="Search"
                         prepend-inner-icon="mdi-magnify"
                         variant="outlined"
@@ -35,20 +35,18 @@
                         <v-col>
                             <v-data-table-server
                                 v-model:items-per-page="
-                                    MoneyAccountRepository.itemsPerPage
+                                    SettingRepository.itemsPerPage
                                 "
                                 :headers="headers"
-                                :items-length="
-                                    MoneyAccountRepository.totalItems
-                                "
-                                :items="MoneyAccountRepository.accounts"
-                                :loading="MoneyAccountRepository.loading"
-                                :search="MoneyAccountRepository.ServiceSearch"
+                                :items-length="SettingRepository.totalItems"
+                                :items="SettingRepository.wharehouses"
+                                :loading="SettingRepository.loading"
+                                :search="SettingRepository.ServiceSearch"
                                 item-value="id"
                                 @update:options="
-                                    MoneyAccountRepository.FetchAccountsData
+                                    SettingRepository.FetchWharehousesData
                                 "
-                                :item-key="MoneyAccountRepository.accounts"
+                                :item-key="SettingRepository.wharehouses"
                                 itemKey="id"
                                 hover
                             >
@@ -100,40 +98,41 @@
 </template>
 
 <script setup>
-import { useMoneyAccountRepository } from "../../store/MoneyAccountRepository ";
+import { useSettingRepository } from "../../store/SettingRepository";
 import Create from "./Create.vue";
 import Update from "./Update.vue";
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
 import CreateButton from "../../Component/UI/CreateButton.vue";
-let MoneyAccountRepository = useMoneyAccountRepository();
+let SettingRepository = useSettingRepository();
 
 const headers = [
-    { title: "MONEY ACCOUNT", key: "name", sortable: false },
-    { title: "AMOUNT", key: "price", sortable: false },
-
+    { title: "WAREHOUSE", key: "name", sortable: false },
+    { title: "PHONE", key: "phone", sortable: false },
+    { title: "EMAIL", key: "email", sortable: false },
+    { title: "CITY", key: "city", sortable: false },
+    { title: "COUNTRY", key: "country", sortable: false },
     { title: "Action", key: "actions", sortable: false, align: "end" },
 ];
 
 const createPopUp = () => {
-    MoneyAccountRepository.createDailog = true;
+    SettingRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    MoneyAccountRepository.DeleteAccount(id);
+    SettingRepository.DeleteWharehouse(id);
 };
 const editItem = (id) => {
-    MoneyAccountRepository.wharehouse = {};
-    if (Object.keys(MoneyAccountRepository.account).length === 0) {
-        MoneyAccountRepository.FetchAccountData(id)
+    SettingRepository.wharehouse = {};
+    if (Object.keys(SettingRepository.wharehouse).length === 0) {
+        SettingRepository.FetchWharehousesData(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
-                MoneyAccountRepository.updateDailog = true;
+                SettingRepository.updateDailog = true;
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);
                 // Display  message
             });
     }
-    console.log("man of the mutch");
 };
 </script>

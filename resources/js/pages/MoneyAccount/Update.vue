@@ -3,68 +3,63 @@ import { useMoneyAccountRepository } from "../../store/MoneyAccountRepository ";
 import { reactive, ref } from "vue";
 let MoneyAccountRepository = useMoneyAccountRepository();
 const formRef = ref(null);
-
+const formData = reactive({
+    id: MoneyAccountRepository.account.id,
+    name: MoneyAccountRepository.account.name,
+    price: MoneyAccountRepository.account.price,
+    currencyId: MoneyAccountRepository.account.currencyId,
+});
 // this the validtaion rules
 const rules = {
     required: (value) => !!value || " Required.",
     counter: (value) => value.length >= 1 || "Min 1 characters",
 };
 // functions
-async function updateAccount() {
+async function updateaccount() {
     formRef.value.validate().then((validate) => {
         if (validate.valid) {
-            // MoneyAccountRepository.UpdateCurrency(
-            // MoneyAccountRepository.currency.id,
-            // MoneyAccountRepository.currency
-            // );
-            const UpdateData = reactive({
-                name: MoneyAccountRepository.account.name,
-                currency: MoneyAccountRepository.account.currency,
-                price: MoneyAccountRepository.account.currency,
-            });
-            MoneyAccountRepository.UpdateAccount(
-                MoneyAccountRepository.account.id,
-                // MoneyAccountRepository.currency.name,
-                // MoneyAccountRepository.currency.rate,
-                // MoneyAccountRepository.currency.symbl,
-                UpdateData
-            );
+            MoneyAccountRepository.UpdateAccount(formData.id, formData);
         }
     });
 }
 </script>
 <template>
     <v-dialog
-        v-model="MoneyAccountRepository.updateDailog"
         transition="dialog-top-transition"
+        v-model="MoneyAccountRepository.updateDailog"
         width="700px"
     >
-        <template v-slot:default>
-            <v-card class="px-3">
+        <template v-slot:default="{ isActive }">
+            <v-card class="px-3 w-full">
                 <v-card-title class="px-6 py-4 d-flex justify-space-between">
-                    <h2>Update</h2>
-                    <v-btn
-                        variant="text"
-                        @click="MoneyAccountRepository.updateDailog = false"
-                        ><v-icon> mdi-close </v-icon></v-btn
-                    >
+                    <h2>Create</h2>
+                    <v-btn variant="text" @click="isActive.value = false">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
-                    <v-form ref="formRef" class="d-flex gap-4 flex-col">
-                        <div class="w-full">
-                            <v-text-field
-                                v-model="MoneyAccountRepository.currency.name"
-                                variant="outlined"
-                                label="Name*"
-                                :rules="[rules.required, rules.counter]"
-                                class="pb-4"
-                            ></v-text-field>
-                        </div>
-                        <div class="gap-6 w-full d-flex">
+                    <v-form ref="formRef">
+                        <v-text-field
+                            v-model="formData.name"
+                            variant="outlined"
+                            label="Bank*"
+                            :rules="[rules.required]"
+                            class="pb-4"
+                            fullWidth
+                        ></v-text-field>
+
+                        <div class="d-flex align-center pb-4 gap-4">
                             <v-autocomplete
-                                class="w-1/2"
-                                v-model="
+                                v-model="formData.currencyId"
+                                @update:modelValue="
+                                    MoneyAccountRepository.GetCurrency(
+                                        MoneyAccountRepository.currency
+                                            .currencyId,
+                                        formData.currencyId
+                                    )
+                                "
+                                :items="
                                     MoneyAccountRepository.currency.currency
                                 "
                                 label="Currency*"
@@ -74,13 +69,12 @@ async function updateAccount() {
                                 item-title="symbol"
                                 item-value="id"
                             ></v-autocomplete>
-
                             <v-text-field
-                                v-model="MoneyAccountRepository.currency.price"
+                                v-model="formData.price"
                                 variant="outlined"
                                 label="Price*"
                                 :rules="[rules.required, rules.counter]"
-                                class="relative w-1/2"
+                                class="relative"
                             >
                                 <span
                                     class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
@@ -92,8 +86,8 @@ async function updateAccount() {
                     </v-form>
                 </v-card-text>
                 <div class="justify-start pl-6 pb-6">
-                    <v-btn color="light-blue-darken-1" @click="updateAccount"
-                        >Update</v-btn
+                    <v-btn color="light-blue-darken-1" @click="updateaccount"
+                        >Submit</v-btn
                     >
                 </div>
             </v-card>

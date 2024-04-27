@@ -16,8 +16,8 @@ export let useMoneyAccountRepository = defineStore("MoneyAccountRepository", {
             isLoading: false,
             error: null,
             loading: false,
-            createDailog: false,
-            updateDailog: false,
+            createDailog: ref(false),
+            updateDailog: ref(false),
             page: 1,
             itemsPerPage: 5,
             selectedItems: [],
@@ -103,11 +103,11 @@ export let useMoneyAccountRepository = defineStore("MoneyAccountRepository", {
                 itemsPerPage: this.itemsPerPage,
             });
         },
-        async FetchCurrencyData(id) {
+        async FetchAccountData(id) {
             setContentType("application/json");
             const response = await axios.get(`/accounts/${id}`);
 
-            this.currency = response.data.data; // Assign the fetched data directly to this.people
+            this.account = response.data.data; // Assign the fetched data directly to this.people
         },
         async UpdateAccount(id, data) {
             console.log(data);
@@ -127,7 +127,7 @@ export let useMoneyAccountRepository = defineStore("MoneyAccountRepository", {
             //     autoClose: 1000,
             // });
 
-            this.updateDialog = false;
+            this.updateDailog = false;
             this.FetchAccountsData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,

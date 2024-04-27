@@ -82,6 +82,17 @@
                             </router-link>
                         </template>
                     </v-list-group>
+                    <v-list-group value="Warehouse">
+                        <template v-slot:activator="{ props }">
+                            <router-link to="/wharehouse">
+                                <v-list-item
+                                    :append-icon="null"
+                                    v-bind="props"
+                                    title="Warehouse"
+                                ></v-list-item>
+                            </router-link>
+                        </template>
+                    </v-list-group>
                     <v-list-group value="Role Permission">
                         <template v-slot:activator="{ props }">
                             <v-list-item

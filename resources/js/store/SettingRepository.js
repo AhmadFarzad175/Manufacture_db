@@ -10,6 +10,8 @@ export let useSettingRepository = defineStore("SettingRepository", {
         return {
             currencies: reactive([]),
             currency: reactive([]),
+            wharehouse: reactive([]),
+            wharehouses: reactive([]),
 
             isLoading: false,
             error: null,
@@ -17,7 +19,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
             createDailog: false,
             updateDailog: false,
             page: 1,
-            itemsPerPage: 10,
+            itemsPerPage: 5,
             selectedItems: [],
             selectAll: false,
             showSelect: true,
@@ -108,6 +110,86 @@ export let useSettingRepository = defineStore("SettingRepository", {
 
             this.updateDailog = false;
             this.FetchCurrensiesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+
+        // WhareHouse
+        async FetchWharehousesData({ page, itemsPerPage }) {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(
+                `/warehouses?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
+            );
+            this.wharehouses = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async CreateWharehouse(formData) {
+            console.log(formData);
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "POST",
+                url: "/warehouses",
+                data: formData,
+            };
+
+            // Using Axios to make a GET request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Created", {
+            //     autoClose: 1000,
+            // });
+            this.createDailog = false;
+            this.FetchWharehousesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async DeleteWharehouse(id) {
+            const config = {
+                method: "DELETE",
+                url: "/warehouses/" + id,
+            };
+
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Deleted", {
+            //     autoClose: 1000,
+            // });
+            this.FetchWharehousesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async FetchWharehouseData(id) {
+            setContentType("application/json");
+            const response = await axios.get(`/warehouses/${id}`);
+
+            this.wharehouse = response.data.data; // Assign the fetched data directly to this.people
+        },
+        async UpdateWharehouse(id, data) {
+            console.log(data);
+
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "PUT",
+                url: "/warehouses/" + id,
+                data: data,
+            };
+
+            // Using Axios to make a post request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Updated", {
+            //     autoClose: 1000,
+            // });
+
+            this.updateDailog = false;
+            this.FetchWharehousesData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });
