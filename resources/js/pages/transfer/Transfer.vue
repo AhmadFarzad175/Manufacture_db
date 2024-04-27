@@ -107,11 +107,13 @@ import CreateButton from "../../Component/UI/CreateButton.vue";
 let SettingRepository = useSettingRepository();
 
 const headers = [
-    { title: "WAREHOUSE", key: "name", sortable: false },
-    { title: "PHONE", key: "phone", sortable: false },
-    { title: "EMAIL", key: "email", sortable: false },
-    { title: "CITY", key: "city", sortable: false },
-    { title: "COUNTRY", key: "country", sortable: false },
+    { title: "DATE", key: "name", sortable: false },
+    { title: "REFERENCE", key: "phone", sortable: false },
+    { title: "FROM WAREHOUSE", key: "email", sortable: false },
+    { title: "TO WAREHOUSE", key: "city", sortable: false },
+    { title: "ITEMS", key: "country", sortable: false },
+    { title: "GRAND TOTAL", key: "country", sortable: false },
+    { title: "STATUS", key: "country", sortable: false },
     { title: "Action", key: "actions", sortable: false, align: "end" },
 ];
 

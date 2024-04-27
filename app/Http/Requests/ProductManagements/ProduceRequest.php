@@ -1,13 +1,24 @@
 <?php
 
-namespace App\Http\Requests\Settings;
+namespace App\Http\Requests\ProductManagements;
 
 use App\Traits\UpdateRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 
-class WarehouseRequest extends FormRequest
+class ProduceRequest extends FormRequest
 {
     use UpdateRequestRules;
+
+    public function prepareForValidation()
+    {
+        return $this->merge([
+            'warehouse_id' => $this->input('warehouseId'),
+
+        ]);
+    }
+
+
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -24,12 +35,11 @@ class WarehouseRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:192',
-            'phone' => 'required|string|max:15',
-            'city' => 'required|string|max:255',
-            'country' => 'required|string|max:255',
-
+            'date' => 'required|date',
+            'warehouse_id' => 'required|exists:warehouses,id',
+            'details' => 'nullable|string',
+            'consumeDetails.*.productId' => 'required|exists:products,id',
+            'consumeDetails.*.quantity' => 'required',
         ];
 
         $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;

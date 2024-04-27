@@ -12,6 +12,8 @@ export let useSettingRepository = defineStore("SettingRepository", {
             currency: reactive([]),
             wharehouse: reactive([]),
             wharehouses: reactive([]),
+            transfer: reactive([]),
+            transfers: reactive([]),
 
             isLoading: false,
             error: null,
@@ -194,5 +196,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
                 itemsPerPage: this.itemsPerPage,
             });
         },
+
+        // Transfer
     },
 });

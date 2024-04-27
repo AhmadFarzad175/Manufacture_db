@@ -3,13 +3,13 @@
 namespace App\Models\Finances;
 
 use App\Models\Peoples\User;
+use App\Models\Peoples\Owner;
 use App\Models\Settings\Account;
-use App\Models\Peoples\ExpensePeople;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class LoanPaymentReceived extends Model
+class OwnerPaymentReceived extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -17,7 +17,7 @@ class LoanPaymentReceived extends Model
         'date',
         'reference',
         'account_id',
-        'loan_people_id',
+        'owner_id',
         'user_id',
         'amount',
         'details'
@@ -38,7 +38,7 @@ class LoanPaymentReceived extends Model
                 ->orWhereHas('account', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 })
-                ->orWhereHas('loanPeople', function ($query) use ($search) {
+                ->orWhereHas('owner', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 })
                 ->orWhereHas('user', function ($query) use ($search) {
@@ -52,16 +52,16 @@ class LoanPaymentReceived extends Model
     {
         parent::boot();
 
-        static::creating(function ($loanPaymentSent) {
-            $loanPaymentSent->reference = 'EPR_' . (self::max('id') + 1);
+        static::creating(function ($ownerPaymentReceived) {
+            $ownerPaymentReceived->reference = 'OPR_' . (self::max('id') + 1);
         });
     }
 
 
 
-    public function expensePeople()
+    public function owner()
     {
-        return $this->belongsTo(ExpensePeople::class);
+        return $this->belongsTo(Owner::class);
     }
 
     public function account()

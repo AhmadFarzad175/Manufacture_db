@@ -1,8 +1,6 @@
 <?php
 
-use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\Settings\Warehouse;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AllController;
 use App\Http\Controllers\Sales\SaleController;
@@ -19,21 +17,27 @@ use App\Http\Controllers\Sales\SaleExpenseController;
 use App\Http\Controllers\Sales\SalePaymentController;
 use App\Http\Controllers\Settings\CurrencyController;
 use App\Http\Controllers\Settings\MaterialController;
+use App\Http\Controllers\Settings\TransferController;
 use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Settings\WarehouseController;
 use App\Http\Controllers\Peoples\ExpensePeopleController;
 use App\Http\Controllers\Settings\SystemSettingController;
-use App\Http\Controllers\Expenses\ExpensePaymentController;
 use App\Http\Controllers\Settings\ExpenseProductController;
 use App\Http\Controllers\Expenses\BillableExpenseController;
 use App\Http\Controllers\Expenses\BillablePaymentController;
+use App\Http\Controllers\Finances\LoanPaymentSentController;
 use App\Http\Controllers\Settings\AccountTransferController;
 use App\Http\Controllers\Settings\ExpenseCategoryController;
+use App\Http\Controllers\Finances\OwnerPaymentSentController;
 use App\Http\Controllers\Purchases\PurchaseExpenseController;
 use App\Http\Controllers\Purchases\PurchasePaymentController;
 use App\Http\Controllers\Settings\MaterialCategoryController;
 use App\Http\Controllers\ProductManagements\ConsumeController;
+use App\Http\Controllers\ProductManagements\ProduceController;
 use App\Http\Controllers\Finances\ExpensePaymentSentController;
+use App\Http\Controllers\Finances\LoanPaymentReceivedController;
+use App\Http\Controllers\Finances\OwnerPaymentReceivedController;
+use App\Http\Controllers\Finances\ExpensePaymentReceivedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,11 +61,10 @@ Route::post('/systemSettings/update/{systemSetting}', [SystemSettingController::
 
 Route::apiResource('/currencies', CurrencyController::class);
 Route::post('currenciesBulkDelete', [CurrencyController::class, 'bulkDelete']);
-Route::get('currencyAccounts',[AllController::class, 'currencyAccount'] );
+Route::post('currencyAccount',[AllController::class, 'currencyAccount'] );
 
 Route::apiResource('/warehouses', WarehouseController::class);
 Route::post('warehousesBulkDelete', [WarehouseController::class, 'bulkDelete']);
-
 
 Route::apiResource('/accounts', AccountController::class);
 Route::post('accountsBulkDelete', [AccountController::class, 'bulkDelete']);
@@ -102,6 +105,7 @@ Route::apiResource('/paymentReceiveds', PaymentReceivedController::class);
 
 #CONSUME
 Route::apiResource('/consumes', ConsumeController::class);
+Route::apiResource('/produces', ProduceController::class);
 
 
 #PURCHASE
@@ -118,4 +122,36 @@ Route::apiResource('/SalePayments', SalePaymentController::class);
 
 #Finance
 Route::apiResource('/expensePaymentSents', ExpensePaymentSentController::class);
+Route::apiResource('/expensePaymentReceiveds', ExpensePaymentReceivedController::class);
+
+Route::apiResource('/loanPaymentSents', LoanPaymentSentController::class);
+Route::apiResource('/loanPaymentReceiveds', LoanPaymentReceivedController::class);
+
+Route::apiResource('/ownerPaymentSents', OwnerPaymentSentController::class);
+Route::apiResource('/ownerPaymentReceiveds', OwnerPaymentReceivedController::class);
+
+
+
+
+// All Needed Routes
+Route::post('currencyAccounts',[AllController::class, 'currencyAccount'] );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

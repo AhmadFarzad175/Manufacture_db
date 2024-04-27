@@ -14,8 +14,8 @@ class AllController extends Controller
     public function currencyAccount()
     {   //all controller 
             $allData = [
-                'currency' => Currency::select('id', 'symbol')->get(),
-                'accounts' => Account::select('id', 'name')->get(),
+                'currencies' => Currency::select('id', 'symbol')->get(),
+                
             ];
     
             return response()->json(['data'=>$allData]);

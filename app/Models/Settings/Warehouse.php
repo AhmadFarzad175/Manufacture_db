@@ -42,4 +42,10 @@ class Warehouse extends Model
     {
         return $this->hasMany(Purchase::class);
     }
+
+    public function transfers()
+    {
+        return $this->hasMany(Transfer::class);
+    }
+
 }

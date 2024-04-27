@@ -16,18 +16,8 @@ class SaleExpenseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
-        $perPage = $request->input('perPage');
-        $search = $request->input('search');
-
-        // Eager load relationships and apply search
-        $saleExpenses = SaleExpense::with(['account', 'expenseCategory', 'user'])->search($search);
-
-        $saleExpenses =$saleExpenses->latest()->paginate($perPage);
-
-        return SaleExpenseResource::collection($saleExpenses);
-    }
+    
+    
 
     /**
      * Store a newly created resource in storage.

@@ -52,8 +52,8 @@ class LoanPaymentSent extends Model
     {
         parent::boot();
 
-        static::creating(function ($expensePaymentSent) {
-            $expensePaymentSent->reference = 'LNP_' . (self::max('id') + 1);
+        static::creating(function ($loanPaymentSent) {
+            $loanPaymentSent->reference = 'LNP_' . (self::max('id') + 1);
         });
     }
 

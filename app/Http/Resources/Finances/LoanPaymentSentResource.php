@@ -5,7 +5,7 @@ namespace App\Http\Resources\Finances;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ExpensePaymentReceivedResource extends JsonResource
+class LoanPaymentSentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,7 +18,7 @@ class ExpensePaymentReceivedResource extends JsonResource
             'id' => $this->id,
             'reference' => $this->reference,
             'date' => $this->date,
-            'received' => $this->amount,
+            'paid' => $this->amount,
             'details' => $this->details,
             'account' => [
                 'id' => $this->account->id,
@@ -29,8 +29,8 @@ class ExpensePaymentReceivedResource extends JsonResource
                 'name' => $this->user->name,
             ],
             'people' => [
-                'id' => $this->expense_people_id,
-                'name' => $this->expensePeople->name,
+                'id' => $this->loan_people_id,
+                'name' => $this->loanPeople->name,
             ]
         ];
     }

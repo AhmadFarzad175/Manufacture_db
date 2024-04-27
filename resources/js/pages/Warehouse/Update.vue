@@ -48,7 +48,7 @@ async function updateWharehouse() {
                             <v-text-field
                                 v-model="formData.name"
                                 variant="outlined"
-                                label="Name"
+                                label="NAME"
                                 :rules="[rules.required, rules.counter]"
                                 class="pb-4"
                             ></v-text-field>
@@ -64,20 +64,20 @@ async function updateWharehouse() {
                             <v-text-field
                                 v-model="formData.email"
                                 variant="outlined"
-                                label="Name"
+                                label="EMAIL"
                                 :rules="[rules.required, rules.counter]"
                                 class="pb-4"
                             ></v-text-field>
                             <v-text-field
                                 v-model="formData.city"
                                 variant="outlined"
-                                label="Rate"
+                                label="CITY"
                                 class="pb-4"
                             ></v-text-field>
                             <v-text-field
                                 v-model="formData.country"
                                 variant="outlined"
-                                label="Rate"
+                                label="COUNTRY"
                                 class="pb-4"
                             ></v-text-field>
                         </div>
