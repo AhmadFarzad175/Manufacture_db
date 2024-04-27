@@ -55,6 +55,6 @@ class TransferController extends Controller
      */
     public function destroy(Transfer $transfer)
     {
-        //
+        $transfer->delete();
     }
 }
