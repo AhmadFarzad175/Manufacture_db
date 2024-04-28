@@ -116,7 +116,7 @@
 
 <script setup>
 import { useSettingRepository } from "../../store/SettingRepository";
-// import Create from "./Create.vue";
+import Create from "./Create.vue";
 // import Update from "./Update.vue";
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";

@@ -54,7 +54,7 @@ export let useMoneyAccountRepository = defineStore("MoneyAccountRepository", {
             this.loading = true;
             setContentType("application/json");
 
-            const response = await axios.get(`account`);
+            const response = await axios.get(`/currency`);
             this.currency = response.data.data;
             console.log(response.data.data, "man");
             this.loading = false;

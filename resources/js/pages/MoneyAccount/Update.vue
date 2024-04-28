@@ -7,7 +7,7 @@ const formData = reactive({
     id: MoneyAccountRepository.account.id,
     name: MoneyAccountRepository.account.name,
     price: MoneyAccountRepository.account.price,
-    currencyId: MoneyAccountRepository.account.currencyId,
+    currencies: MoneyAccountRepository.account.currencies,
 });
 // this the validtaion rules
 const rules = {
@@ -51,16 +51,16 @@ async function updateaccount() {
 
                         <div class="d-flex align-center pb-4 gap-4">
                             <v-autocomplete
-                                v-model="formData.currencyId"
+                                v-model="formData.currency"
                                 @update:modelValue="
                                     MoneyAccountRepository.GetCurrency(
                                         MoneyAccountRepository.currency
-                                            .currencyId,
-                                        formData.currencyId
+                                            .currencies,
+                                        formData.currencies
                                     )
                                 "
                                 :items="
-                                    MoneyAccountRepository.currency.currency
+                                    MoneyAccountRepository.currency.currencies
                                 "
                                 label="Currency*"
                                 :rules="[rules.required]"
