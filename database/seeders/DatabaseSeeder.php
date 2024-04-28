@@ -65,13 +65,13 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
+        User::factory(10)->create();
         Currency::factory(5)->create();
         Account::factory(50)->create();
         AccountTransfer::factory(5)->create();
         Warehouse::factory(10)->create();
 
 
-        User::factory(10)->create();
         SystemSetting::create([
             'companyName' => 'Your Company',
             'email' => 'your@email.com',

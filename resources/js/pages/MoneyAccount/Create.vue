@@ -59,12 +59,12 @@ const rules = {
                                 @update:modelValue="
                                     MoneyAccountRepository.GetCurrency(
                                         MoneyAccountRepository.currency
-                                            .currency,
+                                            .currencyId,
                                         formData.currencyId
                                     )
                                 "
                                 :items="
-                                    MoneyAccountRepository.currency.currency
+                                    MoneyAccountRepository.currency.currencyid
                                 "
                                 label="Currency*"
                                 :rules="[rules.required]"

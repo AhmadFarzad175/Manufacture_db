@@ -122,11 +122,13 @@
                     </v-list-group>
                     <v-list-group value="Product Setup">
                         <template v-slot:activator="{ props }">
-                            <v-list-item
-                                :append-icon="null"
-                                v-bind="props"
-                                title="Product Setup"
-                            ></v-list-item>
+                            <router-link to="/product">
+                                <v-list-item
+                                    :append-icon="null"
+                                    v-bind="props"
+                                    title="Product Setup"
+                                ></v-list-item>
+                            </router-link>
                         </template>
                     </v-list-group>
                 </div>

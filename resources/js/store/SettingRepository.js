@@ -14,6 +14,8 @@ export let useSettingRepository = defineStore("SettingRepository", {
             wharehouses: reactive([]),
             transfer: reactive([]),
             transfers: reactive([]),
+            product: reactive([]),
+            products: reactive([]),
 
             isLoading: false,
             error: null,
@@ -197,6 +199,17 @@ export let useSettingRepository = defineStore("SettingRepository", {
             });
         },
 
-        // Transfer
+        // Products Setup
+        async FetchProductsData({ page, itemsPerPage }) {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(
+                `/products?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
+            );
+            this.products = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
     },
 });
