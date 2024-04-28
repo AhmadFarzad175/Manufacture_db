@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Transfer::class)->constrained();
             $table->integer('productMaterial_id');
-            $table->integer('type');    // 0:material    1:product
+            $table->boolean('type');    // 0:material    1:product
             $table->integer('quantity');
             $table->decimal('unit_cost', 20, 2);
             $table->timestamps();

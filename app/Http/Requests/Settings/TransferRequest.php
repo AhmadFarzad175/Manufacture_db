@@ -11,7 +11,7 @@ class TransferRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,16 @@ class TransferRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'date' => 'required|date',
+            'reference' => 'required|unique:transfers,reference',
+            'from_warehouse_id' => 'required|exists:warehouses,id',
+            'to_warehouse_id' => 'required|exists:warehouses,id',
+            'total' => 'required|numeric|min:0',
+            'status' => 'required|integer',
+            'shipping' => 'required|numeric|min:0',
+            'discount' => 'required|numeric|min:0',
+            'tax' => 'required|numeric|min:0',
+            'details' => 'nullable|string',
         ];
     }
 }

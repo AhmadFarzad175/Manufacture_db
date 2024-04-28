@@ -10,6 +10,14 @@ class TransferDetails extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'transfer_id',
+        'productMaterial_id',
+        'type',
+        'quantity',
+        'unit_cost'
+    ];
+
     public function transfer(){
         return $this->belongsTo(Transfer::class);
     }

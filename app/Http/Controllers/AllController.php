@@ -11,7 +11,7 @@ class AllController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function currencyAccount()
+    public function currency()
     {   //all controller 
             $allData = [
                 'currencies' => Currency::select('id', 'symbol')->get(),

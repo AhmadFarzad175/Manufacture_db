@@ -25,6 +25,22 @@ class Transfer extends Model
     ];
 
 
+    // Accessor for converting status to human-readable string
+    public function getStatusAttribute($value)
+    {
+        switch ($value) {
+            case 0:
+                return 'pending';
+            case 1:
+                return 'Completed';
+            case 2:
+                return 'sent';
+            default:
+                return 'Unknown';
+        }
+    }
+
+
     protected static function boot()
     {
         parent::boot();
