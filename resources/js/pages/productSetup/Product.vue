@@ -139,12 +139,12 @@ const createPopUp = () => {
     SettingRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    SettingRepository.DeleteWharehouse(id);
+    SettingRepository.DeleteProduct(id);
 };
 const editItem = (id) => {
     SettingRepository.product = {};
     if (Object.keys(SettingRepository.product).length === 0) {
-        SettingRepository.FetchWharehouseData(id)
+        SettingRepository.FetchProductsData(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
                 SettingRepository.updateDailog = true;

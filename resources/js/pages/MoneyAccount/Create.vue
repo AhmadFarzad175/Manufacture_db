@@ -10,7 +10,7 @@ MoneyAccountRepository.GetAccounts();
 const formData = reactive({
     id: "",
     name: "",
-    currencies: "",
+    currency: "",
     price: "",
     // accounts: "",
 });
@@ -54,12 +54,12 @@ const rules = {
 
                         <div class="d-flex align-center pb-4 gap-4">
                             <v-autocomplete
-                                v-model="formData.currencies"
+                                v-model="formData.currency"
                                 @update:modelValue="
                                     MoneyAccountRepository.GetCurrency(
                                         MoneyAccountRepository.currency
                                             .currencies,
-                                        formData.currencies
+                                        formData.currency
                                     )
                                 "
                                 :items="

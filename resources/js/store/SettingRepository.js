@@ -211,5 +211,42 @@ export let useSettingRepository = defineStore("SettingRepository", {
             this.totalItems = response.data.meta.total;
             this.loading = false;
         },
+        async CreateProuduct(formData) {
+            console.log(formData);
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "POST",
+                url: "/products",
+                data: formData,
+            };
+
+            // Using Axios to make a GET request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Created", {
+            //     autoClose: 1000,
+            // });
+            this.createDailog = false;
+            this.FetchProductsData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async DeleteProduct(id) {
+            const config = {
+                method: "DELETE",
+                url: "/products/" + id,
+            };
+
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Deleted", {
+            //     autoClose: 1000,
+            // });
+            this.FetchProductsData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
     },
 });
