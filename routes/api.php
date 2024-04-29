@@ -62,8 +62,6 @@ Route::post('/systemSettings/update/{systemSetting}', [SystemSettingController::
 Route::apiResource('/currencies', CurrencyController::class);
 Route::post('currenciesBulkDelete', [CurrencyController::class, 'bulkDelete']);
 
-Route::get('/currency', [AllController::class, 'currency']);
-
 Route::apiResource('/warehouses', WarehouseController::class);
 Route::post('warehousesBulkDelete', [WarehouseController::class, 'bulkDelete']);
 
@@ -136,9 +134,9 @@ Route::apiResource('/ownerPaymentReceiveds', OwnerPaymentReceivedController::cla
 
 
 
-
 // All Needed Routes
-Route::post('currencyAccounts',[AllController::class, 'currencyAccount'] );
+Route::get('/currency', [AllController::class, 'currency']);
+Route::get('unitCategories',[AllController::class, 'unitCategory'] );
 
 
 
