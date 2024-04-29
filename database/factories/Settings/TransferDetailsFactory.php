@@ -19,7 +19,7 @@ class TransferDetailsFactory extends Factory
         return [
             'transfer_id' => rand(1, 10),
             'productMaterial_id' => rand(1, 10),
-            'type' => rand(1, 2),
+            'type' => $this->faker->boolean(),
             'quantity' => rand(1,50),
             'unit_cost' => rand(100,10000),
         ];

@@ -32,6 +32,9 @@ class TransferRequest extends FormRequest
             'discount' => 'required|numeric|min:0',
             'tax' => 'required|numeric|min:0',
             'details' => 'nullable|string',
+            'transferDetails.*.transferId' => 'required|exists:transfers,id',
+            'transferDetails.*.productMaterial_id' => 'required|integer',
+            'transferDetails.*.type' => 'required|numeric|min:0',
         ];
     }
 }

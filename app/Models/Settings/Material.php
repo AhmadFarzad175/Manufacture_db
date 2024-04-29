@@ -21,7 +21,7 @@ class Material extends Model
         'cost',
         'stock',
         'stock_alert',
-        'description',
+        'details',
     ];
 
     public function scopeSearch($query, $search)

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->decimal('cost', 20, 2);
             $table->integer('stock')->default(0);
             $table->integer('stock_alert');
-            $table->text('description')->nullable();
+            $table->text('details')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
