@@ -26,8 +26,8 @@ class AllController extends Controller
     public function unitCategory()
     {   //all controller 
             $allData = [
-                'units' => Unit::select('id', 'name')->get(),
-                'categories' => MaterialCategory::select('id', 'name')->get(),
+                'unit' => Unit::select('id', 'name')->get(),
+                'materialCategoryId' => MaterialCategory::select('id', 'name')->get(),
             ];
     
             return response()->json(['data'=>$allData]);
