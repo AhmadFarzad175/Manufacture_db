@@ -4,7 +4,7 @@ namespace App\Http\Requests\Settings;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreMaterialRequest extends FormRequest
+class MaterialRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -38,7 +38,7 @@ class StoreMaterialRequest extends FormRequest
             'material_category_id' => 'required',
             'unit_id' => 'required',
             'cost' => 'required|min:0',
-            'stock' => 'nullable|min:0',
+            'stock' => 'integer|min:0',
             'stock_alert' => 'nullable|min:0',
             'details' => 'nullable|string',
         ];
