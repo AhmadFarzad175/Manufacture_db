@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Settings\Unit;
 use App\Models\Settings\Account;
 use App\Models\Settings\Currency;
+use App\Models\Settings\MaterialCategory;
 
 class AllController extends Controller
 {
@@ -16,6 +18,16 @@ class AllController extends Controller
             $allData = [
                 'currencies' => Currency::select('id', 'symbol')->get(),
                 
+            ];
+    
+            return response()->json(['data'=>$allData]);
+    }
+
+    public function unitCategory()
+    {   //all controller 
+            $allData = [
+                'units' => Unit::select('id', 'name')->get(),
+                'categories' => MaterialCategory::select('id', 'name')->get(),
             ];
     
             return response()->json(['data'=>$allData]);

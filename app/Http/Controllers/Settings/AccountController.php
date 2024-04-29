@@ -20,7 +20,7 @@ class AccountController extends Controller
         $search = $request->input('search');
 
         // Eager load relationships and apply search
-        $accounts = Account::with('currency')->search($search);
+        $accounts = Account::query()->search($search);
 
         $accounts = $perPage ? $accounts->latest()->paginate($perPage) : $accounts->latest()->get();
 
