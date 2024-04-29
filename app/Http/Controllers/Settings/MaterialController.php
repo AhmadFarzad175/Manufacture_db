@@ -33,7 +33,7 @@ class MaterialController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMaterialRequest $request)
+    public function store(MaterialRequest $request)
     {
         $validated = $request->validated();
 
