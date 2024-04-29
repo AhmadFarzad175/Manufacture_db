@@ -17,7 +17,7 @@ class UpdateMaterialRequest extends FormRequest
     public function prepareForValidation()
     {
         return $this->merge([
-            'material_category_id' => $this->input('materialCategoryId'),
+            'material_category_id' => $this->input('materialCategory'),
             'unit_id' => $this->input('unitId'),
             'stock_alert' => $this->input('stockAlert'),
 
