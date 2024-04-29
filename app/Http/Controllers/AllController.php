@@ -27,7 +27,7 @@ class AllController extends Controller
     {   //all controller 
             $allData = [
                 'unit' => Unit::select('id', 'name')->get(),
-                'materialCategoryId' => MaterialCategory::select('id', 'name')->get(),
+                'materialCategory' => MaterialCategory::select('id', 'name')->get(),
             ];
     
             return response()->json(['data'=>$allData]);
