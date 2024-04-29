@@ -21,7 +21,7 @@ class TransferFactory extends Factory
             'from_warehouse_id' => rand(1, 10),
             'to_warehouse_id' => rand(1, 10),
             'total' => rand(10000, 200000),
-            'status' => rand(0,4),
+            'status' => rand(0,2),
             'shipping' => rand(10, 100),
             'discount' => rand(10, 100),
             'tax' => rand(10, 30),
