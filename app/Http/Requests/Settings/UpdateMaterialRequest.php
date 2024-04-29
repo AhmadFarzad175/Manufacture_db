@@ -40,7 +40,7 @@ class UpdateMaterialRequest extends FormRequest
             'cost' => 'sometimes|min:0',
             'stock' => 'nullable|min:0',
             'stock_alert' => 'nullable|min:0',
-            'description' => 'nullable|string',
+            'details' => 'nullable|string',
         ];
     }
 }
