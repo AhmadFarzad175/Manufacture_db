@@ -33,28 +33,32 @@
         <v-list v-model:opened="open">
             <v-list-group>
                 <template v-slot:activator="{ props }">
-                    <v-list-item
-                        class="hover:bg-green-500"
-                        rounded="shaped"
-                        v-bind="props"
-                        :append-icon="null"
-                        title="Settings"
-                        value="settings"
-                    ></v-list-item>
+                    <router-link to="/product">
+                        <v-list-item
+                            class="hover:bg-green-500"
+                            rounded="shaped"
+                            v-bind="props"
+                            :append-icon="null"
+                            title="Settings"
+                            value="settings"
+                        ></v-list-item>
+                    </router-link>
                 </template>
             </v-list-group>
         </v-list>
         <v-list v-model:opened="open">
             <v-list-group>
                 <template v-slot:activator="{ props }">
-                    <v-list-item
-                        class="hover:bg-green-500"
-                        rounded="shaped"
-                        v-bind="props"
-                        :append-icon="null"
-                        title="Settings"
-                        value="settings"
-                    ></v-list-item>
+                    <router-link to="/allUnits">
+                        <v-list-item
+                            class="hover:bg-green-500"
+                            rounded="shaped"
+                            v-bind="props"
+                            :append-icon="null"
+                            title="Unit"
+                            value="Unit"
+                        ></v-list-item>
+                    </router-link>
                 </template>
             </v-list-group>
         </v-list>

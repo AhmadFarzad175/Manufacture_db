@@ -5,7 +5,7 @@ import MoneyAccount from "./pages/MoneyAccount/MoneyAccount.vue";
 import Wharehouse from "./pages/Warehouse/wharehouse.vue";
 import Porduct from "./pages/productSetup/Product.vue";
 import productMenu from "./pages/productSetup/productMenu.vue";
-
+import AllUnits from "./pages/unit/AllUnits.vue";
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -15,6 +15,7 @@ const router = createRouter({
         { path: "/wharehouse", component: Wharehouse },
         { path: "/product", component: Porduct },
         { path: "/productMenu", component: productMenu },
+        { path: "/allUnits", component: AllUnits },
     ],
 });
 
