@@ -1,11 +1,11 @@
 <template>
     <Create v-if="SettingRepository.createDailog" />
-    <Update v-if="SettingRepository.updateDailog" />
+    <UpdateProduct v-if="SettingRepository.updateDailog" />
     <toolbar title="Setting-" subtitle="Product Setup" />
     <v-divider :thickness="5" class="border-opacity-25"></v-divider>
     <div class="w-full d-flex">
         <productMenu />
-        <div class="mt-9">
+        <div class="mt-9 w-full">
             <v-layout class="py-5">
                 <v-row class="justify-space-between">
                     <v-col cols="12" sm="3">
@@ -118,6 +118,7 @@
 import { useSettingRepository } from "../../store/SettingRepository";
 import Create from "./Create.vue";
 // import Update from "./Update.vue";
+import UpdateProduct from "./UpdateProduct.vue";
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
 import CreateButton from "../../Component/UI/CreateButton.vue";
@@ -127,10 +128,10 @@ let SettingRepository = useSettingRepository();
 const headers = [
     { title: "IMAGE", key: "image", sortable: false },
     { title: "PRODUCTS", key: "name", sortable: false },
-    { title: "CATEGORY", key: "material_category.name", sortable: false },
+    { title: "CATEGORY", key: "materialCategory.name", sortable: false },
     { title: "UNIT", key: "unit.name", sortable: false },
-    { title: "COST", key: "price", sortable: false },
-    { title: "STOCK ALERT", key: "stock", sortable: false },
+    { title: "COST", key: "cost", sortable: false },
+    { title: "STOCK ALERT", key: "stockAlert", sortable: false },
 
     { title: "Action", key: "actions", sortable: false, align: "end" },
 ];

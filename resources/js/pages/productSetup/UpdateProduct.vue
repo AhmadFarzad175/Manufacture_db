@@ -7,7 +7,7 @@
         <template v-slot:default="{ isActive }">
             <v-card class="px-3">
                 <v-card-title class="px-6 py-4 d-flex justify-space-between">
-                    <h2>Create</h2>
+                    <h2>Update</h2>
 
                     <v-btn variant="text" @click="isActive.value = false"
                         ><v-icon> mdi-close </v-icon></v-btn
@@ -46,7 +46,7 @@
                                 >
                                     <img
                                         v-if="!formData.image_url"
-                                        :src="SettingRepository.image_url"
+                                        src=""
                                         alt="Placeholder Image"
                                         class="w-full h-full font object-cover"
                                     />
@@ -69,20 +69,7 @@
                             <div class="w-50">
                                 <v-autocomplete
                                     type="category"
-                                    v-model="formData.materialCategory"
-                                    @create:modelValue="
-                                        SettingRepository.GetProducts(
-                                            SettingRepository.product
-                                                .materialCategory,
-                                            formData.materialCategory
-                                        )
-                                    "
-                                    :items="
-                                        SettingRepository.product
-                                            .materialCategory
-                                    "
-                                    item-title="name"
-                                    item-value="id"
+                                    v-model="formData.material_category"
                                     label="   Category *"
                                     variant="outlined"
                                     density="compact"
@@ -93,16 +80,7 @@
                             <div class="w-50">
                                 <v-autocomplete
                                     type="unit"
-                                    v-model="formData.unitId"
-                                    @create:modelValue="
-                                        SettingRepository.GetProducts(
-                                            SettingRepository.product.unit,
-                                            formData.unitId
-                                        )
-                                    "
-                                    :items="SettingRepository.product.unit"
-                                    item-title="name"
-                                    item-value="id"
+                                    v-model="formData.unit"
                                     label="  UNIT *"
                                     variant="outlined"
                                     density="compact"
@@ -142,31 +120,33 @@
                             <div class="w-full d-flex">
                                 <v-text-field
                                     type="email"
-                                    v-model="formData.cost"
+                                    v-model="formData.price"
                                     label="   COST*"
                                     variant="outlined"
                                     density="compact"
                                     class="pr-2 w-1/2"
                                     :rules="[rules.required, rules.email]"
                                 >
-                                    <!-- <span -->
-                                    <!-- class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600" -->
-                                    <!-- >kkkk -->
-                                    <!-- {{ MoneyAccountRepository.symbol }} -->
-                                    <!-- </span> -->
-                                </v-text-field>
+                                    <span
+                                        class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600"
+                                        >kkkk
+                                        <!-- {{ MoneyAccountRepository.symbol }} -->
+                                    </span></v-text-field
+                                >
                                 <v-text-field
-                                    v-model="formData.stockAlert"
+                                    v-model="formData.stock_alert"
                                     :counter="10"
                                     label="   Stock Alert   * "
                                     variant="outlined"
                                     density="compact"
                                     class="w-1/2"
+                                    :rules="[rules.required, rules.name]"
                                 ></v-text-field>
                             </div>
                         </div>
                         <v-textarea
-                            v-model="formData.details"
+                            v-model="formData.detail"
+                            :counter="10"
                             label="   Details   * "
                             variant="outlined"
                             density="compact"
@@ -175,7 +155,7 @@
                     </v-form>
                 </v-card-text>
                 <div class="d-flex flex-row mb-6 mx-6">
-                    <v-btn color="primary" @click="createProduct">
+                    <v-btn color="primary" @click="updateProduct">
                         Submit</v-btn
                     >
                 </div>
@@ -187,35 +167,19 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { useSettingRepository } from "@/store/SettingRepository";
-const SettingRepository = useSettingRepository();
-SettingRepository.GetUnit();
+let SettingRepository = useSettingRepository();
 
 const formData = reactive({
-    image: null,
-    name: "",
-    code: "",
-    materialCategory: "",
-
-    unitId: "",
-    cost: "",
-
-    stockAlert: "",
-    details: "",
+    id: SettingRepository.product.id,
+    image: SettingRepository.product.image,
+    name: SettingRepository.product.name,
+    code: SettingRepository.product.code,
+    material_category: SettingRepository.product.material_category,
+    stock: SettingRepository.product.stock,
+    unit: SettingRepository.product.unit,
+    price: SettingRepository.product.price,
+    stock_alert: SettingRepository.product.stock_alert,
 });
-
-const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-        formData.image_url = URL.createObjectURL(file);
-        formData.image = file;
-    }
-};
-const triggerFileInput = () => {
-    const fileInput = document.querySelector('input[type="file"]');
-    fileInput.click();
-};
-
-const formRef = ref(null);
 const rules = {
     required: (value) => !!value || "Field is required. ",
     name: (value) => /^[a-zA-Z\s]*$/.test(value) || "Invalid Name",
@@ -226,13 +190,13 @@ const rules = {
     //         "Password must be at least 8 characters long and contain at least one letter and one number",
 };
 
-const createProduct = async () => {
-    const isValid = await formRef.value.validate();
-    if (isValid) {
-        SettingRepository.CreateProduct(formData);
-    }
-};
-console.log(SettingRepository.image_url, "man");
+async function updateProduct() {
+    formRef.value.validate().then((validate) => {
+        if (validate.valid) {
+            SettingRepository.Updateproduct(formData.id, formData);
+        }
+    });
+}
 </script>
 <style scoped>
 span {

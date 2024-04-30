@@ -18,12 +18,6 @@ class AccountResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'price' => $this->price,
-            "currency" => [
-                'id' => $this->currency->id ?? null,
-                'name' => $this->currency->name  ?? null,
-                'symbol' => $this->currency->symbol  ?? null,
-                'rate' => $this->currency->rate  ?? null,
-            ]
         ];
     }
 }

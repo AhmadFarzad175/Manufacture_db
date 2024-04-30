@@ -23,7 +23,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
             createDailog: false,
             updateDailog: false,
             page: 1,
-            itemsPerPage: 5,
+            itemsPerPage: 7,
             selectedItems: [],
             selectAll: false,
             showSelect: true,
@@ -35,6 +35,11 @@ export let useSettingRepository = defineStore("SettingRepository", {
         };
     },
     actions: {
+        GetProducts(account, name) {
+            const accArr = account.filter((acc) => acc.id == id);
+            this.name = accArr[0].name;
+            console.log(currArr[0].name);
+        },
         GetCurrency(currency, id) {
             const currArr = currency.filter((curr) => curr.id == id);
             this.symbol = currArr[0].symbol;
@@ -199,44 +204,62 @@ export let useSettingRepository = defineStore("SettingRepository", {
             });
         },
 
+        // ============================================================================??
+
         // Products Setup
         async FetchProductsData({ page, itemsPerPage }) {
             this.loading = true;
             setContentType("application/json");
 
             const response = await axios.get(
-                `/products?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
+                `/materials?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
             );
             this.products = response.data.data;
             this.totalItems = response.data.meta.total;
             this.loading = false;
         },
-        async CreateProuduct(formData) {
-            console.log(formData);
-            // Adding a custom header to the Axios request
+        async GetUnit() {
+            this.loading = true;
             setContentType("application/json");
 
-            const config = {
-                method: "POST",
-                url: "/products",
-                data: formData,
-            };
+            const response = await axios.get(`unitCategories`);
+            this.product = response.data.data;
+            console.log(response.data.data);
+            this.loading = false;
+        },
+        async CreateProduct(formData) {
+            console.log(formData);
 
-            // Using Axios to make a GET request with async/await and custom headers
-            const response = await axios(config);
-            // toast.success("Customer Succesfully Created", {
-            //     autoClose: 1000,
-            // });
-            this.createDailog = false;
-            this.FetchProductsData({
-                page: this.page,
-                itemsPerPage: this.itemsPerPage,
-            });
+            try {
+                // Assuming setContentType and axios are defined somewhere
+                setContentType("multipart/form-data");
+
+                const config = {
+                    method: "POST",
+                    url: "materials",
+                    data: formData,
+                };
+
+                const response = await axios(config);
+                console.log("Account created successfully:", response.data);
+
+                // Close dialog after successful creation
+                this.createDailog = false;
+
+                // Fetch updated account data
+                this.FetchProductsData({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (error) {
+                console.error("Error creating account:", error);
+                // Handle error here (e.g., show error message to the user)
+            }
         },
         async DeleteProduct(id) {
             const config = {
                 method: "DELETE",
-                url: "/products/" + id,
+                url: "materials/" + id,
             };
 
             const response = await axios(config);
@@ -244,6 +267,30 @@ export let useSettingRepository = defineStore("SettingRepository", {
             //     autoClose: 1000,
             // });
             this.FetchProductsData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async UpdateProduct(id, data) {
+            console.log(data);
+
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "PUT",
+                url: "/warehouses/" + id,
+                data: data,
+            };
+
+            // Using Axios to make a post request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Updated", {
+            //     autoClose: 1000,
+            // });
+
+            this.updateDailog = false;
+            this.FetchWharehousesData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });

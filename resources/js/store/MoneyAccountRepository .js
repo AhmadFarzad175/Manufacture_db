@@ -56,7 +56,7 @@ export let useMoneyAccountRepository = defineStore("MoneyAccountRepository", {
 
             const response = await axios.get(`/currency`);
             this.currency = response.data.data;
-            console.log(response.data.data, "man");
+            console.log(response.data.data);
             this.loading = false;
         },
         async CreateAccount(formData) {
@@ -110,7 +110,7 @@ export let useMoneyAccountRepository = defineStore("MoneyAccountRepository", {
             this.account = response.data.data; // Assign the fetched data directly to this.people
         },
         async UpdateAccount(id, data) {
-            console.log(data);
+            console.log(response.data.data);
 
             // Adding a custom header to the Axios request
             setContentType("application/json");
@@ -120,7 +120,7 @@ export let useMoneyAccountRepository = defineStore("MoneyAccountRepository", {
                 url: "/accounts/" + id,
                 data: data,
             };
-
+            console.log(response.data.data);
             // Using Axios to make a post request with async/await and custom headers
             const response = await axios(config);
             // toast.success("Customer Succesfully Updated", {
