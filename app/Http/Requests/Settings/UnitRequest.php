@@ -16,6 +16,17 @@ class UnitRequest extends FormRequest
         return true;
     }
 
+
+    public function prepareForValidation()
+    {
+        return $this->merge([
+            'short_name' => $this->input('shortName'),
+            
+
+        ]);
+    }
+
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,7 +36,7 @@ class UnitRequest extends FormRequest
     {
         $rules = [
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'short_name' => 'required|string',
         ];
 
         $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;

@@ -10,10 +10,11 @@ use App\Http\Requests\Settings\MaterialRequest;
 use App\Http\Resources\Settings\MaterialResource;
 use App\Http\Requests\Settings\StoreMaterialRequest;
 use App\Http\Requests\Settings\UpdateMaterialRequest;
-
+use App\Traits\ImageManipulation;
 
 class MaterialController extends Controller
 {
+    use ImageManipulation;
     /**
      * Display a listing of the resource.
      */
@@ -36,11 +37,7 @@ class MaterialController extends Controller
     public function store(MaterialRequest $request)
     {
         $validated = $request->validated();
-
-        if ($request->hasFile('image')) {
-            $validated['image'] = $validated['image']->store('material_images/', 'public');
-        }
-
+        $request->hasFile('image') ? $this->storeImage($request, $validated, 'material_images') : null;
         Material::create($validated);
 
         return response()->json(['success' => 'Material inserted successfully']);
@@ -57,30 +54,11 @@ class MaterialController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function updateMaterial(UpdateMaterialRequest $request, Material $material)
+    public function updateMaterial(MaterialRequest $request, Material $material)
     {
         $validated = $request->validated();
+        $this->updateImage($material, $request, $validated, 'material_images');
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $oldImagePath = public_path('storage/material_images/' . basename($material->image));
-
-            if (File::exists($oldImagePath)) {
-                File::delete($oldImagePath);
-            }
-            $validated['image'] = $request['image']->store('material_images/', 'public');
-        }
-        if (!isset($request['image'])) {
-            $oldImagePath = public_path('storage/material_images/' . basename($material->image));
-
-            if (File::exists($oldImagePath)) {
-                File::delete($oldImagePath);
-            }
-            $validated['image'] = $imagePath;
-        }
-        if (is_string($request['image'])) {
-            $validated['image'] = $material->image;
-        }
         $material->update($validated);
 
         return response()->json(['success' => 'Material updated successfully']);
@@ -91,10 +69,8 @@ class MaterialController extends Controller
      */
     public function destroy(Material $material)
     {
-        $imagePath = public_path('storage/product_images/' . basename($material->image));
-        if (File::exists($imagePath)) {
-            File::delete($imagePath);
-        }
+        $this->deleteImage($material, 'material_images');
+
         $material->delete();
         return response()->noContent();
     }

@@ -14,11 +14,12 @@ class MaterialResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $imageUrl = asset('storage/' . $this->image);
         return [
             'id' => $this->id,
             'code' => $this->code,
             'name' => $this->name,
-            'image' => $this->image,
+            'image' => $imageUrl,
             'cost' => $this->cost,
             'stock' => $this->stock,
             'stockAlert' => $this->stock_alert,

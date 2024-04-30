@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests\Settings;
 
+use App\Traits\UpdateRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class MaterialRequest extends FormRequest
 {
+    use UpdateRequestRules;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -31,7 +33,7 @@ class MaterialRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules =  [
             'code' => 'required|string',
             'name' => 'required|string',
             'image' => 'nullable|image',
@@ -42,5 +44,9 @@ class MaterialRequest extends FormRequest
             'stock_alert' => 'nullable|min:0',
             'details' => 'nullable|string',
         ];
+
+        $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;
+
+        return $rules;
     }
 }

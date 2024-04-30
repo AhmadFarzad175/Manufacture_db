@@ -18,7 +18,7 @@ class UnitFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'description' => $this->faker->sentence(2),
+            'short_name' => $this->faker->word(),
         ];
     }
 }
