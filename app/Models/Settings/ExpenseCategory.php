@@ -14,7 +14,7 @@ class ExpenseCategory extends Model
 
     protected $fillable = [
         'name',
-        'description',
+        'details',
     ];
 
 
@@ -24,7 +24,7 @@ class ExpenseCategory extends Model
             return $query;
         }
         return $query->where('name', 'like', '%' . $search . '%')
-            ->where('description', 'like', '%' . $search . '%');
+            ->where('details', 'like', '%' . $search . '%');
     }
 
 

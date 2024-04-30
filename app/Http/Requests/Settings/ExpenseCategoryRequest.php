@@ -26,7 +26,7 @@ class ExpenseCategoryRequest extends FormRequest
 
         $rules = [
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:255',
+            'details' => 'nullable|string|max:255',
         ];
 
         $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;
