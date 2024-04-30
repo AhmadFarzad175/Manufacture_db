@@ -55,10 +55,9 @@ class ProductController extends Controller
      */
     public function updateProduct(UpdateProductRequest $request, Product $product)
     {
-
         $validated = $request->validated();
 
-        
+        $this->updateImage($product, $request, $validated, 'product_images');
 
         $product->update($validated);
 
@@ -70,10 +69,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $imagePath = public_path('storage/product_images/' . basename($product->image));
-        if (File::exists($imagePath)) {
-            File::delete($imagePath);
-        }
+        $this->deleteImage($product, 'product_images');
+
         $product->delete();
         return response()->noContent();
     }
