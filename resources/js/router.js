@@ -6,6 +6,8 @@ import Wharehouse from "./pages/Warehouse/wharehouse.vue";
 import Porduct from "./pages/productSetup/Product.vue";
 import productMenu from "./pages/productSetup/productMenu.vue";
 import AllUnits from "./pages/unit/AllUnits.vue";
+import AllProduct from "./pages/productCategory/AllProduct.vue";
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -16,6 +18,7 @@ const router = createRouter({
         { path: "/product", component: Porduct },
         { path: "/productMenu", component: productMenu },
         { path: "/allUnits", component: AllUnits },
+        { path: "/allCategory", component: AllProduct },
     ],
 });
 

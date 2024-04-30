@@ -62,6 +62,23 @@
                 </template>
             </v-list-group>
         </v-list>
+        <v-list v-model:opened="open">
+            <v-list-group>
+                <template v-slot:activator="{ props }">
+                    <router-link to="/allCategory">
+                        <v-list-item
+                            class="hover:bg-green-500"
+                            rounded="shaped"
+                            v-bind="props"
+                            :append-icon="null"
+                            title="Product Category"
+                            value="Product Category"
+                        ></v-list-item>
+                    </router-link>
+                </template>
+            </v-list-group>
+        </v-list>
+
         <!-- </v-card> -->
     </div>
 </template>

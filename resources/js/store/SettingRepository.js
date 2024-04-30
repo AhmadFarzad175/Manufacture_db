@@ -18,6 +18,8 @@ export let useSettingRepository = defineStore("SettingRepository", {
             products: reactive([]),
             unit: reactive([]),
             units: reactive([]),
+            productCategory: reactive([]),
+            productCategories: reactive([]),
 
             isLoading: false,
             error: null,
@@ -374,6 +376,88 @@ export let useSettingRepository = defineStore("SettingRepository", {
 
             this.updateDailog = false;
             this.FetchUnitsData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+
+        // =====================================================================//
+        // Product Category//
+
+        async FetchProductCategoriesData({ page, itemsPerPage }) {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(
+                `/materialCategories?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
+            );
+            this.productCategories = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async CreateProductCategory(formData) {
+            console.log(formData);
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "POST",
+                url: "/materialCategories/",
+                data: formData,
+            };
+
+            // Using Axios to make a GET request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Created", {
+            //     autoClose: 1000,
+            // });
+            this.createDailog = false;
+            this.FetchProductCategoriesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async DeleteProductCategory(id) {
+            const config = {
+                method: "DELETE",
+                url: "/materialCategories/" + id,
+            };
+
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Deleted", {
+            //     autoClose: 1000,
+            // });
+            this.FetchProductCategoriesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async FetchProductCategoryData(id) {
+            setContentType("application/json");
+            const response = await axios.get(`/materialCategories/${id}`);
+
+            this.unit = response.data.data; // Assign the fetched data directly to this.people
+        },
+        async UpdateProductCategory(id, data) {
+            console.log(data);
+
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "PUT",
+                url: "/materialCategories" + id,
+                data: data,
+            };
+
+            // Using Axios to make a post request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Updated", {
+            //     autoClose: 1000,
+            // });
+
+            this.updateDailog = false;
+            this.FetchProductCategoriesData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });
