@@ -12,7 +12,7 @@ class Unit extends Model
 
     protected $fillable = [
         "name",
-        "description"
+        "short_name"
     ];
 
     public function scopeSearch($query, $search)
@@ -21,7 +21,7 @@ class Unit extends Model
             return $query;
         }
         return $query->where('name', 'like', '%' . $search . '%')
-            ->where('description', 'like', '%' . $search . '%');
+            ->where('short_name', 'like', '%' . $search . '%');
     }
 
     public function materials()
