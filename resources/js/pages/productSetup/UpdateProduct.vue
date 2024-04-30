@@ -69,7 +69,7 @@
                             <div class="w-50">
                                 <v-autocomplete
                                     type="category"
-                                    v-model="formData.material_category"
+                                    v-model="formData.materialCategory"
                                     label="   Category *"
                                     variant="outlined"
                                     density="compact"
@@ -120,7 +120,7 @@
                             <div class="w-full d-flex">
                                 <v-text-field
                                     type="email"
-                                    v-model="formData.price"
+                                    v-model="formData.cost"
                                     label="   COST*"
                                     variant="outlined"
                                     density="compact"
@@ -134,7 +134,7 @@
                                     </span></v-text-field
                                 >
                                 <v-text-field
-                                    v-model="formData.stock_alert"
+                                    v-model="formData.stockAlert"
                                     :counter="10"
                                     label="   Stock Alert   * "
                                     variant="outlined"
@@ -174,12 +174,30 @@ const formData = reactive({
     image: SettingRepository.product.image,
     name: SettingRepository.product.name,
     code: SettingRepository.product.code,
-    material_category: SettingRepository.product.material_category,
+    materialCategory: SettingRepository.product.materialCategory,
     stock: SettingRepository.product.stock,
     unit: SettingRepository.product.unit,
-    price: SettingRepository.product.price,
-    stock_alert: SettingRepository.product.stock_alert,
+    cost: SettingRepository.product.cost,
+    stockAlert: SettingRepository.product.stockAlert,
 });
+SettingRepository.UpdateProduct(
+    SettingRepository.product.id,
+    // SettingRepository.currency.name,
+    // SettingRepository.currency.rate,
+    // SettingRepository.currency.symbl,
+    UpdateData
+);
+const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        formData.image_url = URL.createObjectURL(file);
+        formData.image = file;
+    }
+};
+const triggerFileInput = () => {
+    const fileInput = document.querySelector('input[type="file"]');
+    fileInput.click();
+};
 const rules = {
     required: (value) => !!value || "Field is required. ",
     name: (value) => /^[a-zA-Z\s]*$/.test(value) || "Invalid Name",
@@ -193,7 +211,7 @@ const rules = {
 async function updateProduct() {
     formRef.value.validate().then((validate) => {
         if (validate.valid) {
-            SettingRepository.Updateproduct(formData.id, formData);
+            SettingRepository.UpdateProduct(formData.id, formData);
         }
     });
 }

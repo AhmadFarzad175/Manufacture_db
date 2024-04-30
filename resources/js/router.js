@@ -7,7 +7,7 @@ import Porduct from "./pages/productSetup/Product.vue";
 import productMenu from "./pages/productSetup/productMenu.vue";
 import AllUnits from "./pages/unit/AllUnits.vue";
 import AllProduct from "./pages/productCategory/AllProduct.vue";
-
+import AllExpense from "./pages/expenseCategory/AllExpense.vue";
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -19,6 +19,7 @@ const router = createRouter({
         { path: "/productMenu", component: productMenu },
         { path: "/allUnits", component: AllUnits },
         { path: "/allCategory", component: AllProduct },
+        { path: "/allExpense", component: AllExpense },
     ],
 });
 

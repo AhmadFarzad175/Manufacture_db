@@ -10,7 +10,7 @@ const rules = {
     counter: (value) => value.length >= 1 || "Min 1 characters",
 };
 // functions
-async function updateProductCategory() {
+async function updateExpenseCategory() {
     formRef.value.validate().then((validate) => {
         if (validate.valid) {
             // SettingRepository.UpdateCurrency(
@@ -18,11 +18,11 @@ async function updateProductCategory() {
             // SettingRepository.currency
             // );
             const UpdateData = reactive({
-                name: SettingRepository.productCategory.name,
-                details: SettingRepository.productCategory.details,
+                name: SettingRepository.expenseCategory.name,
+                details: SettingRepository.expenseCategory.details,
             });
-            SettingRepository.UpdateProductCategory(
-                SettingRepository.productCategory.id,
+            SettingRepository.UpdateExpenseCategory(
+                SettingRepository.expenseCategory.id,
                 // SettingRepository.currency.name,
                 // SettingRepository.currency.rate,
                 // SettingRepository.currency.symbl,
@@ -53,7 +53,7 @@ async function updateProductCategory() {
                     <v-form ref="formRef" class="d-flex gap-4">
                         <div class="w-full">
                             <v-text-field
-                                v-model="SettingRepository.productCategory.name"
+                                v-model="SettingRepository.expenseCategory.name"
                                 variant="outlined"
                                 label="Name"
                                 :rules="[rules.required, rules.name]"
@@ -61,7 +61,7 @@ async function updateProductCategory() {
                             ></v-text-field>
                             <v-textarea
                                 v-model="
-                                    SettingRepository.productCategory.details
+                                    SettingRepository.expenseCategory.details
                                 "
                                 variant="outlined"
                                 label="Details"
@@ -73,7 +73,7 @@ async function updateProductCategory() {
                 <div class="justify-start pl-6 pb-6">
                     <v-btn
                         color="light-blue-darken-1"
-                        @click="updateProductCategory"
+                        @click="updateExpenseCategory"
                         >Update</v-btn
                     >
                 </div>

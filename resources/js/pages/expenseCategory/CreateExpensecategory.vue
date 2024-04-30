@@ -9,10 +9,10 @@ const formData = reactive({
     details: "",
 });
 
-const createProductCategory = async () => {
+const createExpenseCategory = async () => {
     formRef.value.validate().then((validate) => {
         if (validate.valid) {
-            SettingRepository.CreateProductCategory(formData);
+            SettingRepository.CreateExpenseCategory(formData);
         }
     });
 };
@@ -63,7 +63,7 @@ const rules = {
                 <div class="justify-start pl-6 pb-6">
                     <v-btn
                         color="light-blue-darken-1"
-                        @click="createProductCategory"
+                        @click="createExpenseCategory"
                         >Submit</v-btn
                     >
                 </div>

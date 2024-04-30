@@ -1,7 +1,7 @@
 <template>
     <CreateExpensecategory v-if="SettingRepository.createDailog" />
     <UpdateExpensecategory v-if="SettingRepository.updateDailog" />
-    <toolbar title="Setting-" subtitle="Product Category" />
+    <toolbar title="Setting-" subtitle="Expense Category" />
 
     <div class="w-full d-flex">
         <productMenu />
@@ -42,15 +42,15 @@
                                     "
                                     :headers="headers"
                                     :items-length="SettingRepository.totalItems"
-                                    :items="SettingRepository.productCategories"
+                                    :items="SettingRepository.expenseCategories"
                                     :loading="SettingRepository.loading"
                                     :search="SettingRepository.ServiceSearch"
                                     item-value="id"
                                     @update:options="
-                                        SettingRepository.FetchProductCategoriesData
+                                        SettingRepository.FetchExpenseCategoriesData
                                     "
                                     :item-key="
-                                        SettingRepository.productCategories
+                                        SettingRepository.expenseCategories
                                     "
                                     itemKey="id"
                                     hover
@@ -113,7 +113,7 @@
 import { useSettingRepository } from "../../store/SettingRepository";
 import productMenu from "../productSetup/productMenu.vue";
 
-import CreateExpensecategory from "../expenseCategory/CreateExpensecategory.vue";
+import CreateExpensecategory from "./CreateExpensecategory.vue";
 import UpdateExpensecategory from "./UpdateExpensecategory.vue";
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
@@ -131,12 +131,12 @@ const createPopUp = () => {
     SettingRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    SettingRepository.DeleteProductCategory(id);
+    SettingRepository.DeleteExpenseCategory(id);
 };
 const editItem = (id) => {
-    SettingRepository.productCategory = {};
-    if (Object.keys(SettingRepository.productCategory).length === 0) {
-        SettingRepository.FetchProductCategoryData(id)
+    SettingRepository.expenseCategory = {};
+    if (Object.keys(SettingRepository.expenseCategory).length === 0) {
+        SettingRepository.FetchExpenseCategoryData(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
                 SettingRepository.updateDailog = true;

@@ -20,6 +20,8 @@ export let useSettingRepository = defineStore("SettingRepository", {
             units: reactive([]),
             productCategory: reactive([]),
             productCategories: reactive([]),
+            expenseCategories: reactive([]),
+            expenseCategory: reactive([]),
 
             isLoading: false,
             error: null,
@@ -279,11 +281,11 @@ export let useSettingRepository = defineStore("SettingRepository", {
             console.log(data);
 
             // Adding a custom header to the Axios request
-            setContentType("application/json");
+            setContentType("multipart/form-data");
 
             const config = {
                 method: "PUT",
-                url: "/warehouses/" + id,
+                url: "/materials/" + id,
                 data: data,
             };
 
@@ -294,7 +296,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
             // });
 
             this.updateDailog = false;
-            this.FetchWharehousesData({
+            this.FetchProductsData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });
@@ -402,7 +404,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
 
             const config = {
                 method: "POST",
-                url: "/materialCategories/",
+                url: "materialCategories",
                 data: formData,
             };
 
@@ -458,6 +460,87 @@ export let useSettingRepository = defineStore("SettingRepository", {
 
             this.updateDailog = false;
             this.FetchProductCategoriesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        // ===============================================================================//
+
+        // Expese Category
+        async FetchExpenseCategoriesData({ page, itemsPerPage }) {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(
+                `/expenseCategories?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
+            );
+            this.expenseCategories = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async CreateExpenseCategory(formData) {
+            console.log(formData);
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "POST",
+                url: "/expenseCategories/",
+                data: formData,
+            };
+
+            // Using Axios to make a GET request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Created", {
+            //     autoClose: 1000,
+            // });
+            this.createDailog = false;
+            this.FetchExpenseCategoriesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async DeleteExpenseCategory(id) {
+            const config = {
+                method: "DELETE",
+                url: "/expenseCategories/" + id,
+            };
+
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Deleted", {
+            //     autoClose: 1000,
+            // });
+            this.FetchExpenseCategoriesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async FetchExpenseCategoryData(id) {
+            setContentType("application/json");
+            const response = await axios.get(`/expenseCategories/${id}`);
+
+            this.expenseCategory = response.data.data; // Assign the fetched data directly to this.people
+        },
+        async UpdateExpenseCategory(id, data) {
+            console.log(data);
+
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "PUT",
+                url: "expenseCategories/" + id,
+                data: data,
+            };
+
+            // Using Axios to make a post request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Updated", {
+            //     autoClose: 1000,
+            // });
+
+            this.updateDailog = false;
+            this.FetchExpenseCategoriesData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });

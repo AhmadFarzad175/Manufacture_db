@@ -79,6 +79,6 @@ class MaterialController extends Controller
     {
         $materials = $request->input('materialIds');
         Material::destroy($materials);
-        return response()->json(['success', 'Materials deleted successfully']);
+        return response()->json(['success' => 'Materials deleted successfully']);
     }
 }
