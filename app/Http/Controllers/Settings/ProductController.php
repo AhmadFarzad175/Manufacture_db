@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Settings\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
-use App\Http\Requests\Settings\ProductRequest;
 use App\Http\Resources\Settings\ProductResource;
 use App\Http\Requests\Settings\StoreProductRequest;
 use App\Http\Requests\Settings\UpdateProductRequest;
@@ -36,9 +35,7 @@ class ProductController extends Controller
     {
         $validated = $request->validated();
 
-        if ($request->hasFile('image')) {
-            $validated['image'] = $validated['image']->store('product_images/', 'public');
-        }
+        $request->hasFile('image') ? $this->storeImage($request, $validated, 'product_images') : null;
 
         Product::create($validated);
 
@@ -61,26 +58,8 @@ class ProductController extends Controller
 
         $validated = $request->validated();
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $oldImagePath = public_path('storage/product_images/' . basename($product->image));
+        
 
-            if (File::exists($oldImagePath)) {
-                File::delete($oldImagePath);
-            }
-            $validated['image'] = $request['image']->store('product_images/', 'public');
-        }
-        if (!isset($request['image'])) {
-            $oldImagePath = public_path('storage/product_images/' . basename($product->image));
-
-            if (File::exists($oldImagePath)) {
-                File::delete($oldImagePath);
-            }
-            $validated['image'] = $imagePath;
-        }
-        if (is_string($request['image'])) {
-            $validated['image'] = $product->image;
-        }
         $product->update($validated);
 
         return response()->json(['success' => 'Product updated successfully']);

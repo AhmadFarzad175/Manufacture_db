@@ -24,7 +24,7 @@ return new class extends Migration
             // $table->decimal('stock', 10, 2)->nullable()->default(0.00);
             $table->integer('stock')->nullable()->default(0);
             $table->integer('stock_alert');
-            $table->text('description')->nullable();
+            $table->text('details')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -35,6 +35,7 @@ class Product extends Model
                 ->orWhere('code', 'like', '%' . $search . '%')
                 ->orWhere('price', 'like', '%' . $search . '%')
                 ->orWhere('stock_alert', 'like', '%' . $search . '%')
+                ->orWhere('details', 'like', '%' . $search . '%')
                 ->orWhere(function ($query) use ($search) {
                     $query->whereHas('unit', function ($query) use ($search) {
                         $query->where('name', 'like', '%' . $search . '%');

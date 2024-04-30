@@ -18,7 +18,7 @@ class ExpenseCategoryFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'description' => $this->faker->sentence(2),
+            'details' => $this->faker->sentence(2),
         ];
     }
 }
