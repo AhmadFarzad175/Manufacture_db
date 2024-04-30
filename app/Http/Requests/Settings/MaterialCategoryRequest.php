@@ -25,7 +25,7 @@ class MaterialCategoryRequest extends FormRequest
     {
         $rules = [
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'details' => 'required|string',
         ];
 
         $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;

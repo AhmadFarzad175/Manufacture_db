@@ -12,7 +12,7 @@ class MaterialCategory extends Model
 
     protected $fillable = [
         "name",
-        "description"
+        "details"
     ];
 
     public function scopeSearch($query, $search)
@@ -21,7 +21,7 @@ class MaterialCategory extends Model
             return $query;
         }
         return $query->where('name', 'like', '%' . $search . '%')
-            ->orWhere('description', 'like', '%' . $search . '%');
+            ->orWhere('details', 'like', '%' . $search . '%');
     }
 
 
