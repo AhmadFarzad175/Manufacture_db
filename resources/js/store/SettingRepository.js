@@ -436,7 +436,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
             setContentType("application/json");
             const response = await axios.get(`/materialCategories/${id}`);
 
-            this.unit = response.data.data; // Assign the fetched data directly to this.people
+            this.productCategory = response.data.data; // Assign the fetched data directly to this.people
         },
         async UpdateProductCategory(id, data) {
             console.log(data);
@@ -446,7 +446,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
 
             const config = {
                 method: "PUT",
-                url: "/materialCategories" + id,
+                url: "/materialCategories/" + id,
                 data: data,
             };
 

@@ -113,7 +113,7 @@
 import { useSettingRepository } from "../../store/SettingRepository";
 import productMenu from "../productSetup/productMenu.vue";
 import CreateCategory from "./CreateCategory.vue";
-import UpdateCategory from "./UpdateCategory.vue";
+import UpdateCategory from "./UpdateExpensecategory.vue";
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
 import CreateButton from "../../Component/UI/CreateButton.vue";

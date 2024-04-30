@@ -1,6 +1,6 @@
 <template>
-    <CreateCategory v-if="SettingRepository.createDailog" />
-    <UpdateCategory v-if="SettingRepository.updateDailog" />
+    <CreateExpensecategory v-if="SettingRepository.createDailog" />
+    <UpdateExpensecategory v-if="SettingRepository.updateDailog" />
     <toolbar title="Setting-" subtitle="Product Category" />
 
     <div class="w-full d-flex">
@@ -112,8 +112,9 @@
 <script setup>
 import { useSettingRepository } from "../../store/SettingRepository";
 import productMenu from "../productSetup/productMenu.vue";
-import CreateCategory from "./CreateCategory.vue";
-import UpdateCategory from "./UpdateCategory.vue";
+
+import CreateExpensecategory from "../expenseCategory/CreateExpensecategory.vue";
+import UpdateExpensecategory from "./UpdateExpensecategory.vue";
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
 import CreateButton from "../../Component/UI/CreateButton.vue";
