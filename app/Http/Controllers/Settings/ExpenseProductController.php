@@ -34,15 +34,11 @@ class ExpenseProductController extends Controller
     {
         $validated = $request->validated();
 
-        if ($request->hasFile('image')) {
-            $validated['image'] = $validated['image']->store('expense_images/', 'public');
-        }
+        $request->hasFile('image') ? $this->storeImage($request, $validated, 'expense_images') : null;
 
         ExpenseProduct::create($validated);
 
         return response()->json(['success' => 'Product inserted successfully']);
-
-        //! MAKE A TRAIT FOR STORE AND UPDATE
     }
 
     /**

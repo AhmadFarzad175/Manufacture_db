@@ -14,6 +14,24 @@ class ExpenseProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
-    }
+        $imageUrl = asset('storage/' . $this->image);
+
+        return [
+            'id' => $this->id,
+            'code' => $this->code,
+            'name' => $this->name,
+            'image' => $imageUrl,
+            'price' => $this->price,
+            'stock' => $this->stock,
+            'stock_alert' => $this->stock_alert,
+            'material_category' => [
+                'id' => $this->materialCategory->id,
+                'name' => $this->materialCategory->name
+            ],
+            'unit' => [
+                'id' => $this->unit->id,
+                'name' => $this->unit->name
+            ],
+
+        ];    }
 }

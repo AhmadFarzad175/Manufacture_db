@@ -43,6 +43,7 @@ class TransferController extends Controller
 
         //INSERT INTO PIVOT TABLE
         foreach ($validated['transferDetails'] as $transferDetail) {
+            
             Transfer::create([
                 'transfer_id' => $transfer->id,
                 'productMaterial_id' => $transferDetail['productMaterialId'],
