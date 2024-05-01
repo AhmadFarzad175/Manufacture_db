@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Settings\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use App\Http\Requests\Settings\ProductRequest;
 use App\Http\Resources\Settings\ProductResource;
 use App\Http\Requests\Settings\StoreProductRequest;
 use App\Http\Requests\Settings\UpdateProductRequest;
@@ -31,7 +32,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductRequest $request)
+    public function store(ProductRequest $request)
     {
         $validated = $request->validated();
 
@@ -53,7 +54,7 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function updateProduct(UpdateProductRequest $request, Product $product)
+    public function updateProduct(ProductRequest $request, Product $product)
     {
         $validated = $request->validated();
 

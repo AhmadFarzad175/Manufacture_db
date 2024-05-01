@@ -25,8 +25,8 @@ class ExpenseProductResource extends JsonResource
             'stock' => $this->stock,
             'stock_alert' => $this->stock_alert,
             'material_category' => [
-                'id' => $this->materialCategory->id,
-                'name' => $this->materialCategory->name
+                'id' => $this->expenseCategory->id,
+                'name' => $this->expenseCategory->name
             ],
             'unit' => [
                 'id' => $this->unit->id,

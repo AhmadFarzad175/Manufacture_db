@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Traits\ImageManipulation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Models\Settings\ExpenseProduct;
+use App\Http\Requests\Settings\ExpenseProductRequest;
 use App\Http\Resources\Settings\ExpenseProductResource;
 
 
 class ExpenseProductController extends Controller
 {
+    use ImageManipulation;
     /**
      * Display a listing of the resource.
      */
@@ -30,9 +33,10 @@ class ExpenseProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ExpenseProductRequest $request)
     {
         $validated = $request->validated();
+        // return $validated['image'];
 
         $request->hasFile('image') ? $this->storeImage($request, $validated, 'expense_images') : null;
 
@@ -52,30 +56,12 @@ class ExpenseProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ExpenseProduct $expenseProduct)
+    public function updateExpenseProduct(ExpenseProductRequest $request, ExpenseProduct $expenseProduct)
     {
         $validated = $request->validated();
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $oldImagePath = public_path('storage/expense_images/' . basename($expenseProduct->image));
+        $this->updateImage($expenseProduct, $request, $validated, 'expense_images');
 
-            if (File::exists($oldImagePath)) {
-                File::delete($oldImagePath);
-            }
-            $validated['image'] = $request['image']->store('expense_images/', 'public');
-        }
-        if (!isset($request['image'])) {
-            $oldImagePath = public_path('storage/expense_images/' . basename($expenseProduct->image));
-
-            if (File::exists($oldImagePath)) {
-                File::delete($oldImagePath);
-            }
-            $validated['image'] = $imagePath;
-        }
-        if (is_string($request['image'])) {
-            $validated['image'] = $expenseProduct->image;
-        }
         $expenseProduct->update($validated);
 
         return response()->json(['success' => 'Product updated successfully']);
@@ -86,10 +72,8 @@ class ExpenseProductController extends Controller
      */
     public function destroy(ExpenseProduct $expenseProduct)
     {
-        $imagePath = public_path('storage/expense_images/' . basename($expenseProduct->image));
-        if (File::exists($imagePath)) {
-            File::delete($imagePath);
-        }
+        $this->deleteImage($expenseProduct, 'expense_images');
+
         $expenseProduct->delete();
         return response()->noContent();
     }

@@ -5,7 +5,7 @@ namespace App\Http\Requests\Settings;
 use App\Traits\UpdateRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductRequest extends FormRequest
+class ProductRequest extends FormRequest
 {
 
     use UpdateRequestRules;
@@ -22,7 +22,7 @@ class StoreProductRequest extends FormRequest
     public function prepareForValidation()
     {
         return $this->merge([
-            'material_category_id' => $this->input('materialCategoryId'),
+            'material_category_id' => $this->input('materialCategory'),
             'unit_id' => $this->input('unitId'),
             'stock_alert' => $this->input('stockAlert'),
 
@@ -46,7 +46,7 @@ class StoreProductRequest extends FormRequest
             'price' => 'required|min:0',
             'stock' => 'nullable|min:0',
             'stock_alert' => 'required|min:0',
-            'description' => 'nullable|string',
+            'details' => 'nullable|string',
         ];
 
 

@@ -21,7 +21,7 @@ class Product extends Model
         'price',
         'stock',
         'stock_alert',
-        'description',
+        'details',
     ];
 
     public function scopeSearch($query, $search)

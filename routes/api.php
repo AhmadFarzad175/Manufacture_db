@@ -85,6 +85,8 @@ Route::post('materialCategoriesBulkDelete', [MaterialCategoryController::class, 
 
 Route::apiResource('/expenseCategories', ExpenseCategoryController::class);
 Route::apiResource('/expenseProducts', ExpenseProductController::class);
+Route::post('/expenseProducts/update/{expenseProduct}', [ExpenseProductController::class, 'updateExpenseProduct']);
+
 
 Route::apiResource('/units', UnitController::class);
 Route::post('unitsBulkDelete', [UnitController::class, 'bulkDelete']);
