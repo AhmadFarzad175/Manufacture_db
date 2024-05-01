@@ -1,7 +1,7 @@
 <template>
-    <Create v-if="SettingRepository.createDailog" />
-    <UpdateProduct v-if="SettingRepository.updateDailog" />
-    <toolbar title="Setting-" subtitle="Product Setup" />
+    <CreateExpenseProduct v-if="SettingRepository.createDailog" />
+    <UpdateExpenseProduct v-if="SettingRepository.updateDailog" />
+    <toolbar title="Setting-" subtitle="Expense Product" />
     <v-divider :thickness="5" class="border-opacity-25"></v-divider>
     <div class="w-full d-flex">
         <productMenu />
@@ -114,13 +114,12 @@
 
 <script setup>
 import { useSettingRepository } from "../../store/SettingRepository";
-import Create from "./Create.vue";
-// import Update from "./Update.vue";
-import UpdateProduct from "./UpdateProduct.vue";
+import CreateExpenseProduct from "./CreateExpenseProduct.vue";
+import UpdateExpenseProduct from "./UpdateExpenseProduct.vue";
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
 import CreateButton from "../../Component/UI/CreateButton.vue";
-import productMenu from "./productMenu.vue";
+import productMenu from "../productSetup/productMenu.vue";
 let SettingRepository = useSettingRepository();
 
 const headers = [

@@ -22,6 +22,8 @@ export let useSettingRepository = defineStore("SettingRepository", {
             productCategories: reactive([]),
             expenseCategories: reactive([]),
             expenseCategory: reactive([]),
+            // git ubit
+            productUnit: reactive([]),
 
             isLoading: false,
             error: null,
@@ -215,21 +217,29 @@ export let useSettingRepository = defineStore("SettingRepository", {
         // Products Setup
         async FetchProductsData({ page, itemsPerPage }) {
             this.loading = true;
-            setContentType("application/json");
+            setContentType("multipart/form-data");
 
             const response = await axios.get(
                 `/materials?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
             );
             this.products = response.data.data;
+
             this.totalItems = response.data.meta.total;
             this.loading = false;
+        },
+        async FetchProductData(id) {
+            setContentType("multipart/form-data");
+
+            const response = await axios.get(`/materials/${id}`);
+
+            this.product = response.data.data; // Assign the fetched data directly to this.people
         },
         async GetUnit() {
             this.loading = true;
             setContentType("application/json");
 
             const response = await axios.get(`unitCategories`);
-            this.product = response.data.data;
+            this.productUnit = response.data.data;
             console.log(response.data.data);
             this.loading = false;
         },
@@ -278,29 +288,36 @@ export let useSettingRepository = defineStore("SettingRepository", {
             });
         },
         async UpdateProduct(id, data) {
-            console.log(data);
-
             // Adding a custom header to the Axios request
             setContentType("multipart/form-data");
 
             const config = {
                 method: "PUT",
-                url: "/materials/" + id,
+                url: "materials" + id,
                 data: data,
             };
 
-            // Using Axios to make a post request with async/await and custom headers
-            const response = await axios(config);
-            // toast.success("Customer Succesfully Updated", {
-            //     autoClose: 1000,
-            // });
+            try {
+                // Using Axios to make a post request with async/await and custom headers
+                const response = await axios(config);
 
-            this.updateDailog = false;
-            this.FetchProductsData({
-                page: this.page,
-                itemsPerPage: this.itemsPerPage,
-            });
+                console.log("Response from backend:", response.data); // Log the response data
+
+                // toast.success("Customer Succesfully Updated", {
+                //     autoClose: 1000,
+                // });
+
+                this.updateDailog = false;
+                this.FetchProductsData({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (error) {
+                console.error("Error updating product:", error);
+                // Handle errors here if necessary
+            }
         },
+
         // ===================================================================//
 
         //Unit

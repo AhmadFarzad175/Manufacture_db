@@ -23,9 +23,7 @@ async function updateProductCategory() {
             });
             SettingRepository.UpdateProductCategory(
                 SettingRepository.productCategory.id,
-                // SettingRepository.currency.name,
-                // SettingRepository.currency.rate,
-                // SettingRepository.currency.symbl,
+
                 UpdateData
             );
         }

@@ -8,6 +8,9 @@ import productMenu from "./pages/productSetup/productMenu.vue";
 import AllUnits from "./pages/unit/AllUnits.vue";
 import AllProduct from "./pages/productCategory/AllProduct.vue";
 import AllExpense from "./pages/expenseCategory/AllExpense.vue";
+import AllTransfer from "./pages/transfer/AllTransfer.vue";
+import AllExpenseProduct from "./pages/expenseProduct/AllExpenseProduct.vue";
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -20,6 +23,8 @@ const router = createRouter({
         { path: "/allUnits", component: AllUnits },
         { path: "/allCategory", component: AllProduct },
         { path: "/allExpense", component: AllExpense },
+        { paht: "/allTransfer", component: AllTransfer },
+        { path: "/allExpenseProduct", component: AllExpenseProduct },
     ],
 });
 

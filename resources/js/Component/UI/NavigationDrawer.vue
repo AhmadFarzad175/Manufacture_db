@@ -113,11 +113,13 @@
                     </v-list-group>
                     <v-list-group value="Transfer">
                         <template v-slot:activator="{ props }">
-                            <v-list-item
-                                :append-icon="null"
-                                v-bind="props"
-                                title="Transfer"
-                            ></v-list-item>
+                            <router-link to="/allTransfer">
+                                <v-list-item
+                                    :append-icon="null"
+                                    v-bind="props"
+                                    title="Transfer"
+                                ></v-list-item>
+                            </router-link>
                         </template>
                     </v-list-group>
                     <v-list-group value="Product Setup">
