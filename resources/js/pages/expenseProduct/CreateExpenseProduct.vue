@@ -69,12 +69,12 @@
                             <div class="w-50">
                                 <v-autocomplete
                                     type="category"
-                                    v-model="formData.materialCategory"
+                                    v-model="formData.expenseCategory"
                                     @create:modelValue="
                                         SettingRepository.GetProducts(
                                             SettingRepository.productUnit
                                                 .materialCategory,
-                                            formData.materialCategory
+                                            formData.expenseCategory
                                         )
                                     "
                                     :items="
@@ -142,7 +142,7 @@
                             <div class="w-full d-flex">
                                 <v-text-field
                                     type="email"
-                                    v-model="formData.cost"
+                                    v-model="formData.price"
                                     label="   COST*"
                                     variant="outlined"
                                     density="compact"
@@ -175,7 +175,7 @@
                     </v-form>
                 </v-card-text>
                 <div class="d-flex flex-row mb-6 mx-6">
-                    <v-btn color="primary" @click="createProduct">
+                    <v-btn color="primary" @click="createExpenseProduct">
                         Submit</v-btn
                     >
                 </div>
@@ -194,10 +194,10 @@ const formData = reactive({
     image: null,
     name: "",
     code: "",
-    materialCategory: "",
+    expenseCategory: "",
 
     unitId: "",
-    cost: "",
+    price: "",
 
     stockAlert: "",
     details: "",
@@ -226,10 +226,10 @@ const rules = {
     //         "Password must be at least 8 characters long and contain at least one letter and one number",
 };
 
-const createProduct = async () => {
+const createExpenseProduct = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
-        SettingRepository.CreateProduct(formData);
+        SettingRepository.CreateExpenseProduct(formData);
     }
 };
 console.log(SettingRepository.image_url, "man");

@@ -24,6 +24,9 @@ export let useSettingRepository = defineStore("SettingRepository", {
             expenseCategory: reactive([]),
             // git ubit
             productUnit: reactive([]),
+            // Expense Product
+            expenseProducts: reactive([]),
+            expenseProduct: reactive([]),
 
             isLoading: false,
             error: null,
@@ -316,6 +319,94 @@ export let useSettingRepository = defineStore("SettingRepository", {
                 console.error("Error updating product:", error);
                 // Handle errors here if necessary
             }
+        },
+        // ====================================================================//
+        // Expense Product
+        async FetchExpenseProductsData({ page, itemsPerPage }) {
+            this.loading = true;
+            setContentType("multipart/form-data");
+
+            const response = await axios.get(
+                `/expenseProducts?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
+            );
+            this.expenseProducts = response.data.data;
+
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async FetchExpenseProductData(id) {
+            setContentType("multipart/form-data");
+
+            const response = await axios.get(`/expenseProducts/${id}`);
+
+            this.expenseProduct = response.data.data; // Assign the fetched data directly to this.people
+        },
+        async CreateExpenseProduct(formData) {
+            console.log(formData);
+
+            try {
+                // Assuming setContentType and axios are defined somewhere
+                setContentType("multipart/form-data");
+
+                const config = {
+                    method: "POST",
+                    url: "expenseProducts",
+                    data: formData,
+                };
+
+                const response = await axios(config);
+                console.log("Account created successfully:", response.data);
+
+                // Close dialog after successful creation
+                this.createDailog = false;
+
+                // Fetch updated account data
+                this.FetchExpenseProductsData({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (error) {
+                console.error("Error creating account:", error);
+                // Handle error here (e.g., show error message to the user)
+            }
+        },
+        async DeleteExpenseProduct(id) {
+            const config = {
+                method: "DELETE",
+                url: "/expenseProducts/" + id,
+            };
+
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Deleted", {
+            //     autoClose: 1000,
+            // });
+            this.FetchExpenseProductsData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async UpdateExpenseProduc(id, data) {
+            console.log(data);
+
+            // Adding a custom header to the Axios request
+            setContentType("multipart/form-data");
+            const config = {
+                method: "PUT",
+                url: "/expenseProducts/" + id,
+                data: data,
+            };
+
+            // Using Axios to make a post request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("User Succesfully Updated", {
+            //     autoClose: 1000,
+            // });
+
+            this.updateDailog = false;
+            this.FetchExpenseProductsData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
         },
 
         // ===================================================================//

@@ -25,8 +25,8 @@
                             rounded="shaped"
                             v-bind="props"
                             :append-icon="null"
-                            title="Expense Produc"
-                            value="Expense Produc"
+                            title="Expense Product"
+                            value="Expense Product"
                         ></v-list-item>
                     </router-link>
                 </template>

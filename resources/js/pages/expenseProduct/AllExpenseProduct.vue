@@ -42,14 +42,16 @@
                                     "
                                     :headers="headers"
                                     :items-length="SettingRepository.totalItems"
-                                    :items="SettingRepository.products"
+                                    :items="SettingRepository.expenseProducts"
                                     :loading="SettingRepository.loading"
                                     :search="SettingRepository.ServiceSearch"
                                     item-value="id"
                                     @update:options="
-                                        SettingRepository.FetchProductsData
+                                        SettingRepository.FetchExpenseProductsData
                                     "
-                                    :item-key="SettingRepository.products"
+                                    :item-key="
+                                        SettingRepository.expenseProducts
+                                    "
                                     itemKey="id"
                                     hover
                                 >
@@ -127,7 +129,7 @@ const headers = [
     { title: "PRODUCTS", key: "name", sortable: false },
     { title: "CATEGORY", key: "materialCategory.name", sortable: false },
     { title: "UNIT", key: "unit.name", sortable: false },
-    { title: "COST", key: "cost", sortable: false },
+    { title: "COST", key: "price", sortable: false },
     { title: "STOCK ALERT", key: "stockAlert", sortable: false },
 
     { title: "Action", key: "actions", sortable: false, align: "end" },
@@ -137,13 +139,13 @@ const createPopUp = () => {
     SettingRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    SettingRepository.DeleteProduct(id);
+    SettingRepository.DeleteExpenseProduct(id);
 };
 const editItem = (item) => {
     console.log(item.id, "man");
-    SettingRepository.product = {};
-    if (Object.keys(SettingRepository.product).length === 0) {
-        SettingRepository.FetchProductData(item.id)
+    SettingRepository.expenseProduct = {};
+    if (Object.keys(SettingRepository.expenseProduct).length === 0) {
+        SettingRepository.FetchExpenseProductData(item.id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
                 SettingRepository.updateDailog = true;
