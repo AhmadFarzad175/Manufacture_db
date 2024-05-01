@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Traits\ImageManipulation;
 use Illuminate\Http\Request;
 use App\Models\Settings\Product;
 use App\Http\Controllers\Controller;
@@ -13,6 +14,7 @@ use App\Http\Requests\Settings\UpdateProductRequest;
 
 class ProductController extends Controller
 {
+    use ImageManipulation;
     /**
      * Display a listing of the resource.
      */

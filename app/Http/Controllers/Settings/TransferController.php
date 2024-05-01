@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Traits\WarehouseSelection;
 use Illuminate\Http\Request;
 use App\Models\Settings\Transfer;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Settings\TransferDetails;
 use App\Models\Settings\WarehouseProduct;
 use App\Models\Settings\WarehouseMaterial;
 use App\Http\Requests\Settings\TransferRequest;
@@ -13,6 +15,7 @@ use App\Http\Resources\Settings\TransferResource;
 
 class TransferController extends Controller
 {
+    use WarehouseSelection;
     /**
      * Display a listing of the resource.
      */
@@ -43,8 +46,8 @@ class TransferController extends Controller
 
         //INSERT INTO PIVOT TABLE
         foreach ($validated['transferDetails'] as $transferDetail) {
-            
-            Transfer::create([
+
+            TransferDetails::create([
                 'transfer_id' => $transfer->id,
                 'productMaterial_id' => $transferDetail['productMaterialId'],
                 'type' => $transferDetail['type'],
@@ -52,47 +55,9 @@ class TransferController extends Controller
                 'unit_cost' => $transferDetail['unitCost'],
             ]);
 
-            
-            // Update existing record
-            if ($transferDetail['type'] == 0) {
-                //UPDATE THE WAREHOUSE PRODUCT TABLE
-                $warehouseProduct = WarehouseMaterial::where('warehouse_id', $validated['from_warehouse_id '])
-                    ->where('material_id', $transferDetail['productMaterial_id'])
-                    ->first();
-    
-                $warehouseProduct = WarehouseMaterial::where('warehouse_id', $validated['from_warehouse_id '])
-                    ->where('material_id', $transferDetail['productMaterial_id'])
-                    ->first();
-                if ($warehouseProduct && $warehouseProduct->quantity >= $transferDetail['quantity']) {
-                    $warehouseProduct->decrement('quantity', $transferDetail['quantity']);
-                }
-            }
-
-            //UPDATE THE WAREHOUSE PRODUCT TABLE
-            if ($transferDetail['type'] == 1) {
-                $warehouseProduct = WarehouseProduct::where('warehouse_id', $validated['from_warehouse_id '])
-                    ->where('product_id', $transferDetail['productMaterial_id'])
-                    ->first();
-    
-                $warehouseProduct = WarehouseProduct::where('warehouse_id', $validated['from_warehouse_id '])
-                    ->where('product_id', $transferDetail['productMaterial_id'])
-                    ->first();
-
-                if ($warehouseProduct && $warehouseProduct->quantity >= $transferDetail['quantity']) {
-                    $warehouseProduct->decrement('quantity', $transferDetail['quantity']);
-                }
-            }
-
-            $warehouseProduct = WarehouseProduct::where('warehouse_id', $validated['warehouse_id'])
-                ->where('product_id', $transferDetail['product_id'])
-                ->first();
-
-            if ($warehouseProduct && $warehouseProduct->quantity >= $transferDetail['quantity']) {
-                // Update existing record
-                $warehouseProduct->decrement('quantity', $transferDetail['quantity']);
-            }
+            $this->WarehouseManipulation($validated, $transferDetail);
         }
-       
+
 
 
         DB::commit();
@@ -117,16 +82,12 @@ class TransferController extends Controller
      */
     public function update(TransferRequest $request, Transfer $transfer)
     {
-        $transfer->update($request->validated());
+        $validated = $request->validated();
+        $transfer->update($validated);
 
-        // Update transfer details if necessary
-        if ($request->has('transferDetails')) {
-
-            
-            foreach ($request->input('transferDetails') as $transferDetail) {
-                
-            }
-
+        // Handle transfer details
+        foreach ($validated['transferDetails'] as $transferDetail) {
+            $this->updateTransferDetail($transfer, $transferDetail);
         }
 
         return TransferResource::make($transfer);
