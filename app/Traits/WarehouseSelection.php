@@ -11,7 +11,7 @@ trait WarehouseSelection
 {
 
 
-    public function WarehouseManipulation($validated, $transferDetail)
+    public function WarehouseManipulation($validated, $transferDetail, $oldQuantity = null)
     {
         if ($transferDetail['type'] == 0) {
             $fromWarehouse = $this->getWarehouseMaterial($validated['from_warehouse_id'], $transferDetail['productMaterialId']);
@@ -25,9 +25,7 @@ trait WarehouseSelection
                     'quantity' => 0
                 ]);
             }
-        }
-
-        elseif ($transferDetail['type'] == 1) {
+        } elseif ($transferDetail['type'] == 1) {
             $fromWarehouse = $this->getWarehouseProduct($validated['from_warehouse_id'], $transferDetail['productMaterialId']);
             $toWarehouse = $this->getWarehouseProduct($validated['to_warehouse_id'], $transferDetail['productMaterialId']);
 
@@ -40,26 +38,36 @@ trait WarehouseSelection
                 ]);
             }
         }
+        // just for update method
+        if ($oldQuantity) {
+            $qtyDiff = $oldQuantity - $transferDetail['quantity'];
+            $fromWarehouse->increment('quantity', $qtyDiff);
+            $toWarehouse->decrement('quantity', $qtyDiff);
 
-        //update the warehouses
-        $fromWarehouse->decrement('quantity', $transferDetail['quantity']);
-        $toWarehouse->increment('quantity', $transferDetail['quantity']);
+        }else{
+            //update the warehouses in store method
+            $fromWarehouse->decrement('quantity', $transferDetail['quantity']);
+            $toWarehouse->increment('quantity', $transferDetail['quantity']);
+        }
+
     }
 
 
 
-
+    //Update method
     public function updateTransferDetail($transfer, $transferDetail)
     {
         // Get the transfer detail
         $existingDetail = TransferDetails::where('transfer_id', $transfer->id)
             ->where('productMaterial_id', $transferDetail['productMaterialId'])
+            ->where('type', $transferDetail['type'])
             ->first();
-        
-        
-        dd($existingDetail);
+
+        // Store the old quantity if the existing detail exists
+        $oldQuantity = $existingDetail ? $existingDetail->quantity : 0;
+
+        // Update existing detail
         if ($existingDetail) {
-            // Update existing detail
             $existingDetail->update([
                 'type' => $transferDetail['type'],
                 'quantity' => $transferDetail['quantity'],
@@ -77,10 +85,20 @@ trait WarehouseSelection
         }
 
         // Update warehouse
-        $this->warehouseManipulation($transfer, $transferDetail);
+        $this->warehouseManipulation($transfer, $transferDetail, $oldQuantity);
     }
 
 
+
+
+
+
+
+
+
+
+
+    // helper methods
     public function getWarehouseMaterial($warehouseId, $materialId)
     {
         return WarehouseMaterial::where('warehouse_id', $warehouseId)
