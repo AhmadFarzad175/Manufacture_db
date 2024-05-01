@@ -27,7 +27,7 @@ trait WarehouseSelection
             }
         }
 
-        if ($transferDetail['type'] == 1) {
+        elseif ($transferDetail['type'] == 1) {
             $fromWarehouse = $this->getWarehouseProduct($validated['from_warehouse_id'], $transferDetail['productMaterialId']);
             $toWarehouse = $this->getWarehouseProduct($validated['to_warehouse_id'], $transferDetail['productMaterialId']);
 

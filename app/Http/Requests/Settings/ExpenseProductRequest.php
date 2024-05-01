@@ -41,7 +41,7 @@ class ExpenseProductRequest extends FormRequest
             'image' => 'nullable|image',
             'expense_category_id' => 'required',
             'unit_id' => 'required',
-            'price' => 'required|min:0',
+            'price' => 'required|min:0',    
             'stock' => 'nullable|min:0',
             'stock_alert' => 'required|min:0',
             'details' => 'nullable|string',
