@@ -195,10 +195,8 @@ const formData = reactive({
     name: "",
     code: "",
     expenseCategory: "",
-
     unitId: "",
     price: "",
-
     stockAlert: "",
     details: "",
 });

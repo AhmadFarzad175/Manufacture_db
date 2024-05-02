@@ -21,8 +21,8 @@
                 <v-card-text>
                     <v-form ref="formRef">
                         <v-row>
-                            <div class="w-3/5">
-                                <v-col cols="10">
+                            <div class="w-4/5">
+                                <v-col cols="12">
                                     <v-text-field
                                         v-model="
                                             SettingRepository.expenseProduct
@@ -47,9 +47,9 @@
                                     ></v-text-field>
                                 </v-col>
                             </div>
-                            <v-col cols="3" sm="3">
+                            <v-col cols="" sm="" class="w-1/5">
                                 <div
-                                    class="relative inline-block h-28 w-40 ml-5 rounded-lg object-cover"
+                                    class="relative inline-block h-28 w-28 rounded-2xl border-dashed border-2 overflow-hidden"
                                 >
                                     <v-file-input
                                         type="file"
@@ -60,12 +60,12 @@
 
                                     <img
                                         :src="imageSrc"
-                                        class="h-28 w-40 object-cover"
-                                        :style="
-                                            imageSrc === null
-                                                ? { display: 'none' }
-                                                : { display: 'block' }
-                                        "
+                                        class="h-full w-full object-cover"
+                                        :style="{
+                                            display: imageSrc
+                                                ? 'block'
+                                                : 'none',
+                                        }"
                                     />
                                     <div
                                         class="absolute top-0 h-full w-full rounded bg-opacity-0 flex items-center justify-center border-2 border-gray-300"
@@ -96,7 +96,7 @@
                                             v-if="imageSrc"
                                             type="button"
                                             @click="OpenWindow(inputRef)"
-                                            class="rounded-full absolute -top-4 -right-4 text-gray hover:text-blue-500 bg-white shodaw-lg p-1 transition duration-200"
+                                            class="rounded-full absolute -top-4 -right-4 text-gray hover:text-blue-500 bg-white shadow-lg p-1 transition duration-200"
                                         >
                                             <v-icon size="small"
                                                 >mdi-pencil</v-icon
@@ -110,10 +110,7 @@
                             <div class="w-50">
                                 <v-autocomplete
                                     type="category"
-                                    v-model="
-                                        SettingRepository.expenseProduct
-                                            .materialCategory
-                                    "
+                                    v-model="formData.expenseCategory"
                                     :items="
                                         SettingRepository.productUnit
                                             .materialCategory
@@ -128,9 +125,7 @@
                             </div>
                             <div class="w-50">
                                 <v-autocomplete
-                                    v-model="
-                                        SettingRepository.expenseProduct.unit
-                                    "
+                                    v-model="formData.unitId"
                                     :items="SettingRepository.productUnit.unit"
                                     item-title="name"
                                     item-value="id"
@@ -235,9 +230,10 @@ const formRef = ref(null);
 const formData = reactive({
     id: SettingRepository.expenseProduct.id,
     image: "",
+
     name: SettingRepository.expenseProduct.name,
     code: SettingRepository.expenseProduct.code,
-    materialCategory: SettingRepository.expenseProduct.materialCategory,
+    expenseCategory: SettingRepository.expenseProduct.expenseCategory,
     unitId: SettingRepository.expenseProduct.unitId,
     price: SettingRepository.expenseProduct.price,
     stockAlert: SettingRepository.expenseProduct.stockAlert,
@@ -245,11 +241,11 @@ const formData = reactive({
 });
 let imageSrc = ref(SettingRepository.expenseProduct.image);
 
-let image_url = SettingRepository.expenseProduct.image_url;
 const inputRef = ref(null);
 const onChangeImage = (e) => {
-    imageSrc.value = URL.createObjectURL(e.target.files[0]);
-    UpdateData.image = e.target.files[0];
+    const file = e.target.files[0]; // Get the selected file
+    formData.image = file; // Set the file in formData
+    imageSrc.value = URL.createObjectURL(file);
 };
 const OpenWindow = (action) => {
     if (action) {

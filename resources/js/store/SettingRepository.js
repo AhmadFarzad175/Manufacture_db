@@ -391,8 +391,8 @@ export let useSettingRepository = defineStore("SettingRepository", {
             // Adding a custom header to the Axios request
             setContentType("multipart/form-data");
             const config = {
-                method: "PUT",
-                url: "/expenseProducts/" + id,
+                method: "POST",
+                url: "/expenseProducts/update/" + id,
                 data: data,
             };
 
