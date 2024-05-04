@@ -24,10 +24,7 @@
                             <div class="w-4/5">
                                 <v-col cols="12">
                                     <v-text-field
-                                        v-model="
-                                            SettingRepository.expenseProduct
-                                                .name
-                                        "
+                                        v-model="formData.name"
                                         :counter="10"
                                         label="   NAME  * "
                                         variant="outlined"
@@ -36,10 +33,7 @@
                                         :rules="[rules.required, rules.name]"
                                     ></v-text-field>
                                     <v-text-field
-                                        v-model="
-                                            SettingRepository.expenseProduct
-                                                .code
-                                        "
+                                        v-model="formData.code"
                                         :counter="10"
                                         label="   CODE *"
                                         variant="outlined"
@@ -175,9 +169,7 @@
                             <div class="w-full d-flex">
                                 <v-text-field
                                     type="email"
-                                    v-model="
-                                        SettingRepository.expenseProduct.price
-                                    "
+                                    v-model="formData.price"
                                     label="   COST*"
                                     variant="outlined"
                                     density="compact"
@@ -190,10 +182,7 @@
                                     <!-- </span> -->
                                 </v-text-field>
                                 <v-text-field
-                                    v-model="
-                                        SettingRepository.expenseProduct
-                                            .stockAlert
-                                    "
+                                    v-model="formData.stockAlert"
                                     :counter="10"
                                     label="   Stock Alert   * "
                                     variant="outlined"
@@ -203,7 +192,7 @@
                             </div>
                         </div>
                         <v-textarea
-                            v-model="SettingRepository.expenseProduct.details"
+                            v-model="formData.details"
                             label="   Details   * "
                             variant="outlined"
                             density="compact"
@@ -237,7 +226,7 @@ const formData = reactive({
     unitId: SettingRepository.expenseProduct.unitId,
     price: SettingRepository.expenseProduct.price,
     stockAlert: SettingRepository.expenseProduct.stockAlert,
-    details: SettingRepository.expenseProduct.details,
+    details: "",
 });
 let imageSrc = ref(SettingRepository.expenseProduct.image);
 
@@ -279,56 +268,8 @@ const rules = {
 const updateProduct = async () => {
     formRef.value.validate().then((validate) => {
         if (validate.valid) {
-            SettingRepository.UpdateExpenseProduc(formData.id, formData);
+            SettingRepository.UpdateExpenseProduct(formData.id, formData);
         }
     });
 };
 </script>
-<style scoped>
-span {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.switch {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    border: 1px solid #000;
-}
-.file-input-button {
-    display: block;
-    width: 7.6rem;
-    height: 7.6rem;
-    border: 2px dashed #ccc;
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
-    position: relative;
-}
-
-.file-input-button img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-
-    /* Make the image cover the entire area */
-}
-
-.file-input-button::before {
-    content: ""; /* Hide the "Choose File" text */
-    display: block;
-    text-align: center;
-    font-size: 16px;
-    color: #666;
-}
-
-.file-input-button:hover {
-    background-color: #f0f0f0; /* Change the background color on hover */
-}
-
-.hidden {
-    display: none;
-}
-</style>

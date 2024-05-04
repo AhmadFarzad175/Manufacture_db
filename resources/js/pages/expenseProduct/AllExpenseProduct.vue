@@ -142,7 +142,7 @@ const deleteItem = (id) => {
     SettingRepository.DeleteExpenseProduct(id);
 };
 const editItem = (item) => {
-    console.log(item.id, "man");
+    // console.log(item.id, "man");
     SettingRepository.expenseProduct = {};
     if (Object.keys(SettingRepository.expenseProduct).length === 0) {
         SettingRepository.FetchExpenseProductData(item.id)

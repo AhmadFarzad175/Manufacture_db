@@ -293,10 +293,11 @@ export let useSettingRepository = defineStore("SettingRepository", {
         async UpdateProduct(id, data) {
             // Adding a custom header to the Axios request
             setContentType("multipart/form-data");
+            console.log(data);
 
             const config = {
-                method: "PUT",
-                url: "materials" + id,
+                method: "POST",
+                url: "/materials/update/" + id,
                 data: data,
             };
 
@@ -385,7 +386,7 @@ export let useSettingRepository = defineStore("SettingRepository", {
                 itemsPerPage: this.itemsPerPage,
             });
         },
-        async UpdateExpenseProduc(id, data) {
+        async UpdateExpenseProduct(id, data) {
             console.log(data);
 
             // Adding a custom header to the Axios request
@@ -653,5 +654,9 @@ export let useSettingRepository = defineStore("SettingRepository", {
                 itemsPerPage: this.itemsPerPage,
             });
         },
+
+        // ============================================================================////
+
+        // Transfer===========================================================/////////////
     },
 });
