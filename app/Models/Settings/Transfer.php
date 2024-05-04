@@ -71,15 +71,6 @@ class Transfer extends Model
                 })
                 ->orWhereHas('toWarehouse', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('customer', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('user', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('currency', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
                 });
         });
     }

@@ -13,7 +13,7 @@ trait WarehouseSelection
 
     public function WarehouseManipulation($validated, $transferDetail, $oldQuantity = null)
     {
-        if ($transferDetail['type'] == 0) {
+        if ($transferDetail['kind'] == 0) {
             $fromWarehouse = $this->getWarehouseMaterial($validated['from_warehouse_id'], $transferDetail['productMaterialId']);
             $toWarehouse = $this->getWarehouseMaterial($validated['to_warehouse_id'], $transferDetail['productMaterialId']);
 
@@ -25,7 +25,7 @@ trait WarehouseSelection
                     'quantity' => 0
                 ]);
             }
-        } elseif ($transferDetail['type'] == 1) {
+        } elseif ($transferDetail['kind'] == 1) {
             $fromWarehouse = $this->getWarehouseProduct($validated['from_warehouse_id'], $transferDetail['productMaterialId']);
             $toWarehouse = $this->getWarehouseProduct($validated['to_warehouse_id'], $transferDetail['productMaterialId']);
 
@@ -60,7 +60,7 @@ trait WarehouseSelection
         // Get the transfer detail
         $existingDetail = TransferDetails::where('transfer_id', $transfer->id)
             ->where('productMaterial_id', $transferDetail['productMaterialId'])
-            ->where('type', $transferDetail['type'])
+            ->where('kind', $transferDetail['kind'])
             ->first();
 
         // Store the old quantity if the existing detail exists
@@ -69,7 +69,7 @@ trait WarehouseSelection
         // Update existing detail
         if ($existingDetail) {
             $existingDetail->update([
-                'type' => $transferDetail['type'],
+                'kind' => $transferDetail['kind'],
                 'quantity' => $transferDetail['quantity'],
                 'unit_cost' => $transferDetail['unitCost'],
             ]);
@@ -78,7 +78,7 @@ trait WarehouseSelection
             TransferDetails::create([
                 'transfer_id' => $transfer->id,
                 'productMaterial_id' => $transferDetail['productMaterialId'],
-                'type' => $transferDetail['type'],
+                'kind' => $transferDetail['kind'],
                 'quantity' => $transferDetail['quantity'],
                 'unit_cost' => $transferDetail['unitCost'],
             ]);

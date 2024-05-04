@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Settings\Transfer;
+use App\Models\Settings\Warehouse;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -12,13 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transfer_details', function (Blueprint $table) {
+        Schema::create('adjustments', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Transfer::class)->constrained();
-            $table->integer('productMaterial_id');
-            $table->boolean('kind');    // 0:material    1:product
-            $table->integer('quantity');
-            $table->decimal('unit_cost', 20, 2);
+            $table->date('date');
+            $table->string('reference')->unique();
+            $table->foreignIdFor(Warehouse::class)->constrained();
+            $table->text('details')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transfer_details');
+        Schema::dropIfExists('adjustments');
     }
 };

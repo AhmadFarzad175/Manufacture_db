@@ -24,6 +24,7 @@ use App\Models\Settings\Transfer;
 use App\Models\Peoples\LoanPeople;
 use App\Models\Purchases\Purchase;
 use App\Models\Settings\Warehouse;
+use App\Models\Settings\Adjustment;
 use App\Models\Peoples\ExpensePeople;
 use App\Models\Settings\SystemSetting;
 use App\Models\Settings\ExpenseProduct;
@@ -42,6 +43,7 @@ use App\Models\Settings\MaterialCategory;
 use App\Models\Settings\WarehouseProduct;
 use App\Models\ProductManagements\Consume;
 use App\Models\ProductManagements\Produce;
+use App\Models\Settings\AdjustmentDetails;
 use App\Models\Settings\WarehouseMaterial;
 use App\Models\Finances\ExpensePaymentSent;
 use App\Models\Finances\LoanPaymentReceived;
@@ -130,5 +132,8 @@ class DatabaseSeeder extends Seeder
 
         Transfer::factory(10)->create();
         TransferDetails::factory(10)->create();
+
+        Adjustment::factory(10)->create();
+        AdjustmentDetails::factory(10)->create();
     }
 }
