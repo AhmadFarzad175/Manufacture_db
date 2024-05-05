@@ -50,13 +50,15 @@
                     </v-list-group>
                     <v-list-group value="Supplier" class="w-full">
                         <template v-slot:activator="{ props }">
-                            <v-list-item
-                                v-bind="props"
-                                :append-icon="null"
-                                title="Supplier"
-                                class="-ml-12 w-full"
-                            >
-                            </v-list-item>
+                            <router-link to="/allsupliers">
+                                <v-list-item
+                                    v-bind="props"
+                                    :append-icon="null"
+                                    title="Supplier"
+                                    class="-ml-12 w-full"
+                                >
+                                </v-list-item>
+                            </router-link>
                         </template>
                     </v-list-group>
                     <v-list-group value="Expense People" class="w-full">

@@ -1,44 +1,15 @@
+<script setup></script>
 <template>
-    <div class="search w-full py-8 ml-8">
-        <v-card max-width="262" class="border">
-            <v-text-field
-                class="w-full"
-                :loading="loading"
-                append-inner-icon="mdi-magnify"
-                label="Search"
-                variant="solo"
-                hide-details
-                single-line
-                @click:append-inner="onClick"
-            ></v-text-field>
-        </v-card>
+    <div
+        class="flex items-center p-2 bg-[#F3F6F9] rounded-[4px] h-[42px] w-full sm:w-[252px]"
+    >
+        <div>
+            <img src="" alt="search icon" class="mr-2" />
+        </div>
+        <input
+            type="text"
+            placeholder="Search..."
+            class="border-none outline-none w-full bg-[#F3F6F9] font-style"
+        />
     </div>
 </template>
-<script>
-import { ref } from "vue";
-
-export default {
-    setup() {
-        // Define reactive properties
-        const loaded = ref(false);
-        const loading = ref(false);
-
-        // Define method
-        const onClick = () => {
-            loading.value = true;
-
-            setTimeout(() => {
-                loading.value = false;
-                loaded.value = true;
-            }, 2000);
-        };
-
-        // Return reactive properties and method
-        return {
-            loaded,
-            loading,
-            onClick,
-        };
-    },
-};
-</script>

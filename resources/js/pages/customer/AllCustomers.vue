@@ -4,7 +4,6 @@
     <toolbar title="Setting-" subtitle="customer" />
 
     <div class="w-full d-flex">
-        <productMenu />
         <div class="w-full">
             <v-layout class="py-5">
                 <v-row class="justify-space-between mt-6">
@@ -18,7 +17,11 @@
                             density="compact"
                         ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="2">
+                    <v-col cols="12" sm="2" class="d-flex mr-28 gap-2">
+                        <v-btn color="blue" variant="outlined" size="large">
+                            <v-icon>mdi-filter-outline</v-icon>
+                            <span class="">FILTER</span>
+                        </v-btn>
                         <v-btn
                             @click="createPopUp"
                             color="light-blue-darken-1"
@@ -109,8 +112,8 @@
 
 <script setup>
 import { usePeopleRepository } from "../../store/PeopleRepository";
-import CreateCustomer from "./CreateCustomer.vue";
-import UpdateCustomer from "./UpdateCustomer.vue";
+import CreateCustomer from "../supplier/CreateSupplier.vue";
+import UpdateCustomer from "../supplier/UpdateSupplier.vue";
 
 // import CreateUnits from "../unit/CreateUnits.vue";
 // import UpdateUnits from "./UpdateUnits.vue";

@@ -11,6 +11,7 @@ import AllExpense from "./pages/expenseCategory/AllExpense.vue";
 import AllTransfer from "./pages/transfer/AllTransfer.vue";
 import AllExpenseProduct from "./pages/expenseProduct/AllExpenseProduct.vue";
 import AllCustomers from "./pages/customer/AllCustomers.vue";
+import AllSupplier from "./pages/supplier/AllSupplier.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -27,6 +28,7 @@ const router = createRouter({
         { path: "/allTransfer", component: AllTransfer },
         { path: "/allExpenseProduct", component: AllExpenseProduct },
         { path: "/allCustomers", component: AllCustomers },
+        { path: "/allsupliers", component: AllSupplier },
     ],
 });
 

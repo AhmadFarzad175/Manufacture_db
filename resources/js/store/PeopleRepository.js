@@ -11,6 +11,10 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             // Customers//
             customers: reactive([]),
             customer: reactive([]),
+            // ===Supplier====\\
+            suppliers: reactive([]),
+            supplier: reactive([]),
+
             isLoading: false,
             error: null,
             loading: false,
@@ -24,6 +28,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             router: useRouter(),
             totalItems: 0,
             itemKey: "id",
+            supplierSearch: "",
 
             Search: "",
         };
@@ -104,6 +109,56 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
 
             this.updateDailog = false;
             this.FetchCustomersData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        //  ==============================Supplier==========================================\\
+
+        async FetchSuppliersData({ page, itemsPerPage }) {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(
+                `/suppliers?page=${page}&perPage=${itemsPerPage}&search=${this.supplierSearch}`
+            );
+            this.suppliers = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async CreateSupplier(formData) {
+            console.log(formData);
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "POST",
+                url: "/suppliers/",
+                data: formData,
+            };
+
+            // Using Axios to make a GET request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Created", {
+            //     autoClose: 1000,
+            // });
+            this.createDailog = false;
+            this.FetchSuppliersData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async DeleteSupplier(id) {
+            const config = {
+                method: "DELETE",
+                url: "/suppliers/" + id,
+            };
+
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Deleted", {
+            //     autoClose: 1000,
+            // });
+            this.FetchSuppliersData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });
