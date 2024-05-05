@@ -29,7 +29,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
         };
     },
     actions: {
-        async FetchAcustomersData({ page, itemsPerPage }) {
+        async FetchCustomersData({ page, itemsPerPage }) {
             this.loading = true;
             setContentType("application/json");
 
@@ -63,28 +63,28 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 itemsPerPage: this.itemsPerPage,
             });
         },
-        async DeleteUnit(id) {
+        async DeleteCustomer(id) {
             const config = {
                 method: "DELETE",
-                url: "/units/" + id,
+                url: "/customers/" + id,
             };
 
             const response = await axios(config);
             // toast.success("Customer Succesfully Deleted", {
             //     autoClose: 1000,
             // });
-            this.FetchUnitsData({
+            this.FetchCustomersData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });
         },
-        async FetchUnitData(id) {
+        async FetchCustomerData(id) {
             setContentType("application/json");
-            const response = await axios.get(`/units/${id}`);
+            const response = await axios.get(`/customers/${id}`);
 
-            this.unit = response.data.data; // Assign the fetched data directly to this.people
+            this.customer = response.data.data; // Assign the fetched data directly to this.people
         },
-        async UpdateUnit(id, data) {
+        async UpdateCustomer(id, data) {
             console.log(data);
 
             // Adding a custom header to the Axios request
@@ -92,7 +92,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
 
             const config = {
                 method: "PUT",
-                url: "/units/" + id,
+                url: "/customers/" + id,
                 data: data,
             };
 
@@ -103,7 +103,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             // });
 
             this.updateDailog = false;
-            this.FetchUnitsData({
+            this.FetchCustomersData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });

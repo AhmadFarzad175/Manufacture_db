@@ -13,10 +13,6 @@ const rules = {
 async function updateUnit() {
     formRef.value.validate().then((validate) => {
         if (validate.valid) {
-            // SettingRepository.UpdateCurrency(
-            // SettingRepository.currency.id,
-            // SettingRepository.currency
-            // );
             const UpdateData = reactive({
                 name: SettingRepository.unit.name,
                 shortName: SettingRepository.unit.shortName,

@@ -1,6 +1,6 @@
 <template>
-    <CreateUnits v-if="PeopleRepository.createDailog" />
-    <UpdateUnits v-if="PeopleRepository.updateDailog" />
+    <CreateCustomer v-if="PeopleRepository.createDailog" />
+    <UpdateCustomer v-if="PeopleRepository.updateDailog" />
     <toolbar title="Setting-" subtitle="customer" />
 
     <div class="w-full d-flex">
@@ -47,7 +47,7 @@
                                     :search="PeopleRepository.ServiceSearch"
                                     item-value="id"
                                     @update:options="
-                                        PeopleRepository.FetchAcustomersData
+                                        PeopleRepository.FetchCustomersData
                                     "
                                     :item-key="PeopleRepository.customers"
                                     itemKey="id"
@@ -109,12 +109,15 @@
 
 <script setup>
 import { usePeopleRepository } from "../../store/PeopleRepository";
+import CreateCustomer from "./CreateCustomer.vue";
+import UpdateCustomer from "./UpdateCustomer.vue";
 
 // import CreateUnits from "../unit/CreateUnits.vue";
 // import UpdateUnits from "./UpdateUnits.vue";
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
 import CreateButton from "../../Component/UI/CreateButton.vue";
+
 let PeopleRepository = usePeopleRepository();
 
 const headers = [
@@ -131,12 +134,12 @@ const createPopUp = () => {
     PeopleRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    PeopleRepository.DeleteUnit(id);
+    PeopleRepository.DeleteCustomer(id);
 };
 const editItem = (id) => {
-    PeopleRepository.unit = {};
-    if (Object.keys(PeopleRepository.unit).length === 0) {
-        PeopleRepository.FetchUnitData(id)
+    PeopleRepository.customer = {};
+    if (Object.keys(PeopleRepository.customer).length === 0) {
+        PeopleRepository.FetchCustomerData(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
                 PeopleRepository.updateDailog = true;
