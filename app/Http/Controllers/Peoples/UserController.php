@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Peoples;
 
 use App\Models\Peoples\User;
+use App\Traits\ImageManipulation;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
@@ -11,6 +12,7 @@ use App\Http\Resources\Peoples\UserResource;
 
 class UserController extends Controller
 {
+    use ImageManipulation;
     /**
      * Display a listing of the resource.
      */
@@ -32,9 +34,7 @@ class UserController extends Controller
     {
         $validated = $request->validated();
 
-        if ($request->hasFile('image')) {
-            $validated['image'] = $validated['image']->store('user_images/', 'public');
-        }
+        $request->hasFile('image') ? $this->storeImage($request, $validated, 'user_images') : null;
 
         User::create($validated);
 
@@ -52,31 +52,12 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function updateUser(UserRequest $request, User $user)
     {
-
         $validated = $request->validated();
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $oldImagePath = public_path('storage/user_images/' . basename($user->image));
+        $this->updateImage($user, $request, $validated, 'user_images');
 
-            if (File::exists($oldImagePath)) {
-                File::delete($oldImagePath);
-            }
-            $validated['image'] = $request['image']->store('user_images/', 'public');
-        }
-        if (!isset($request['image'])) {
-            $oldImagePath = public_path('storage/user_images/' . basename($user->image));
-
-            if (File::exists($oldImagePath)) {
-                File::delete($oldImagePath);
-            }
-            $validated['image'] = $imagePath;
-        }
-        if (is_string($request['image'])) {
-            $validated['image'] = $user->image;
-        }
         $user->update($validated);
 
         return response()->json(['success' => 'User updated successfully']);
@@ -87,12 +68,16 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $imagePath = public_path('storage/user_images/' . basename($user->image));
-        if (File::exists($imagePath)) {
-            File::delete($imagePath);
-        }
+        $this->deleteImage($user, 'material_images');
         $user->delete();
         return response()->noContent();
+    }
+
+    public function switchUser(Request $request, User $user)
+    {
+        // HERE WE SWITCH THE STATUS OF USER
+        $user->update($request->validate(['status' => 'boolean']));
+        return new UserResource($user);
     }
 
     public function bulkDelete(Request $request)
@@ -101,4 +86,7 @@ class UserController extends Controller
         User::destroy($users);
         return response()->json(['success', 'Users deleted successfully']);
     }
+
+    
+
 }

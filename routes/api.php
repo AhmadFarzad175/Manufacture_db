@@ -95,12 +95,13 @@ Route::post('/expenseProducts/update/{expenseProduct}', [ExpenseProductControlle
 Route::apiResource('/units', UnitController::class);
 Route::post('unitsBulkDelete', [UnitController::class, 'bulkDelete']);
 
-
 #PEOPLE
 Route::apiResource('/customers', CustomerController::class);
 Route::apiResource('/suppliers', SupplierController::class);
 Route::apiResource('/expensePeoples', ExpensePeopleController::class);
 Route::apiResource('/users', UserController::class);
+Route::post('/users/update/{updateUser}', [UserController::class, 'updateUser']);
+
 
 
 #EXPENSE
