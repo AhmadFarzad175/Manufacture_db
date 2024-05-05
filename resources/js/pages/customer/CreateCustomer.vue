@@ -26,7 +26,7 @@ const rules = {
     <v-dialog
         transition="dialog-top-transition"
         v-model="SettingRepository.createDailog"
-        width="70rem"
+        width="600px"
     >
         <template v-slot:default="{ isActive }">
             <v-card class="px-3">
@@ -39,53 +39,25 @@ const rules = {
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
-                    <v-form class="w-full">
-                        <div class="w-full d-flex gap-4">
-                            <v-autocomplete
-                                type="Date"
+                    <v-form ref="formRef" class="w-full gap-4">
+                        <div class="w-full">
+                            <v-text-field
                                 v-model="formData.name"
                                 variant="outlined"
-                                label=" DATE*"
+                                label=" Name *"
                                 :rules="[rules.required, rules.counter]"
                                 class="pb-4"
-                            ></v-autocomplete>
-
-                            <v-autocomplete
-                                v-model="formData.shortName"
-                                variant="outlined"
-                                label="From Warehouse *"
-                                :rules="[rules.required, rules.name]"
-                                class="pb-4"
-                            ></v-autocomplete>
-                            <v-autocomplete
-                                v-model="formData.shortName"
-                                variant="outlined"
-                                label="To Warehouse *"
-                                :rules="[rules.required, rules.name]"
-                                class="pb-4"
-                            ></v-autocomplete>
-                        </div>
-                        <v-col cols="full" class="w-50" sm="12" md="12">
-                            <v-text-field
-                                variant="outlined"
-                                label="Product"
-                                density="compact"
-                                append-inner-icon="mdi-magnify"
-                                clearable
-                                class="border-none"
                             ></v-text-field>
-                            <div class="rounded shadow-lg px-5 mb-12 w-[83vw]">
-                                <div>
-                                    <div>
-                                        <p
-                                            class="cursor-pointer pb-2.5 hover:bg-red"
-                                        >
-                                            {{ index.name }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </v-col>
+                        </div>
+                        <div class="w-full">
+                            <v-text-field
+                                v-model="formData.shortName"
+                                variant="outlined"
+                                label="Short Name *"
+                                :rules="[rules.required, rules.name]"
+                                class="pb-4"
+                            ></v-text-field>
+                        </div>
                     </v-form>
                 </v-card-text>
                 <div class="justify-start pl-6 pb-6">

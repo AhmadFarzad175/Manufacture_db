@@ -8,6 +8,7 @@ import { useRouter } from "vue-router";
 export let usePeopleRepository = defineStore("PeopleRepository", {
     state() {
         return {
+            // Customers//
             customers: reactive([]),
             customer: reactive([]),
             isLoading: false,
@@ -39,6 +40,73 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             console.log(response.data.data);
             this.totalItems = response.data.meta.total;
             this.loading = false;
+        },
+        async CreateCustomer(formData) {
+            console.log(formData);
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "POST",
+                url: "/units",
+                data: formData,
+            };
+
+            // Using Axios to make a GET request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Created", {
+            //     autoClose: 1000,
+            // });
+            this.createDailog = false;
+            this.FetchUnitsData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async DeleteUnit(id) {
+            const config = {
+                method: "DELETE",
+                url: "/units/" + id,
+            };
+
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Deleted", {
+            //     autoClose: 1000,
+            // });
+            this.FetchUnitsData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async FetchUnitData(id) {
+            setContentType("application/json");
+            const response = await axios.get(`/units/${id}`);
+
+            this.unit = response.data.data; // Assign the fetched data directly to this.people
+        },
+        async UpdateUnit(id, data) {
+            console.log(data);
+
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "PUT",
+                url: "/units/" + id,
+                data: data,
+            };
+
+            // Using Axios to make a post request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Updated", {
+            //     autoClose: 1000,
+            // });
+
+            this.updateDailog = false;
+            this.FetchUnitsData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
         },
     },
 });
