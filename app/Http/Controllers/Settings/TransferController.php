@@ -25,7 +25,7 @@ class TransferController extends Controller
         $search = $request->input('search');
 
         // Eager load relationships and apply search
-        $transfers = Transfer::with(['fromWarehouse', 'transferDetails'])->search($search);
+        $transfers = Transfer::with(['fromWarehouse', 'toWarehouse','transferDetails'])->search($search);
 
         $transfers = $transfers->latest()->paginate($perPage);
 
@@ -50,7 +50,7 @@ class TransferController extends Controller
             TransferDetails::create([
                 'transfer_id' => $transfer->id,
                 'productMaterial_id' => $transferDetail['productMaterialId'],
-                'type' => $transferDetail['type'],
+                'kind' => $transferDetail['kind'],
                 'quantity' => $transferDetail['quantity'],
                 'unit_cost' => $transferDetail['unitCost'],
             ]);
@@ -98,6 +98,20 @@ class TransferController extends Controller
      */
     public function destroy(Transfer $transfer)
     {
-        $transfer->delete();
+        DB::beginTransaction();
+        try {
+            // Delete associated transfer details
+            $transfer->transferDetails()->delete();
+
+            // Delete the transfer record
+            $transfer->delete();
+
+            DB::commit();
+            return response()->json(['message' => 'Transfer deleted successfully']);
+        } catch (\Exception $e) {
+            DB::rollback();
+            // Handle the exception, log it, or return an error response
+            return response()->json(['message' => 'An error occurred while processing the request.'], 500);
+        }
     }
 }

@@ -44,7 +44,7 @@ class TransferRequest extends FormRequest
             'tax' => 'required|numeric|min:0',
             'details' => 'nullable|string',
             'transferDetails.*.productMaterialId' => 'required|integer',
-            'transferDetails.*.type' => 'required|numeric|min:0',
+            'transferDetails.*.kind' => 'required|numeric|min:0',
             'transferDetails.*.quantity' => 'required|numeric|min:0',
             'transferDetails.*.unitCost' => 'required|numeric|min:0',
         ];

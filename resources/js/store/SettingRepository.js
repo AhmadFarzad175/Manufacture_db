@@ -12,8 +12,12 @@ export let useSettingRepository = defineStore("SettingRepository", {
             currency: reactive([]),
             wharehouse: reactive([]),
             wharehouses: reactive([]),
+            // transfer
             transfer: reactive([]),
             transfers: reactive([]),
+            getWharehouse: reactive([]),
+
+            // //////////
             product: reactive([]),
             products: reactive([]),
             unit: reactive([]),
@@ -657,6 +661,48 @@ export let useSettingRepository = defineStore("SettingRepository", {
 
         // ============================================================================////
 
-        // Transfer===========================================================/////////////
+        // Transfer//
+        async FetchTransfersData({ page, itemsPerPage }) {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(
+                `/transfers?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
+            );
+            this.transfers = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async CreateTransfer(formData) {
+            console.log(formData);
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "POST",
+                url: "/transfers/",
+                data: formData,
+            };
+
+            // Using Axios to make a GET request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Created", {
+            //     autoClose: 1000,
+            // });
+            this.createDailog = false;
+            this.FetchExpenseCategoriesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async GetUnit() {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(`unitCategories`);
+            this.productUnit = response.data.data;
+            console.log(response.data.data);
+            this.loading = false;
+        },
     },
 });

@@ -2,23 +2,23 @@
 
 namespace App\Models\Settings;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class TransferDetails extends Model
+class AdjustmentDetails extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'transfer_id',
+        'adjustment_id',
         'productMaterial_id',
+        'type',
         'kind',
-        'quantity',
-        'unit_cost'
+        'amount',
     ];
 
-    public function transfer(){
-        return $this->belongsTo(Transfer::class);
+    public function adjustment(){
+        return $this->belongsTo(Adjustment::class);
     }
 }

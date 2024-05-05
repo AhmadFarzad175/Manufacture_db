@@ -1,8 +1,8 @@
 <template>
-    <Create v-if="SettingRepository.createDailog" />
+    <CreateTransfer v-if="SettingRepository.createDailog" />
     <Update v-if="SettingRepository.updateDailog" />
     <div class="w-full">
-        <toolbar title="Setting-" subtitle="wharehouse" />
+        <toolbar title="Setting-" subtitle="Transfer" />
         <v-layout class="py-5">
             <v-row class="justify-space-between">
                 <v-col cols="12" sm="3">
@@ -39,17 +39,27 @@
                                 "
                                 :headers="headers"
                                 :items-length="SettingRepository.totalItems"
-                                :items="SettingRepository.wharehouses"
+                                :items="SettingRepository.transfers"
                                 :loading="SettingRepository.loading"
                                 :search="SettingRepository.ServiceSearch"
                                 item-value="id"
                                 @update:options="
-                                    SettingRepository.FetchWharehousesData
+                                    SettingRepository.FetchTransfersData
                                 "
-                                :item-key="SettingRepository.wharehouses"
+                                :item-key="SettingRepository.transfers"
                                 itemKey="id"
                                 hover
                             >
+                                <template v-slot:item.status="{ item }">
+                                    <!-- Status Cell -->
+                                    <div
+                                        v-bind:class="
+                                            getStatusClasses(item.status)
+                                        "
+                                    >
+                                        {{ item.status }}
+                                    </div>
+                                </template>
                                 <template
                                     v-slot:item.actions="{ item }"
                                     class="right"
@@ -101,19 +111,35 @@
 import { useSettingRepository } from "../../store/SettingRepository";
 // import Create from "./Create.vue";
 // import Update from "./Update.vue";
+import CreateTransfer from "./CreateTransfer.vue";
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
 import CreateButton from "../../Component/UI/CreateButton.vue";
 let SettingRepository = useSettingRepository();
+const getStatusClasses = (status) => {
+    // Map status to Tailwind classes
+    switch (status) {
+        case "pending":
+            return "border-2 border-orange-500 text-orange-500 text-center   rounded";
+        case "order":
+            return "border-2 text-gray-700 text-gray-700 px-2 py-1 text-center rounded";
+        case "Completed":
+            return "border-2 border-green-500 text-green-500  text-center rounded";
+        case "sent":
+            return "border-2 border-blue-500 text-blue-500 text-center  rounded";
+        default:
+            return " text-gray-500   text-center  rounded";
+    }
+};
 
 const headers = [
-    { title: "DATE", key: "name", sortable: false },
-    { title: "REFERENCE", key: "phone", sortable: false },
-    { title: "FROM WAREHOUSE", key: "email", sortable: false },
-    { title: "TO WAREHOUSE", key: "city", sortable: false },
-    { title: "ITEMS", key: "country", sortable: false },
-    { title: "GRAND TOTAL", key: "country", sortable: false },
-    { title: "STATUS", key: "country", sortable: false },
+    { title: "DATE", key: "date", sortable: false },
+    { title: "REFERENCE", key: "references", sortable: false },
+    { title: "FROM WAREHOUSE", key: "fromWarehouse.name", sortable: false },
+    { title: "TO WAREHOUSE", key: "toWarehouse.name", sortable: false },
+    { title: "ITEMS", key: "items", sortable: false },
+    { title: "GRAND TOTAL", key: "total", sortable: false },
+    { title: "STATUS", key: "status", sortable: false },
     { title: "Action", key: "actions", sortable: false, align: "end" },
 ];
 

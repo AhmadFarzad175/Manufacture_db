@@ -23,12 +23,78 @@
             title="Finance"
             value="finance"
         ></v-list-item>
-        <v-list-item
-            prepend-icon="mdi-transmission-tower"
-            :append-icon="null"
-            title="People"
-            value="people"
-        ></v-list-item>
+        <v-list v-model:opened="open">
+            <v-list-group class="side" value="People">
+                <template v-slot:activator="{ props }">
+                    <v-list-item
+                        v-bind="props"
+                        prepend-icon="mdi-cog-outline"
+                        :append-icon="null"
+                        title="People"
+                        value="People"
+                    ></v-list-item>
+                </template>
+                <div>
+                    <v-list-group value="Customer" class="w-full">
+                        <template v-slot:activator="{ props }">
+                            <router-link to="/allCustomers">
+                                <v-list-item
+                                    v-bind="props"
+                                    :append-icon="null"
+                                    title="Customer"
+                                    class="-ml-12 w-full"
+                                >
+                                </v-list-item>
+                            </router-link>
+                        </template>
+                    </v-list-group>
+                    <v-list-group value="Supplier" class="w-full">
+                        <template v-slot:activator="{ props }">
+                            <v-list-item
+                                v-bind="props"
+                                :append-icon="null"
+                                title="Supplier"
+                                class="-ml-12 w-full"
+                            >
+                            </v-list-item>
+                        </template>
+                    </v-list-group>
+                    <v-list-group value="Expense People" class="w-full">
+                        <template v-slot:activator="{ props }">
+                            <v-list-item
+                                v-bind="props"
+                                :append-icon="null"
+                                title="Expense People"
+                                class="-ml-12 w-full"
+                            >
+                            </v-list-item>
+                        </template>
+                    </v-list-group>
+                    <v-list-group value="Loan People" class="w-full">
+                        <template v-slot:activator="{ props }">
+                            <v-list-item
+                                v-bind="props"
+                                :append-icon="null"
+                                title="Loan People"
+                                class="-ml-12 w-full"
+                            >
+                            </v-list-item>
+                        </template>
+                    </v-list-group>
+                    <v-list-group value="Users" class="w-full">
+                        <template v-slot:activator="{ props }">
+                            <v-list-item
+                                v-bind="props"
+                                :append-icon="null"
+                                title="Users"
+                                class="-ml-12 w-full"
+                            >
+                            </v-list-item>
+                        </template>
+                    </v-list-group>
+                </div>
+            </v-list-group>
+        </v-list>
         <v-list-item
             prepend-icon="mdi-finance"
             :append-icon="null"

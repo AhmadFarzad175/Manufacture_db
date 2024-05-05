@@ -5,9 +5,9 @@ namespace Database\Factories\Settings;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Settings\TransferDetails>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Settings\AdjustmentDetails>
  */
-class TransferDetailsFactory extends Factory
+class AdjustmentDetailsFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,11 +17,11 @@ class TransferDetailsFactory extends Factory
     public function definition(): array
     {
         return [
-            'transfer_id' => rand(1, 10),
+            'adjustment_id' => rand(1, 10),
             'productMaterial_id' => rand(1, 10),
+            'type' => $this->faker->boolean(),
             'kind' => $this->faker->boolean(),
-            'quantity' => rand(1,50),
-            'unit_cost' => rand(100,10000),
+            'amount' => rand(1,50),
         ];
     }
 }

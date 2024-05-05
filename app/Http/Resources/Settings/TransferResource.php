@@ -29,9 +29,9 @@ class TransferResource extends JsonResource
         ],
         'toWarehouse' => [
             'id' => $this->to_warehouse_id,
-            'name' => $this->toWarehouse->name, // Corrected the typo here
+            'name' => $this->toWarehouse->name,
         ],
-        'total_items' => $items,
+        'items' => $items,
     ];
 }
 }

@@ -20,6 +20,7 @@ use App\Http\Controllers\Settings\MaterialController;
 use App\Http\Controllers\Settings\TransferController;
 use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Settings\WarehouseController;
+use App\Http\Controllers\Settings\AdjustmentController;
 use App\Http\Controllers\Peoples\ExpensePeopleController;
 use App\Http\Controllers\Settings\SystemSettingController;
 use App\Http\Controllers\Settings\ExpenseProductController;
@@ -65,6 +66,11 @@ Route::post('currencyAccount',[AllController::class, 'currencyAccount'] );
 
 Route::apiResource('/warehouses', WarehouseController::class);
 Route::post('warehousesBulkDelete', [WarehouseController::class, 'bulkDelete']);
+
+
+Route::apiResource('/transfers', TransferController::class);
+Route::apiResource('/adjustments', AdjustmentController::class);
+
 
 Route::apiResource('/accounts', AccountController::class);
 Route::post('accountsBulkDelete', [AccountController::class, 'bulkDelete']);
