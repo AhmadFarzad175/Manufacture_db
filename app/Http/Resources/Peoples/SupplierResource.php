@@ -19,6 +19,8 @@ class SupplierResource extends JsonResource
             'name' => $this->name,
             'phone' => $this->phone,
             'email' => $this->email,
+            'purchaseDue' => 100,
+            'returnDue' =>80
         ];
     }
 }
