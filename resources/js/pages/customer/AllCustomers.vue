@@ -121,8 +121,8 @@ const headers = [
     { title: "NAME", key: "name", sortable: false },
     { title: "PHONE", key: "phone", sortable: false },
     { title: "EMAIL", key: "email", sortable: false },
-    { title: "TOTAL SALES DUE", key: "shortName", sortable: false },
-    { title: "TOTAL SALES RETURN DUE", key: "shortName", sortable: false },
+    { title: "TOTAL SALES DUE", key: "salesDue", sortable: false },
+    { title: "TOTAL SALES RETURN DUE", key: "returnDue", sortable: false },
 
     { title: "Action", key: "actions", sortable: false, align: "end" },
 ];

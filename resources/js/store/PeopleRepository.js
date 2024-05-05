@@ -48,7 +48,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
 
             const config = {
                 method: "POST",
-                url: "/units",
+                url: "/customers",
                 data: formData,
             };
 

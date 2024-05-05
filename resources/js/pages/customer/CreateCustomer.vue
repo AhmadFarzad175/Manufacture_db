@@ -1,18 +1,18 @@
 <script setup>
-import { useSettingRepository } from "../../store/SettingRepository";
+import { usePeopleRepository } from "../../store/PeopleRepository";
 import { reactive, ref } from "vue";
-let SettingRepository = useSettingRepository();
+let PeopleRepository = usePeopleRepository();
 const formRef = ref(null);
 const formData = reactive({
     id: "",
-    name: "",
-    shortName: "",
+    message: "",
+    email: "",
 });
 
 const createUnit = async () => {
     formRef.value.validate().then((validate) => {
         if (validate.valid) {
-            SettingRepository.CreateUnit(formData);
+            PeopleRepository.CreateUnit(formData);
         }
     });
 };
@@ -25,7 +25,7 @@ const rules = {
 <template>
     <v-dialog
         transition="dialog-top-transition"
-        v-model="SettingRepository.createDailog"
+        v-model="PeopleRepository.createDailog"
         width="600px"
     >
         <template v-slot:default="{ isActive }">
@@ -42,7 +42,7 @@ const rules = {
                     <v-form ref="formRef" class="w-full gap-4">
                         <div class="w-full">
                             <v-text-field
-                                v-model="formData.name"
+                                v-model="formData.email"
                                 variant="outlined"
                                 label=" Name *"
                                 :rules="[rules.required, rules.counter]"
@@ -51,7 +51,7 @@ const rules = {
                         </div>
                         <div class="w-full">
                             <v-text-field
-                                v-model="formData.shortName"
+                                v-model="formData.message"
                                 variant="outlined"
                                 label="Short Name *"
                                 :rules="[rules.required, rules.name]"
