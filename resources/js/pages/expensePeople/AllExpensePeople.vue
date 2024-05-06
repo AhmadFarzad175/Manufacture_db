@@ -1,6 +1,6 @@
 <template>
     <CreateExpensePeople v-if="PeopleRepository.createDailog" />
-    <UpdateCustomer v-if="PeopleRepository.updateDailog" />
+    <UpdateExpensePeople v-if="PeopleRepository.updateDailog" />
     <toolbar title="Setting-" subtitle="Expense People" />
 
     <div class="w-full d-flex">
@@ -45,14 +45,16 @@
                                     "
                                     :headers="headers"
                                     :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.customers"
+                                    :items="PeopleRepository.expensePeoples"
                                     :loading="PeopleRepository.loading"
-                                    :search="PeopleRepository.ServiceSearch"
+                                    :search="
+                                        PeopleRepository.expensePeopleSearch
+                                    "
                                     item-value="id"
                                     @update:options="
-                                        PeopleRepository.FetchCustomersData
+                                        PeopleRepository.FetchExpensePeoplesData
                                     "
-                                    :item-key="PeopleRepository.customers"
+                                    :item-key="PeopleRepository.expensePeoples"
                                     itemKey="id"
                                     hover
                                 >
@@ -113,6 +115,7 @@
 <script setup>
 import { usePeopleRepository } from "../../store/PeopleRepository";
 import CreateExpensePeople from "./CreateExpensePeople.vue";
+import UpdateExpensePeople from "./UpdateExpensePeople.vue";
 
 // import CreateUnits from "../unit/CreateUnits.vue";
 // import UpdateUnits from "./UpdateUnits.vue";
@@ -126,8 +129,6 @@ const headers = [
     { title: "NAME", key: "name", sortable: false },
     { title: "PHONE", key: "phone", sortable: false },
     { title: "EMAIL", key: "email", sortable: false },
-    { title: "TOTAL SALES DUE", key: "salesDue", sortable: false },
-    { title: "TOTAL SALES RETURN DUE", key: "returnDue", sortable: false },
 
     { title: "Action", key: "actions", sortable: false, align: "end" },
 ];
@@ -136,12 +137,12 @@ const createPopUp = () => {
     PeopleRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    PeopleRepository.DeleteCustomer(id);
+    PeopleRepository.DeleteExpensePeople(id);
 };
 const editItem = (id) => {
-    PeopleRepository.customer = {};
-    if (Object.keys(PeopleRepository.customer).length === 0) {
-        PeopleRepository.FetchCustomerData(id)
+    PeopleRepository.expensePeople = {};
+    if (Object.keys(PeopleRepository.expensePeople).length === 0) {
+        PeopleRepository.FetchExpensePeopleData(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
                 PeopleRepository.updateDailog = true;

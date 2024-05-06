@@ -10,10 +10,10 @@ const formData = reactive({
     email: "",
 });
 
-const createCustomer = async () => {
+const createExpensePeople = async () => {
     formRef.value.validate().then((validate) => {
         if (validate.valid) {
-            PeopleRepository.CreateCustomer(formData);
+            PeopleRepository.CreateExpensePeople(formData);
         }
     });
 };
@@ -77,7 +77,9 @@ const rules = {
                     </v-form>
                 </v-card-text>
                 <div class="justify-start pl-6 pb-6">
-                    <v-btn color="light-blue-darken-1" @click="createCustomer"
+                    <v-btn
+                        color="light-blue-darken-1"
+                        @click="createExpensePeople"
                         >Submit</v-btn
                     >
                 </div>

@@ -15,6 +15,9 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             // ===Supplier====\\
             suppliers: reactive([]),
             supplier: reactive([]),
+            // ====Expense People ========\\
+            expensePeople: reactive([]),
+            expensePeoples: reactive([]),
 
             isLoading: false,
             error: null,
@@ -30,11 +33,13 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             totalItems: 0,
             itemKey: "id",
             supplierSearch: "",
+            expensePeopleSearch: "",
 
             Search: "",
         };
     },
     actions: {
+        // ===============Customer===============================\\
         async FetchCustomersData({ page, itemsPerPage }) {
             this.loading = true;
             setContentType("application/json");
@@ -190,6 +195,86 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
 
             this.updateDailog = false;
             this.FetchSuppliersData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        // ===============Expense People ======================================
+
+        async FetchExpensePeoplesData({ page, itemsPerPage }) {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(
+                `/expensePeoples?page=${page}&perPage=${itemsPerPage}&search=${this.expensePeopleSearch}`
+            );
+            this.expensePeoples = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async CreateExpensePeople(formData) {
+            console.log(formData);
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "POST",
+                url: "expensePeoples",
+                data: formData,
+            };
+
+            // Using Axios to make a GET request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Created", {
+            //     autoClose: 1000,
+            // });
+            this.createDailog = false;
+            this.FetchExpensePeoplesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async DeleteExpensePeople(id) {
+            const config = {
+                method: "DELETE",
+                url: "/expensePeoples/" + id,
+            };
+
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Deleted", {
+            //     autoClose: 1000,
+            // });
+            this.FetchExpensePeoplesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async FetchExpensePeopleData(id) {
+            setContentType("application/json");
+            const response = await axios.get(`/expensePeoples/${id}`);
+
+            this.expensePeople = response.data.data; // Assign the fetched data directly to this.people
+        },
+        async UpdateExpensePeople(id, data) {
+            console.log(data);
+
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "PUT",
+                url: "/expensePeoples/" + id,
+                data: data,
+            };
+
+            // Using Axios to make a post request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Updated", {
+            //     autoClose: 1000,
+            // });
+
+            this.updateDailog = false;
+            this.FetchExpensePeoplesData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });
