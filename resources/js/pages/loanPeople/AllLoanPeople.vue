@@ -1,7 +1,7 @@
 <template>
     <CreateLoanPeople v-if="PeopleRepository.createDailog" />
     <UpdateLoanPeople v-if="PeopleRepository.updateDailog" />
-    <toolbar title="Setting-" subtitle="Expense People" />
+    <toolbar title="People-" subtitle="Loan People" />
 
     <div class="w-full d-flex">
         <div class="w-full">
@@ -45,16 +45,14 @@
                                     "
                                     :headers="headers"
                                     :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.expensePeoples"
+                                    :items="PeopleRepository.loanPeoples"
                                     :loading="PeopleRepository.loading"
-                                    :search="
-                                        PeopleRepository.expensePeopleSearch
-                                    "
+                                    :search="PeopleRepository.loanPeoplesSearch"
                                     item-value="id"
                                     @update:options="
-                                        PeopleRepository.FetchExpensePeoplesData
+                                        PeopleRepository.FetchLoanPeoplesData
                                     "
-                                    :item-key="PeopleRepository.expensePeoples"
+                                    :item-key="PeopleRepository.loanPeoples"
                                     itemKey="id"
                                     hover
                                 >
@@ -125,7 +123,7 @@ let PeopleRepository = usePeopleRepository();
 const headers = [
     { title: "NAME", key: "name", sortable: false },
     { title: "PHONE", key: "phone", sortable: false },
-    { title: "EMAIL", key: "email", sortable: false },
+    { title: "EMAIL", key: "email", sortable: false, align: "center" },
 
     { title: "Action", key: "actions", sortable: false, align: "end" },
 ];
@@ -134,12 +132,12 @@ const createPopUp = () => {
     PeopleRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    PeopleRepository.DeleteExpensePeople(id);
+    PeopleRepository.DeleteLoanPeople(id);
 };
 const editItem = (id) => {
-    PeopleRepository.expensePeople = {};
-    if (Object.keys(PeopleRepository.expensePeople).length === 0) {
-        PeopleRepository.FetchExpensePeopleData(id)
+    PeopleRepository.loanPeople = {};
+    if (Object.keys(PeopleRepository.loanPeople).length === 0) {
+        PeopleRepository.FetchLoanPeopleData(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
                 PeopleRepository.updateDailog = true;

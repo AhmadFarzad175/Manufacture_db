@@ -76,13 +76,15 @@
                     </v-list-group>
                     <v-list-group value="Loan People" class="w-full">
                         <template v-slot:activator="{ props }">
-                            <v-list-item
-                                v-bind="props"
-                                :append-icon="null"
-                                title="Loan People"
-                                class="-ml-12 w-full"
-                            >
-                            </v-list-item>
+                            <router-link to="/loanPeople">
+                                <v-list-item
+                                    v-bind="props"
+                                    :append-icon="null"
+                                    title="Loan People"
+                                    class="-ml-12 w-full"
+                                >
+                                </v-list-item>
+                            </router-link>
                         </template>
                     </v-list-group>
                     <v-list-group value="Users" class="w-full">
@@ -94,6 +96,19 @@
                                 class="-ml-12 w-full"
                             >
                             </v-list-item>
+                        </template>
+                    </v-list-group>
+                    <v-list-group value="Owner" class="w-full">
+                        <template v-slot:activator="{ props }">
+                            <router-link to="/allOwner">
+                                <v-list-item
+                                    v-bind="props"
+                                    :append-icon="null"
+                                    title="Owner"
+                                    class="-ml-12 w-full"
+                                >
+                                </v-list-item>
+                            </router-link>
                         </template>
                     </v-list-group>
                 </div>

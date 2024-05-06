@@ -13,7 +13,8 @@ import AllExpenseProduct from "./pages/expenseProduct/AllExpenseProduct.vue";
 import AllCustomers from "./pages/customer/AllCustomers.vue";
 import AllSupplier from "./pages/supplier/AllSupplier.vue";
 import AllExpesePeople from "./pages/expensePeople/AllExpensePeople.vue";
-
+import AllLoanPeople from "./pages/loanPeople/AllLoanPeople.vue";
+import AllOwner from "./pages/owner/AllOwner.vue";
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -31,6 +32,8 @@ const router = createRouter({
         { path: "/allCustomers", component: AllCustomers },
         { path: "/allsupliers", component: AllSupplier },
         { path: "/allExpensePeople", component: AllExpesePeople },
+        { path: "/loanPeople", component: AllLoanPeople },
+        { path: "/allOwner", component: AllOwner },
     ],
 });
 

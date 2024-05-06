@@ -291,11 +291,78 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             setContentType("application/json");
 
             const response = await axios.get(
-                `/expensePeoples?page=${page}&perPage=${itemsPerPage}&search=${this.expensePeopleSearch}`
+                `/loanPeoples?page=${page}&perPage=${itemsPerPage}&search=${this.expensePeopleSearch}`
             );
-            this.expensePeoples = response.data.data;
+            this.loanPeoples = response.data.data;
             this.totalItems = response.data.meta.total;
             this.loading = false;
+        },
+        async CreateLoanPeople(formData) {
+            console.log(formData);
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "POST",
+                url: "/loanPeoples/",
+                data: formData,
+            };
+
+            // Using Axios to make a GET request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Created", {
+            //     autoClose: 1000,
+            // });
+            this.createDailog = false;
+            this.FetchLoanPeoplesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async DeleteLoanPeople(id) {
+            const config = {
+                method: "DELETE",
+                url: "/loanPeoples/" + id,
+            };
+
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Deleted", {
+            //     autoClose: 1000,
+            // });
+            this.FetchLoanPeoplesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async FetchLoanPeopleData(id) {
+            setContentType("application/json");
+            const response = await axios.get(`/loanPeoples/${id}`);
+
+            this.loanPeople = response.data.data; // Assign the fetched data directly to this.people
+        },
+        async UpdateLoanPeople(id, data) {
+            console.log(data);
+
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "PUT",
+                url: "/loanPeoples/" + id,
+                data: data,
+            };
+
+            // Using Axios to make a post request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Updated", {
+            //     autoClose: 1000,
+            // });
+
+            this.updateDailog = false;
+            this.FetchLoanPeoplesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
         },
     },
 });
