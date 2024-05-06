@@ -18,6 +18,10 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             // ====Expense People ========\\
             expensePeople: reactive([]),
             expensePeoples: reactive([]),
+            // =====LoanPeople========\\
+
+            loanPeoples: reactive([]),
+            loanPeople: reactive([]),
 
             isLoading: false,
             error: null,
@@ -33,6 +37,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             totalItems: 0,
             itemKey: "id",
             supplierSearch: "",
+            loanPeopleSearch: "",
             expensePeopleSearch: "",
 
             Search: "",
@@ -278,6 +283,19 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });
+        },
+
+        // ======LoanPeople ==================\\
+        async FetchLoanPeoplesData({ page, itemsPerPage }) {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(
+                `/expensePeoples?page=${page}&perPage=${itemsPerPage}&search=${this.expensePeopleSearch}`
+            );
+            this.expensePeoples = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
         },
     },
 });
