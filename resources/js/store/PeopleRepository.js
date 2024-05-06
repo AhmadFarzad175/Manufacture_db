@@ -22,6 +22,9 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
 
             loanPeoples: reactive([]),
             loanPeople: reactive([]),
+            // ====Owner=====\\
+            owners: reactive([]),
+            owner: reactive([]),
 
             isLoading: false,
             error: null,
@@ -39,6 +42,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             supplierSearch: "",
             loanPeopleSearch: "",
             expensePeopleSearch: "",
+            ownerSearch: "",
 
             Search: "",
         };
@@ -360,6 +364,87 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
 
             this.updateDailog = false;
             this.FetchLoanPeoplesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+
+        // =============Owner==================\\
+
+        async FetchOwnersData({ page, itemsPerPage }) {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(
+                `/owners?page=${page}&perPage=${itemsPerPage}&search=${this.ownerSearch}`
+            );
+            this.owners = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async CreateOwner(formData) {
+            console.log(formData);
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "POST",
+                url: "/owners/",
+                data: formData,
+            };
+
+            // Using Axios to make a GET request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Created", {
+            //     autoClose: 1000,
+            // });
+            this.createDailog = false;
+            this.FetchOwnersData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async DeleteOwner(id) {
+            const config = {
+                method: "DELETE",
+                url: "/owners/" + id,
+            };
+
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Deleted", {
+            //     autoClose: 1000,
+            // });
+            this.FetchOwnersData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async FetchOwnerData(id) {
+            setContentType("application/json");
+            const response = await axios.get(`/owners/${id}`);
+
+            this.owner = response.data.data; // Assign the fetched data directly to this.people
+        },
+        async UpdateOwner(id, data) {
+            console.log(data);
+
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "PUT",
+                url: "/owners/" + id,
+                data: data,
+            };
+
+            // Using Axios to make a post request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Updated", {
+            //     autoClose: 1000,
+            // });
+
+            this.updateDailog = false;
+            this.FetchOwnersData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });

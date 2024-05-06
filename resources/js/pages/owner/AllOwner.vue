@@ -45,14 +45,14 @@
                                     "
                                     :headers="headers"
                                     :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.loanPeoples"
+                                    :items="PeopleRepository.owners"
                                     :loading="PeopleRepository.loading"
-                                    :search="PeopleRepository.loanPeoplesSearch"
+                                    :search="PeopleRepository.ownerSearch"
                                     item-value="id"
                                     @update:options="
-                                        PeopleRepository.FetchLoanPeoplesData
+                                        PeopleRepository.FetchOwnersData
                                     "
-                                    :item-key="PeopleRepository.loanPeoples"
+                                    :item-key="PeopleRepository.owners"
                                     itemKey="id"
                                     hover
                                 >
@@ -124,20 +124,28 @@ const headers = [
     { title: "NAME", key: "name", sortable: false },
     { title: "PHONE", key: "phone", sortable: false },
     { title: "EMAIL", key: "email", sortable: false, align: "center" },
+    { title: "OWNERS SHARE", key: "share", sortable: false, align: "center" },
 
-    { title: "Action", key: "actions", sortable: false, align: "end" },
+    { title: "OWNERS ASSET", key: "assets", sortable: false, align: "center" },
+
+    {
+        title: "Action",
+        key: "actions",
+        sortable: false,
+        align: "end",
+    },
 ];
 
 const createPopUp = () => {
     PeopleRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    PeopleRepository.DeleteLoanPeople(id);
+    PeopleRepository.DeleteOwner(id);
 };
 const editItem = (id) => {
-    PeopleRepository.loanPeople = {};
-    if (Object.keys(PeopleRepository.loanPeople).length === 0) {
-        PeopleRepository.FetchLoanPeopleData(id)
+    PeopleRepository.owner = {};
+    if (Object.keys(PeopleRepository.owner).length === 0) {
+        PeopleRepository.FetchOwnerData(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
                 PeopleRepository.updateDailog = true;

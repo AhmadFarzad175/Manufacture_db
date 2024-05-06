@@ -123,7 +123,12 @@ let PeopleRepository = usePeopleRepository();
 const headers = [
     { title: "NAME", key: "name", sortable: false },
     { title: "PHONE", key: "phone", sortable: false },
-    { title: "EMAIL", key: "email", sortable: false, align: "center" },
+    {
+        title: "EMAIL",
+        key: "email",
+        sortable: false,
+        align: "center",
+    },
 
     { title: "Action", key: "actions", sortable: false, align: "end" },
 ];
