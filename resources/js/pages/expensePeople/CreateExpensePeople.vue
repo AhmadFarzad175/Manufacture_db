@@ -10,10 +10,10 @@ const formData = reactive({
     email: "",
 });
 
-const createSupplier = async () => {
+const createCustomer = async () => {
     formRef.value.validate().then((validate) => {
         if (validate.valid) {
-            PeopleRepository.CreateSupplier(formData);
+            PeopleRepository.CreateCustomer(formData);
         }
     });
 };
@@ -49,20 +49,20 @@ const rules = {
                 <v-divider></v-divider>
                 <v-card-text>
                     <v-form ref="formRef" class="w-full gap-4">
-                        <div class="d-flex w-full gap-4">
+                        <div class="d-flex gap-4 w-full">
                             <v-text-field
                                 v-model="formData.name"
                                 variant="outlined"
                                 label=" Name *"
                                 :rules="[rules.required, rules.name]"
-                                class="pb-4 w-1/2"
+                                class="pb-4"
                             ></v-text-field>
                             <v-text-field
                                 v-model="formData.phone"
                                 variant="outlined"
                                 label="phone *"
                                 :rules="[rules.required, rules.phone]"
-                                class="pb-4 w-1/2"
+                                class="pb-4"
                             ></v-text-field>
                         </div>
                         <div class="w-full">
@@ -77,7 +77,7 @@ const rules = {
                     </v-form>
                 </v-card-text>
                 <div class="justify-start pl-6 pb-6">
-                    <v-btn color="light-blue-darken-1" @click="createSupplier"
+                    <v-btn color="light-blue-darken-1" @click="createCustomer"
                         >Submit</v-btn
                     >
                 </div>

@@ -18,16 +18,16 @@ const rules = {
     },
 };
 // functions
-async function updateCustomer() {
+async function updateSupplier() {
     formRef.value.validate().then((validate) => {
         if (validate.valid) {
             const UpdateData = reactive({
-                name: PeopleRepository.customer.name,
-                phone: PeopleRepository.customer.phone,
-                email: PeopleRepository.customer.email,
+                name: PeopleRepository.supplier.name,
+                phone: PeopleRepository.supplier.phone,
+                email: PeopleRepository.supplier.email,
             });
-            PeopleRepository.UpdateCustomer(
-                PeopleRepository.customer.id,
+            PeopleRepository.UpdateSupplier(
+                PeopleRepository.supplier.id,
                 // PeopleRepository.currency.name,
                 // PeopleRepository.currency.rate,
                 // PeopleRepository.currency.symbl,
@@ -58,14 +58,14 @@ async function updateCustomer() {
                     <v-form ref="formRef">
                         <div class="w-full d-flex gap-4">
                             <v-text-field
-                                v-model="PeopleRepository.customer.name"
+                                v-model="PeopleRepository.supplier.name"
                                 variant="outlined"
                                 label="Name"
                                 :rules="[rules.required, rules.name]"
                                 class="pb-4 w-1/2"
                             ></v-text-field>
                             <v-text-field
-                                v-model="PeopleRepository.customer.phone"
+                                v-model="PeopleRepository.supplier.phone"
                                 variant="outlined"
                                 label="Phone"
                                 :rules="[rules.required, rules.phone]"
@@ -73,7 +73,7 @@ async function updateCustomer() {
                             ></v-text-field>
                         </div>
                         <v-text-field
-                            v-model="PeopleRepository.customer.email"
+                            v-model="PeopleRepository.supplier.email"
                             variant="outlined"
                             label="Email"
                             :rules="[rules.required, rules.email]"
@@ -82,7 +82,7 @@ async function updateCustomer() {
                     </v-form>
                 </v-card-text>
                 <div class="justify-start pl-6 pb-6">
-                    <v-btn color="light-blue-darken-1" @click="updateCustomer"
+                    <v-btn color="light-blue-darken-1" @click="updateSupplier"
                         >Update</v-btn
                     >
                 </div>

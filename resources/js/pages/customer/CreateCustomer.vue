@@ -49,20 +49,20 @@ const rules = {
                 <v-divider></v-divider>
                 <v-card-text>
                     <v-form ref="formRef" class="w-full gap-4">
-                        <div class="d-flex gap-4 w-full">
+                        <div class="d-flex w-full gap-4">
                             <v-text-field
                                 v-model="formData.name"
                                 variant="outlined"
                                 label=" Name *"
                                 :rules="[rules.required, rules.name]"
-                                class="pb-4"
+                                class="pb-4 w-1/2"
                             ></v-text-field>
                             <v-text-field
                                 v-model="formData.phone"
                                 variant="outlined"
                                 label="phone *"
                                 :rules="[rules.required, rules.phone]"
-                                class="pb-4"
+                                class="pb-4 w-1/2"
                             ></v-text-field>
                         </div>
                         <div class="w-full">

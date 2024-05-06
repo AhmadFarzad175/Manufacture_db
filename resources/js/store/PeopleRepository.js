@@ -5,6 +5,7 @@ import { reactive, ref } from "vue";
 import { axios, setContentType } from "../axios";
 // import { toast } from "vue3-toastify";
 import { useRouter } from "vue-router";
+
 export let usePeopleRepository = defineStore("PeopleRepository", {
     state() {
         return {
@@ -158,6 +159,36 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             // toast.success("Customer Succesfully Deleted", {
             //     autoClose: 1000,
             // });
+            this.FetchSuppliersData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async FetchSupplierData(id) {
+            setContentType("application/json");
+            const response = await axios.get(`/suppliers/${id}`);
+
+            this.supplier = response.data.data; // Assign the fetched data directly to this.people
+        },
+        async UpdateSupplier(id, data) {
+            console.log(data);
+
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "PUT",
+                url: "/suppliers/" + id,
+                data: data,
+            };
+
+            // Using Axios to make a post request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Updated", {
+            //     autoClose: 1000,
+            // });
+
+            this.updateDailog = false;
             this.FetchSuppliersData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,

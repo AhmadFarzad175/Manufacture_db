@@ -112,8 +112,8 @@
 
 <script setup>
 import { usePeopleRepository } from "../../store/PeopleRepository";
-import CreateCustomer from "../supplier/CreateSupplier.vue";
-import UpdateCustomer from "../supplier/UpdateSupplier.vue";
+import CreateCustomer from "./CreateCustomer.vue";
+import UpdateCustomer from "./UpdateCustomer.vue";
 
 // import CreateUnits from "../unit/CreateUnits.vue";
 // import UpdateUnits from "./UpdateUnits.vue";
