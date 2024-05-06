@@ -25,7 +25,7 @@ class ExpensePeopleRequest extends FormRequest
     {
         $rules = [
             'name'  => 'required|string|max:255',
-            'email' => 'required|email|unique:suppliers,email|max:192',
+            'email' => 'required|email|unique:expensePeoples,email|max:192',
             'phone' => 'required|string|max:15',
         ];
         $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;

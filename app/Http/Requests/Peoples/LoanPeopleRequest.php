@@ -21,8 +21,14 @@ class LoanPeopleRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
+        $rules = [
+            'name'  => 'required|string|max:255',
+            'email' => 'required|email|unique:loanPeoples,email|max:192',
+            'phone' => 'required|string|max:15',
         ];
+        $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;
+
+        return $rules;
+
     }
 }
