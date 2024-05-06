@@ -6,6 +6,7 @@ use App\Http\Controllers\AllController;
 use App\Http\Controllers\Sales\SaleController;
 use App\Http\Controllers\PaymentSentController;
 use App\Http\Controllers\Peoples\UserController;
+use App\Http\Controllers\Peoples\OwnerController;
 use App\Http\Controllers\Settings\UnitController;
 use App\Http\Controllers\PaymentReceivedController;
 use App\Http\Controllers\Expenses\ExpenseController;
@@ -98,11 +99,12 @@ Route::post('unitsBulkDelete', [UnitController::class, 'bulkDelete']);
 
 #PEOPLE
 Route::apiResource('/customers', CustomerController::class);
+Route::apiResource('/owners', OwnerController::class);
 Route::apiResource('/suppliers', SupplierController::class);
 Route::apiResource('/expensePeoples', ExpensePeopleController::class);
 Route::apiResource('/loanPeoples', LoanPeopleController::class);
 Route::apiResource('/users', UserController::class);
-Route::post('/users/update/{updateUser}', [UserController::class, 'updateUser']);
+Route::post('/users/update/{user}', [UserController::class, 'updateUser']);
 
 
 
