@@ -2,16 +2,18 @@
 
 namespace App\Http\Requests\Peoples;
 
+use App\Traits\UpdateRequestRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoanPeopleRequest extends FormRequest
 {
+    use UpdateRequestRules;
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +25,7 @@ class LoanPeopleRequest extends FormRequest
     {
         $rules = [
             'name'  => 'required|string|max:255',
-            'email' => 'required|email|unique:loanPeoples,email|max:192',
+            'email' => 'required|email|unique:loan_peoples,email|max:192',
             'phone' => 'required|string|max:15',
         ];
         $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;

@@ -18,6 +18,7 @@ use App\Http\Controllers\Sales\SalePaymentController;
 use App\Http\Controllers\Settings\CurrencyController;
 use App\Http\Controllers\Settings\MaterialController;
 use App\Http\Controllers\Settings\TransferController;
+use App\Http\Controllers\Peoples\LoanPeopleController;
 use App\Http\Controllers\Purchases\PurchaseController;
 use App\Http\Controllers\Settings\WarehouseController;
 use App\Http\Controllers\Settings\AdjustmentController;
@@ -99,7 +100,7 @@ Route::post('unitsBulkDelete', [UnitController::class, 'bulkDelete']);
 Route::apiResource('/customers', CustomerController::class);
 Route::apiResource('/suppliers', SupplierController::class);
 Route::apiResource('/expensePeoples', ExpensePeopleController::class);
-Route::apiResource('/loanPeoples', ExpensePeopleController::class);
+Route::apiResource('/loanPeoples', LoanPeopleController::class);
 Route::apiResource('/users', UserController::class);
 Route::post('/users/update/{updateUser}', [UserController::class, 'updateUser']);
 
