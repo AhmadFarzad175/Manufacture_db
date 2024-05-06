@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Peoples;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Peoples\ExpensePeople;
+use App\Http\Requests\Peoples\ExpensePeopleRequest;
 use App\Http\Resources\Peoples\ExpensePeopleResource;
 
 class ExpensePeopleController extends Controller
@@ -27,7 +28,7 @@ class ExpensePeopleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ExpensePeopleRequest $request)
     {
         ExpensePeople::create($request->validated());
         return response()->json(['success' => 'Person created successfully']);
@@ -44,7 +45,7 @@ class ExpensePeopleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ExpensePeople $expensePeople)
+    public function update(ExpensePeopleRequest $request, ExpensePeople $expensePeople)
     {
         $expensePeople->update($request->validated());
         return response()->json(['success', 'Person updated successfully']);
