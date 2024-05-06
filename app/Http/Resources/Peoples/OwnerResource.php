@@ -20,7 +20,7 @@ class OwnerResource extends JsonResource
             'phone' => $this->phone,
             'email' => $this->email,
             'share' => $this->share,
-            'assets' => $this->assets
+            'assets' => $this->asset
         ];
     }
 }
