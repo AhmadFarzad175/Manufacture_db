@@ -77,6 +77,7 @@ class UserController extends Controller
     {
         // HERE WE SWITCH THE STATUS OF USER
         $user->update($request->validate(['status' => 'boolean']));
+        // dd($user->status);
         return new UserResource($user);
     }
 
