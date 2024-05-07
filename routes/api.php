@@ -105,7 +105,7 @@ Route::apiResource('/expensePeoples', ExpensePeopleController::class);
 Route::apiResource('/loanPeoples', LoanPeopleController::class);
 Route::apiResource('/users', UserController::class);
 Route::post('/users/update/{user}', [UserController::class, 'updateUser']);
-Route::post('/users/switch/{user}', [UserController::class, 'switchUser']);
+Route::put('/users/switch/{user}', [UserController::class, 'switchUser']);
 
 
 
