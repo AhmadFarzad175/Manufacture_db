@@ -4,23 +4,23 @@ import { usePeopleRepository } from "@/store/PeopleRepository";
 import { reactive, ref } from "vue";
 let PeopleRepository = usePeopleRepository();
 
-const visiblePassword = ref(false);
 const formRef = ref(null);
-const formData = reactive({
-    name: "",
-    phone: "",
-    email: "",
-    password: "",
-
-    status: true,
+const UpdateData = reactive({
+    id: PeopleRepository.user.id,
+    name: PeopleRepository.user.name,
+    phone: PeopleRepository.user.phone,
+    email: PeopleRepository.user.email,
+    password: PeopleRepository.user.password,
+    // role: PeopleRepository.user.role?.id,
+    status: PeopleRepository.user.status,
     image: "",
 });
 // Image Upload Code ----------------------------------------------------------------------------
-let imageSrc = ref(null);
+let imageSrc = ref(PeopleRepository.user.image);
 const inputRef = ref(null);
 const onChangeImage = (e) => {
     imageSrc.value = URL.createObjectURL(e.target.files[0]);
-    formData.image = e.target.files[0];
+    UpdateData.image = e.target.files[0];
 };
 const OpenWindow = (action) => {
     if (action) {
@@ -33,10 +33,10 @@ const CloseWindow = () => {
 };
 
 // ---------------------------------------------
-const createUser = async () => {
+const updateUser = async () => {
     formRef.value.validate().then((validate) => {
         if (validate.valid) {
-            PeopleRepository.CreateUser(formData);
+            PeopleRepository.UpdateUser(UpdateData.id, UpdateData);
         }
     });
 };
@@ -60,13 +60,13 @@ const rules = {
 <template>
     <v-dialog
         transition="dialog-top-transition"
-        v-model="PeopleRepository.createDailog"
+        v-model="PeopleRepository.updateDailog"
         width="60vw"
     >
         <template v-slot:default="{ isActive }">
             <v-card class="py-2">
                 <v-card-title class="px-6 d-flex justify-space-between">
-                    <h2>Create User</h2>
+                    <h2>Update User</h2>
 
                     <v-btn variant="text" @click="isActive.value = false"
                         ><v-icon> mdi-close </v-icon></v-btn
@@ -82,14 +82,14 @@ const rules = {
                                 <v-row no-gutters>
                                     <v-col cols="12" sm="9" md="9">
                                         <v-text-field
-                                            v-model="formData.name"
+                                            v-model="UpdateData.name"
                                             variant="outlined"
                                             label="Name *"
                                             density="compact"
                                             :rules="[rules.required]"
                                         ></v-text-field>
                                         <v-text-field
-                                            v-model="formData.phone"
+                                            v-model="UpdateData.phone"
                                             variant="outlined"
                                             label="Phone *"
                                             density="compact"
@@ -115,16 +115,12 @@ const rules = {
                                                 class="h-28 w-40 object-cover"
                                                 :style="
                                                     imageSrc === null
-                                                        ? {
-                                                              display: 'none',
-                                                          }
-                                                        : {
-                                                              display: 'block',
-                                                          }
+                                                        ? { display: 'none' }
+                                                        : { display: 'block' }
                                                 "
                                             />
                                             <div
-                                                class="absolute top-0 h-full w-full rounded-lg bg-opacity-0 flex items-center justify-center border-2 shadow-lg"
+                                                class="absolute top-0 h-full w-full rounded bg-opacity-0 flex items-center justify-center border-2 border-gray-300"
                                             >
                                                 <button
                                                     v-if="!imageSrc"
@@ -144,7 +140,7 @@ const rules = {
                                                     v-if="imageSrc"
                                                     type="button"
                                                     @click="CloseWindow()"
-                                                    class="rounded-full absolute -bottom-1 -right-1 bg-none text-gray text-white hover:text-blue-500 p-1 shadow-xl transition duration-200"
+                                                    class="rounded-full absolute -bottom-3 -right-4 text-gray bg-white hover:text-blue-500 p-1 shadow-xl transition duration-200"
                                                 >
                                                     <v-icon size="small"
                                                         >mdi-close</v-icon
@@ -156,7 +152,7 @@ const rules = {
                                                     @click="
                                                         OpenWindow(inputRef)
                                                     "
-                                                    class="rounded-full absolute -top-1 -right-1 text-gray text-white hover:text-blue-500 shodaw-lg p-1 transition duration-200"
+                                                    class="rounded-full absolute -top-4 -right-4 text-gray hover:text-blue-500 bg-white shodaw-lg p-1 transition duration-200"
                                                 >
                                                     <v-icon size="small"
                                                         >mdi-pencil</v-icon
@@ -167,7 +163,7 @@ const rules = {
                                     </v-col>
                                     <v-col cols="12" sm="6" md="6">
                                         <v-text-field
-                                            v-model="formData.email"
+                                            v-model="UpdateData.email"
                                             variant="outlined"
                                             label="Email *"
                                             suffix="@gmail.com"
@@ -178,11 +174,14 @@ const rules = {
                                             ]"
                                         ></v-text-field>
                                         <!-- <v-autocomplete
-                                            v-model="formData.rolePermision"
+                                            v-model="UpdateData.role"
                                             clearable
                                             variant="outlined"
                                             label="Role Permision *"
                                             density="compact"
+                                            :items="
+                                                SettingRepository.rolePermissions
+                                            "
                                             item-title="name"
                                             item-value="id"
                                             :return-object="false"
@@ -191,7 +190,7 @@ const rules = {
                                     </v-col>
                                     <v-col cols="12" sm="6" md="6" class="pl-2">
                                         <v-text-field
-                                            v-model="formData.password"
+                                            v-model="UpdateData.password"
                                             :append-inner-icon="
                                                 visiblePassword
                                                     ? 'mdi-eye-off'
@@ -217,15 +216,15 @@ const rules = {
                                             <p class="px-2">Status</p>
                                             <span class="px-2">
                                                 <v-switch
-                                                    v-model="formData.status"
+                                                    v-model="UpdateData.status"
                                                     hide-details
                                                     density="compact"
                                                     :true-value="1"
                                                     :false-value="0"
                                                     :model-value="
-                                                        formData.status
+                                                        UpdateData.status
                                                     "
-                                                    color="blue"
+                                                    color="green"
                                                 ></v-switch>
                                             </span>
                                         </v-layout>
@@ -235,7 +234,7 @@ const rules = {
                             <v-col cols="3" sm="3">
                                 <v-btn
                                     color="light-blue-darken-1"
-                                    @click="createUser"
+                                    @click="updateUser"
                                     >Submit</v-btn
                                 >
                             </v-col>

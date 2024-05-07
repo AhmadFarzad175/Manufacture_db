@@ -474,7 +474,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
 
             const config = {
                 method: "POST",
-                url: "/users/update/",
+                url: "/users",
                 data: formData,
             };
 
@@ -489,5 +489,66 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
                 itemsPerPage: this.itemsPerPage,
             });
         },
+        async DeleteUser(id) {
+            const config = {
+                method: "DELETE",
+                url: "/users/" + id,
+            };
+
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Deleted", {
+            //     autoClose: 1000,
+            // });
+            this.FetchUsersData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async FetchUserData(id) {
+            setContentType("multipart/form-data");
+            const response = await axios.get(`/users/${id}`);
+
+            this.user = response.data.data; // Assign the fetched data directly to this.people
+        },
+        async UpdateUser(id, data) {
+            console.log(data);
+
+            // Adding a custom header to the Axios request
+            setContentType("multipart/form-data");
+
+            const config = {
+                method: "POST",
+                url: "/users/update/" + id,
+                data: data,
+            };
+
+            // Using Axios to make a post request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Updated", {
+            //     autoClose: 1000,
+            // });
+
+            this.updateDailog = false;
+            this.FetchOwnersData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        // async UpdateUserStatus(id, data) {
+        //     console.log(data);
+        //     // Adding a custom header to the Axios request
+        //     setContentType("application/json");
+        //     const config = {
+        //         method: "PUT",
+        //         url: "/users/switch/" + id,
+        //         data: data,
+        //     };
+
+        //     // Using Axios to make a post request with async/await and custom headers
+        //     const response = await axios(config);
+        //     // toast.success(" Status Succesfully Updated", {
+        //     //     autoClose: 1000,
+        //     // });
+        // },
     },
 });

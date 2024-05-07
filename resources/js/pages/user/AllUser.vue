@@ -1,7 +1,7 @@
 <template>
     <CreateUser v-if="PeopleRepository.createDailog" />
-    <UpdateOwner v-if="PeopleRepository.updateDailog" />
-    <toolbar title="People-" subtitle="Owner " />
+    <UpdateUser v-if="PeopleRepository.updateDailog" />
+    <toolbar title="People-" subtitle="User " />
 
     <div class="w-full d-flex">
         <div class="w-full">
@@ -57,38 +57,18 @@
                                     hover
                                 >
                                     <template v-slot:item.status="{ item }">
-                                        <v-layout
-                                            class="d-flex gap-2 items-center"
-                                        >
-                                            <v-switch
-                                                v-model="item.status"
-                                                hide-details
-                                                :model-value="item.status"
-                                                @click="changeStatus(item)"
-                                                color="blue"
-                                            ></v-switch>
-                                        </v-layout>
-                                    </template>
-                                    <template v-slot:item.image="{ item }">
-                                        <v-layout
-                                            class="d-flex gap-2 items-center"
-                                        >
-                                            <v-card
-                                                class="my-2 mr-2"
-                                                elevation="2"
-                                                rounded
-                                            >
-                                                <v-img
-                                                    :src="item.image"
-                                                    height="40"
-                                                    width="40"
-                                                    cover
-                                                ></v-img>
-                                            </v-card>
-
-                                            <!-- Display the name -->
-                                            <div>{{ item.name }}</div>
-                                        </v-layout>
+                                        <v-switch
+                                            class="h-12"
+                                            v-model="item.status"
+                                            :true-value="1"
+                                            :false-value="0"
+                                            @change="changeStatus(item)"
+                                            :color="
+                                                item.status === true
+                                                    ? 'info'
+                                                    : 'primary'
+                                            "
+                                        ></v-switch>
                                     </template>
 
                                     <template
@@ -148,6 +128,7 @@
 <script setup>
 import { usePeopleRepository } from "../../store/PeopleRepository";
 import CreateUser from "./CreateUser.vue";
+import UpdateUser from "./UpdateUser.vue";
 
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
@@ -156,11 +137,17 @@ import CreateButton from "../../Component/UI/CreateButton.vue";
 let PeopleRepository = usePeopleRepository();
 
 const headers = [
-    { title: "IMAGE", key: "image", sortable: false },
+    { title: "NAME", key: "name", sortable: false },
 
     { title: "PHONE", key: "phone", sortable: false },
     { title: "EMAIL", key: "email", sortable: false, align: "center" },
-    { title: "ROLE", key: "", sortable: false, align: "center" },
+    {
+        title: "ROLE",
+        key: "name",
+
+        sortable: false,
+        align: "center",
+    },
 
     { title: "STATUS", key: "status", sortable: false },
 
@@ -171,6 +158,7 @@ const headers = [
         align: "end",
     },
 ];
+
 // const changeStatus = (item) => {
 //     console.log(item.status);
 //     const formData = {
@@ -178,17 +166,24 @@ const headers = [
 //     };
 //     PeopleRepository.UpdateUserStatus(item.id, formData);
 // };
+const changeStatus = async (user) => {
+    try {
+        await axios.PUT(`/users/switch/${user.id}`, { status: user.status });
+    } catch (error) {
+        console.log("the status was not changed", error);
+    }
+};
 
 const createPopUp = () => {
     PeopleRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    PeopleRepository.DeleteOwner(id);
+    PeopleRepository.DeleteUser(id);
 };
 const editItem = (id) => {
-    PeopleRepository.owner = {};
-    if (Object.keys(PeopleRepository.owner).length === 0) {
-        PeopleRepository.FetchOwnerData(id)
+    PeopleRepository.user = {};
+    if (Object.keys(PeopleRepository.user).length === 0) {
+        PeopleRepository.FetchUserData(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
                 PeopleRepository.updateDailog = true;
