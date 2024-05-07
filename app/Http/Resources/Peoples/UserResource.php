@@ -14,12 +14,14 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $imageUrl = asset('storage/' . $this->image);
+
         return [
             'id' => $this->id,
             'name' => $this->name,
             'phone' => $this->phone,
             'email' => $this->email,
-            'image' => $this->image,
+            'image' => $imageUrl,
             'status' => $this->status,
         ];
     }
