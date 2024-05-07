@@ -26,6 +26,10 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             owners: reactive([]),
             owner: reactive([]),
 
+            // ====User===\\
+            user: reactive([]),
+            users: reactive([]),
+
             isLoading: false,
             error: null,
             loading: false,
@@ -43,6 +47,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             loanPeopleSearch: "",
             expensePeopleSearch: "",
             ownerSearch: "",
+            userSearch: "",
 
             Search: "",
         };
@@ -445,6 +450,41 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
 
             this.updateDailog = false;
             this.FetchOwnersData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+
+        // =======User=========\\
+        async FetchUsersData({ page, itemsPerPage }) {
+            this.loading = true;
+            setContentType("multipart/form-data");
+
+            const response = await axios.get(
+                `/users?page=${page}&perPage=${itemsPerPage}&search=${this.ownerSearch}`
+            );
+            this.users = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async CreateUser(formData) {
+            console.log(formData);
+            // Adding a custom header to the Axios request
+            setContentType("multipart/form-data");
+
+            const config = {
+                method: "POST",
+                url: "/users/update/",
+                data: formData,
+            };
+
+            // Using Axios to make a GET request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Created", {
+            //     autoClose: 1000,
+            // });
+            this.createDailog = false;
+            this.FetchUsersData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });
