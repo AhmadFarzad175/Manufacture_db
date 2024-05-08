@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Expenses;
 use Illuminate\Http\Request;
 use App\Models\Expenses\Expense;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Expenses\ExpenseRequest;
 use App\Http\Resources\Expenses\ExpenseResource;
 
@@ -36,8 +37,16 @@ class ExpenseController extends Controller
      */
     public function store(ExpenseRequest $request)
     {
-        $expense = Expense::create($request->validated());
+        $validated = $request->validated();
+        $validated['user_id'] = Auth::id() ?? 1;
+        $expense = Expense::create($validated);
         return ExpenseResource::make($expense);
+
+
+
+
+
+        
     }
 
     /**
@@ -53,7 +62,9 @@ class ExpenseController extends Controller
      */
     public function update(ExpenseRequest $request, Expense $expense)
     {
-        $expense->update($request->validated());
+        $validated = $request->validated();
+        $validated['user_id'] = Auth::id() ?? 2;
+        $expense->update($validated);
         return ExpenseResource::make($expense);
     }
 
