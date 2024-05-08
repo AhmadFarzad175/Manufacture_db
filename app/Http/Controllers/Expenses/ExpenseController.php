@@ -41,6 +41,12 @@ class ExpenseController extends Controller
         $validated['user_id'] = Auth::id() ?? 1;
         $expense = Expense::create($validated);
         return ExpenseResource::make($expense);
+
+
+
+
+
+        
     }
 
     /**
