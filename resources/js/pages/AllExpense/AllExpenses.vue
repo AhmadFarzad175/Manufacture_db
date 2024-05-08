@@ -1,6 +1,6 @@
 <template>
     <CreateExpense v-if="ExpensRepository.createDailog" />
-    <UpdateUser v-if="ExpensRepository.updateDailog" />
+    <UpdateExpense v-if="ExpensRepository.updateDailog" />
     <toolbar title="Expense-" subtitle="All Expense " />
 
     <div class="w-full d-flex">
@@ -113,6 +113,7 @@
 <script setup>
 import { useExpenseRepository } from "../../store/ExpenseRepository";
 import CreateExpense from "./CreateExpense.vue";
+import UpdateExpense from "./UpdateExpense.vue";
 
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
@@ -172,7 +173,7 @@ const deleteItem = (id) => {
 const editItem = (id) => {
     ExpensRepository.expense = {};
     if (Object.keys(ExpensRepository.expense).length === 0) {
-        ExpensRepository.FetchUserData(id)
+        ExpensRepository.FetchExpenseData(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
                 ExpensRepository.updateDailog = true;

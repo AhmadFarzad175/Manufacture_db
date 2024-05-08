@@ -31,6 +31,13 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
         };
     },
     actions: {
+        getCurrentDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = (today.getMonth() + 1).toString().padStart(2, "0");
+            const day = today.getDate().toString().padStart(2, "0");
+            return `${year}-${month}-${day}`;
+        },
         GetPersonCategory(categorey, name) {
             const accArr = categorey.filter((acc) => acc.id == id);
             this.name = accArr[0].name;
@@ -97,13 +104,13 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
                 itemsPerPage: this.itemsPerPage,
             });
         },
-        async FetchCurrencyData(id) {
+        async FetchExpenseData(id) {
             setContentType("application/json");
-            const response = await axios.get(`/currencies/${id}`);
+            const response = await axios.get(`/expenses/${id}`);
 
-            this.currency = response.data.data; // Assign the fetched data directly to this.people
+            this.expense = response.data.data; // Assign the fetched data directly to this.people
         },
-        async UpdateCurrency(id, data) {
+        async UpdateExpense(id, data) {
             console.log(data);
 
             // Adding a custom header to the Axios request
@@ -111,7 +118,7 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
 
             const config = {
                 method: "PUT",
-                url: "/currencies/" + id,
+                url: "/expenses/" + id,
                 data: data,
             };
 
@@ -122,7 +129,7 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
             // });
 
             this.updateDailog = false;
-            this.FetchCurrensiesData({
+            this.FetchExpensesData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });

@@ -23,19 +23,14 @@
                         <v-row>
                             <v-col class="d-flex w-full gap-4">
                                 <v-text-field
-                                    type="date"
                                     v-model="formData.date"
-                                    label="Date *"
                                     variant="outlined"
+                                    label="Date *"
+                                    :rules="[rules.required]"
                                     density="compact"
-                                    class="w-1/2"
-                                    :value="getCurrentDate()"
-                                    @click="setDefaultDate"
-                                >
-                                    <span class="icon-space d-none">
-                                        <v-icon>mdi-calendar</v-icon>
-                                    </span>
-                                </v-text-field>
+                                    type="date"
+                                ></v-text-field>
+
                                 <v-autocomplete
                                     type="Category"
                                     v-model="formData.expenseCategoryId"
@@ -173,16 +168,7 @@ import { reactive, ref } from "vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 const ExpensRepository = useExpenseRepository();
 // ExpensRepository.GetUnit();
-function getCurrentDate() {
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-}
-function setDefaultDate() {
-    this.formData.date = this.getCurrentDate();
-}
+formData.date = VisaRepository.getCurrentDate();
 ExpensRepository.GetPersonCategory();
 
 const formData = reactive({
