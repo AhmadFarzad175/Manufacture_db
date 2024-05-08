@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Settings\Unit;
 use App\Models\Settings\Account;
 use App\Models\Settings\Currency;
+use App\Models\Peoples\ExpensePeople;
+use App\Models\Settings\ExpenseCategory;
 use App\Models\Settings\MaterialCategory;
 
 class AllController extends Controller
@@ -31,6 +33,15 @@ class AllController extends Controller
             ];
     
             return response()->json(['data'=>$allData]);
+    }
+
+    public function personCategory(){
+        $allData = [
+            'expensePeople' => ExpensePeople::select('id', 'name')->get(),
+            'expenseCategory' => ExpenseCategory::select('id', 'name')->get(),
+        ];
+
+        return response()->json(['data'=>$allData]);
     }
   
 }
