@@ -149,7 +149,7 @@ Route::apiResource('/ownerPaymentReceiveds', OwnerPaymentReceivedController::cla
 // All Needed Routes
 Route::get('/currency', [AllController::class, 'currency']);
 Route::get('unitCategories',[AllController::class, 'unitCategory'] );
-
+Route::get('personCategory',[AllController::class, 'personCategory'] );
 
 
 
