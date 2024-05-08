@@ -1,7 +1,7 @@
 <template>
-    <CreateUser v-if="ExpensRepository.createDailog" />
+    <CreateExpense v-if="ExpensRepository.createDailog" />
     <UpdateUser v-if="ExpensRepository.updateDailog" />
-    <toolbar title="People-" subtitle="User " />
+    <toolbar title="Expense-" subtitle="All Expense " />
 
     <div class="w-full d-flex">
         <div class="w-full">
@@ -111,28 +111,34 @@
 </template>
 
 <script setup>
-import { useExpensRepository } from "../../store/ExpensRepository";
+import { useExpenseRepository } from "../../store/ExpenseRepository";
+import CreateExpense from "./CreateExpense.vue";
 
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
 import CreateButton from "../../Component/UI/CreateButton.vue";
 
-let ExpensRepository = useExpensRepository();
+let ExpensRepository = useExpenseRepository();
 
 const headers = [
-    { title: "DATE", key: "name", sortable: false },
+    { title: "DATE", key: "date", sortable: false },
 
-    { title: "PHONE", key: "phone", sortable: false },
-    { title: "EMAIL", key: "email", sortable: false, align: "center" },
+    { title: "REFERENCE", key: "reference", sortable: false },
     {
-        title: "ROLE",
-        key: "name",
+        title: "ADDED BY",
+        key: "addedBy.name",
+        sortable: false,
+        align: "center",
+    },
+    {
+        title: "PERSON",
+        key: "person.name",
 
         sortable: false,
         align: "center",
     },
 
-    { title: "STATUS", key: "status", sortable: false },
+    { title: "AMOUNT", key: "amount", sortable: false },
 
     {
         title: "Action",
@@ -161,11 +167,11 @@ const createPopUp = () => {
     ExpensRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    ExpensRepository.DeleteUser(id);
+    ExpensRepository.DeleteExpense(id);
 };
 const editItem = (id) => {
-    ExpensRepository.user = {};
-    if (Object.keys(ExpensRepository.user).length === 0) {
+    ExpensRepository.expense = {};
+    if (Object.keys(ExpensRepository.expense).length === 0) {
         ExpensRepository.FetchUserData(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true

@@ -10,6 +10,8 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
         return {
             expense: reactive([]),
             expenses: reactive([]),
+            personCategory: reactive([]),
+
             isLoading: false,
             error: null,
             loading: false,
@@ -29,8 +31,8 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
         };
     },
     actions: {
-        GetProducts(account, name) {
-            const accArr = account.filter((acc) => acc.id == id);
+        GetPersonCategory(categorey, name) {
+            const accArr = categorey.filter((acc) => acc.id == id);
             this.name = accArr[0].name;
             console.log(currArr[0].name);
         },
@@ -39,25 +41,33 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
             this.symbol = currArr[0].symbol;
             console.log(currArr[0].symbol);
         },
+        async GetPersonCategory() {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(`/personCategory`);
+            this.personCategory = response.data.data;
+            console.log(response.data.data);
+            this.loading = false;
+        },
         async FetchExpensesData({ page, itemsPerPage }) {
             this.loading = true;
             setContentType("application/json");
 
             const response = await axios.get(
-                `/currencies?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
+                `/expenses?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
             );
-            this.currencies = response.data.data;
+            this.expenses = response.data.data;
             this.totalItems = response.data.meta.total;
             this.loading = false;
         },
-        async CreateCurrency(formData) {
-            console.log(formData);
+        async CreateExpense(formData) {
             // Adding a custom header to the Axios request
             setContentType("application/json");
 
             const config = {
                 method: "POST",
-                url: "/currencies",
+                url: "/expenses",
                 data: formData,
             };
 
@@ -67,22 +77,22 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
             //     autoClose: 1000,
             // });
             this.createDailog = false;
-            this.FetchCurrensiesData({
+            this.FetchExpensesData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });
         },
-        async DeleteCurrency(id) {
+        async DeleteExpense(id) {
             const config = {
                 method: "DELETE",
-                url: "/currencies/" + id,
+                url: "/expenses/" + id,
             };
 
             const response = await axios(config);
             // toast.success("Customer Succesfully Deleted", {
             //     autoClose: 1000,
             // });
-            this.FetchCurrensiesData({
+            this.FetchExpensesData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });

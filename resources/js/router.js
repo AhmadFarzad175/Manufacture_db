@@ -16,6 +16,7 @@ import AllExpesePeople from "./pages/expensePeople/AllExpensePeople.vue";
 import AllLoanPeople from "./pages/loanPeople/AllLoanPeople.vue";
 import AllOwner from "./pages/owner/AllOwner.vue";
 import AllUser from "./pages/user/AllUser.vue";
+import AllExpenses from "./pages/AllExpense/AllExpenses.vue";
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -36,6 +37,7 @@ const router = createRouter({
         { path: "/loanPeople", component: AllLoanPeople },
         { path: "/allOwner", component: AllOwner },
         { path: "/allUser", component: AllUser },
+        { path: "/allExpenses", component: AllExpenses },
     ],
 });
 

@@ -60,6 +60,7 @@
                                             :src="item.image"
                                             width="50"
                                             height="50"
+                                            class="elevation-2"
                                         ></v-img>
                                     </template>
                                     <template
