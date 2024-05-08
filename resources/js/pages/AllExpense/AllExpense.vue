@@ -1,7 +1,7 @@
 <template>
-    <CreateLoanPeople v-if="PeopleRepository.createDailog" />
-    <UpdateLoanPeople v-if="PeopleRepository.updateDailog" />
-    <toolbar title="People-" subtitle="Loan People" />
+    <CreateUser v-if="ExpensRepository.createDailog" />
+    <UpdateUser v-if="ExpensRepository.updateDailog" />
+    <toolbar title="People-" subtitle="User " />
 
     <div class="w-full d-flex">
         <div class="w-full">
@@ -9,7 +9,7 @@
                 <v-row class="justify-space-between mt-6">
                     <v-col cols="12" sm="3">
                         <v-text-field
-                            v-model="PeopleRepository.Search"
+                            v-model="ExpensRepository.Search"
                             label="Search"
                             prepend-inner-icon="mdi-magnify"
                             variant="outlined"
@@ -41,18 +41,18 @@
                             <v-col>
                                 <v-data-table-server
                                     v-model:items-per-page="
-                                        PeopleRepository.itemsPerPage
+                                        ExpensRepository.itemsPerPage
                                     "
                                     :headers="headers"
-                                    :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.loanPeoples"
-                                    :loading="PeopleRepository.loading"
-                                    :search="PeopleRepository.loanPeoplesSearch"
+                                    :items-length="ExpensRepository.totalItems"
+                                    :items="ExpensRepository.expenses"
+                                    :loading="ExpensRepository.loading"
+                                    :search="ExpensRepository.userSearch"
                                     item-value="id"
                                     @update:options="
-                                        PeopleRepository.FetchLoanPeoplesData
+                                        ExpensRepository.FetchExpensesData
                                     "
-                                    :item-key="PeopleRepository.loanPeoples"
+                                    :item-key="ExpensRepository.expenses"
                                     itemKey="id"
                                     hover
                                 >
@@ -111,41 +111,65 @@
 </template>
 
 <script setup>
-import { usePeopleRepository } from "../../store/PeopleRepository";
-import CreateLoanPeople from "./CreateLoanPeople.vue";
-import UpdateLoanPeople from "./UpdateLoanPeople.vue";
+import { useExpensRepository } from "../../store/ExpensRepository";
+
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
 import CreateButton from "../../Component/UI/CreateButton.vue";
 
-let PeopleRepository = usePeopleRepository();
+let ExpensRepository = useExpensRepository();
 
 const headers = [
-    { title: "NAME", key: "name", sortable: false },
+    { title: "DATE", key: "name", sortable: false },
+
     { title: "PHONE", key: "phone", sortable: false },
+    { title: "EMAIL", key: "email", sortable: false, align: "center" },
     {
-        title: "EMAIL",
-        key: "email",
+        title: "ROLE",
+        key: "name",
+
         sortable: false,
         align: "center",
     },
 
-    { title: "Action", key: "actions", sortable: false, align: "end" },
+    { title: "STATUS", key: "status", sortable: false },
+
+    {
+        title: "Action",
+        key: "actions",
+        sortable: false,
+        align: "end",
+    },
 ];
 
+// const changeStatus = (item) => {
+//     console.log(item.status);
+//     const formData = {
+//         status: !item.status,
+//     };
+//     ExpensRepository.UpdateUserStatus(item.id, formData);
+// };
+const changeStatus = async (user) => {
+    try {
+        await axios.PUT(`/users/switch/${user.id}`, { status: user.status });
+    } catch (error) {
+        console.log("the status was not changed", error);
+    }
+};
+
 const createPopUp = () => {
-    PeopleRepository.createDailog = true;
+    ExpensRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    PeopleRepository.DeleteLoanPeople(id);
+    ExpensRepository.DeleteUser(id);
 };
 const editItem = (id) => {
-    PeopleRepository.loanPeople = {};
-    if (Object.keys(PeopleRepository.loanPeople).length === 0) {
-        PeopleRepository.FetchLoanPeopleData(id)
+    ExpensRepository.user = {};
+    if (Object.keys(ExpensRepository.user).length === 0) {
+        ExpensRepository.FetchUserData(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
-                PeopleRepository.updateDailog = true;
+                ExpensRepository.updateDailog = true;
             })
             .catch((error) => {
                 console.error("Error fetching data:", error);

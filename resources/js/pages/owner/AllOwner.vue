@@ -1,7 +1,7 @@
 <template>
-    <CreateLoanPeople v-if="PeopleRepository.createDailog" />
-    <UpdateLoanPeople v-if="PeopleRepository.updateDailog" />
-    <toolbar title="People-" subtitle="Loan People" />
+    <CreateOwner v-if="PeopleRepository.createDailog" />
+    <UpdateOwner v-if="PeopleRepository.updateDailog" />
+    <toolbar title="People-" subtitle="Owner " />
 
     <div class="w-full d-flex">
         <div class="w-full">
@@ -45,14 +45,14 @@
                                     "
                                     :headers="headers"
                                     :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.loanPeoples"
+                                    :items="PeopleRepository.owners"
                                     :loading="PeopleRepository.loading"
-                                    :search="PeopleRepository.loanPeoplesSearch"
+                                    :search="PeopleRepository.ownerSearch"
                                     item-value="id"
                                     @update:options="
-                                        PeopleRepository.FetchLoanPeoplesData
+                                        PeopleRepository.FetchOwnersData
                                     "
-                                    :item-key="PeopleRepository.loanPeoples"
+                                    :item-key="PeopleRepository.owners"
                                     itemKey="id"
                                     hover
                                 >
@@ -112,8 +112,8 @@
 
 <script setup>
 import { usePeopleRepository } from "../../store/PeopleRepository";
-import CreateLoanPeople from "./CreateLoanPeople.vue";
-import UpdateLoanPeople from "./UpdateLoanPeople.vue";
+import CreateOwner from "./CreateOwner.vue";
+import UpdateOwner from "./UpdateOwner.vue";
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
 import CreateButton from "../../Component/UI/CreateButton.vue";
@@ -123,26 +123,29 @@ let PeopleRepository = usePeopleRepository();
 const headers = [
     { title: "NAME", key: "name", sortable: false },
     { title: "PHONE", key: "phone", sortable: false },
-    {
-        title: "EMAIL",
-        key: "email",
-        sortable: false,
-        align: "center",
-    },
+    { title: "EMAIL", key: "email", sortable: false, align: "center" },
+    { title: "OWNERS SHARE", key: "share", sortable: false, align: "center" },
 
-    { title: "Action", key: "actions", sortable: false, align: "end" },
+    { title: "OWNERS ASSET", key: "assets", sortable: false, align: "center" },
+
+    {
+        title: "Action",
+        key: "actions",
+        sortable: false,
+        align: "end",
+    },
 ];
 
 const createPopUp = () => {
     PeopleRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    PeopleRepository.DeleteLoanPeople(id);
+    PeopleRepository.DeleteOwner(id);
 };
 const editItem = (id) => {
-    PeopleRepository.loanPeople = {};
-    if (Object.keys(PeopleRepository.loanPeople).length === 0) {
-        PeopleRepository.FetchLoanPeopleData(id)
+    PeopleRepository.owner = {};
+    if (Object.keys(PeopleRepository.owner).length === 0) {
+        PeopleRepository.FetchOwnerData(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
                 PeopleRepository.updateDailog = true;

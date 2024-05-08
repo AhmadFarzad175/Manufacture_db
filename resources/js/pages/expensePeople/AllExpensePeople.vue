@@ -1,7 +1,7 @@
 <template>
     <CreateExpensePeople v-if="PeopleRepository.createDailog" />
     <UpdateExpensePeople v-if="PeopleRepository.updateDailog" />
-    <toolbar title="Setting-" subtitle="Expense People" />
+    <toolbar title="People-" subtitle="Expense People" />
 
     <div class="w-full d-flex">
         <div class="w-full">

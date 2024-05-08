@@ -1,7 +1,7 @@
 <template>
     <CreateCustomer v-if="PeopleRepository.createDailog" />
     <UpdateCustomer v-if="PeopleRepository.updateDailog" />
-    <toolbar title="Setting-" subtitle="customer" />
+    <toolbar title="People-" subtitle="customer" />
 
     <div class="w-full d-flex">
         <div class="w-full">

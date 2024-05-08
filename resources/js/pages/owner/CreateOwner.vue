@@ -8,12 +8,14 @@ const formData = reactive({
     name: "",
     phone: "",
     email: "",
+    share: "",
+    asset: "",
 });
 
-const createloanPeople = async () => {
+const createOwner = async () => {
     formRef.value.validate().then((validate) => {
         if (validate.valid) {
-            PeopleRepository.CreateLoanPeople(formData);
+            PeopleRepository.CreateOwner(formData);
         }
     });
 };
@@ -24,6 +26,17 @@ const rules = {
     phone: (value) => {
         const pattern = /^(\+\d{1,3}[- ]?)?\d{10}$/;
         return pattern.test(value) || "Invalid phone number.";
+    },
+    share: (value) => {
+        const pattern = /^(100(\.0{1,2})?|[1-9]?\d(\.\d{1,2})?)$/;
+        return pattern.test(value) || "Please enter a valid percentage.";
+    },
+    asset: (value) => {
+        const pattern = /^(?:\d*\.\d{1,2}|\d+)$/;
+        return (
+            pattern.test(value) ||
+            "Please enter a valid numerical value with up to two decimal places."
+        );
     },
     email: (value) => {
         const pattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
@@ -65,7 +78,7 @@ const rules = {
                                 class="pb-4"
                             ></v-text-field>
                         </div>
-                        <div class="w-full">
+                        <div class="w-full d-flex gap-4">
                             <v-text-field
                                 v-model="formData.email"
                                 variant="outlined"
@@ -73,11 +86,34 @@ const rules = {
                                 :rules="[rules.required, rules.email]"
                                 class="pb-4"
                             ></v-text-field>
+                            <v-text-field
+                                v-model="formData.share"
+                                variant="outlined"
+                                label="Share *"
+                                :rules="[rules.required, rules.share]"
+                                class="pb-4 relative"
+                                ><span
+                                    class="absulote absolute right-0 top-0 bg-slate-200 p-4 h-full"
+                                    >%</span
+                                ></v-text-field
+                            >
                         </div>
+                        <v-text-field
+                            v-model="formData.asset"
+                            variant="outlined"
+                            label="Assets"
+                            :rules="[rules.required, rules.asset]"
+                            class="pb-4 relative"
+                        >
+                            <span
+                                class="absolute right-0 top-0 bg-slate-200 p-4 h-full"
+                                >USD</span
+                            >
+                        </v-text-field>
                     </v-form>
                 </v-card-text>
                 <div class="justify-start pl-6 pb-6">
-                    <v-btn color="light-blue-darken-1" @click="createloanPeople"
+                    <v-btn color="light-blue-darken-1" @click="createOwner"
                         >Submit</v-btn
                     >
                 </div>

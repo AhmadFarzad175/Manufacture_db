@@ -1,7 +1,7 @@
 <template>
     <CreateSupplier v-if="PeopleRepository.createDailog" />
     <UpdateSupplier v-if="PeopleRepository.updateDailog" />
-    <toolbar title="Setting-" subtitle="Supplier" />
+    <toolbar title="People-" subtitle="Supplier" />
 
     <div class="w-full d-flex">
         <div class="w-full">

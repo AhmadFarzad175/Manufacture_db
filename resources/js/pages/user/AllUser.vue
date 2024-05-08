@@ -1,7 +1,7 @@
 <template>
-    <CreateLoanPeople v-if="PeopleRepository.createDailog" />
-    <UpdateLoanPeople v-if="PeopleRepository.updateDailog" />
-    <toolbar title="People-" subtitle="Loan People" />
+    <CreateUser v-if="PeopleRepository.createDailog" />
+    <UpdateUser v-if="PeopleRepository.updateDailog" />
+    <toolbar title="People-" subtitle="User " />
 
     <div class="w-full d-flex">
         <div class="w-full">
@@ -45,17 +45,32 @@
                                     "
                                     :headers="headers"
                                     :items-length="PeopleRepository.totalItems"
-                                    :items="PeopleRepository.loanPeoples"
+                                    :items="PeopleRepository.users"
                                     :loading="PeopleRepository.loading"
-                                    :search="PeopleRepository.loanPeoplesSearch"
+                                    :search="PeopleRepository.userSearch"
                                     item-value="id"
                                     @update:options="
-                                        PeopleRepository.FetchLoanPeoplesData
+                                        PeopleRepository.FetchUsersData
                                     "
-                                    :item-key="PeopleRepository.loanPeoples"
+                                    :item-key="PeopleRepository.users"
                                     itemKey="id"
                                     hover
                                 >
+                                    <template v-slot:item.status="{ item }">
+                                        <v-switch
+                                            class="h-12"
+                                            v-model="item.status"
+                                            :true-value="1"
+                                            :false-value="0"
+                                            @change="changeStatus(item)"
+                                            :color="
+                                                item.status === true
+                                                    ? 'info'
+                                                    : 'primary'
+                                            "
+                                        ></v-switch>
+                                    </template>
+
                                     <template
                                         v-slot:item.actions="{ item }"
                                         class="right"
@@ -112,8 +127,9 @@
 
 <script setup>
 import { usePeopleRepository } from "../../store/PeopleRepository";
-import CreateLoanPeople from "./CreateLoanPeople.vue";
-import UpdateLoanPeople from "./UpdateLoanPeople.vue";
+import CreateUser from "./CreateUser.vue";
+import UpdateUser from "./UpdateUser.vue";
+
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
 import CreateButton from "../../Component/UI/CreateButton.vue";
@@ -122,27 +138,52 @@ let PeopleRepository = usePeopleRepository();
 
 const headers = [
     { title: "NAME", key: "name", sortable: false },
+
     { title: "PHONE", key: "phone", sortable: false },
+    { title: "EMAIL", key: "email", sortable: false, align: "center" },
     {
-        title: "EMAIL",
-        key: "email",
+        title: "ROLE",
+        key: "name",
+
         sortable: false,
         align: "center",
     },
 
-    { title: "Action", key: "actions", sortable: false, align: "end" },
+    { title: "STATUS", key: "status", sortable: false },
+
+    {
+        title: "Action",
+        key: "actions",
+        sortable: false,
+        align: "end",
+    },
 ];
+
+// const changeStatus = (item) => {
+//     console.log(item.status);
+//     const formData = {
+//         status: !item.status,
+//     };
+//     PeopleRepository.UpdateUserStatus(item.id, formData);
+// };
+const changeStatus = async (user) => {
+    try {
+        await axios.PUT(`/users/switch/${user.id}`, { status: user.status });
+    } catch (error) {
+        console.log("the status was not changed", error);
+    }
+};
 
 const createPopUp = () => {
     PeopleRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    PeopleRepository.DeleteLoanPeople(id);
+    PeopleRepository.DeleteUser(id);
 };
 const editItem = (id) => {
-    PeopleRepository.loanPeople = {};
-    if (Object.keys(PeopleRepository.loanPeople).length === 0) {
-        PeopleRepository.FetchLoanPeopleData(id)
+    PeopleRepository.user = {};
+    if (Object.keys(PeopleRepository.user).length === 0) {
+        PeopleRepository.FetchUserData(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
                 PeopleRepository.updateDailog = true;
