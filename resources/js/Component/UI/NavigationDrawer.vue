@@ -3,13 +3,60 @@
     <div class="side w-full">
         <!-- <v-card class="mx-auto card" width="300"> -->
 
-        <v-list-item
-            class="hover:bg-sky-700"
-            prepend-icon="mdi-account-multiple-outline"
-            :append-icon="null"
-            title="Expense"
-            value="expense"
-        ></v-list-item>
+        <v-list v-model:opened="open">
+            <v-list-group class="side" value="Expense">
+                <template v-slot:activator="{ props }">
+                    <v-list-item
+                        v-bind="props"
+                        prepend-icon="mdi-account-multiple-outline"
+                        :append-icon="null"
+                        title="Expense"
+                        value="Expense"
+                    ></v-list-item>
+                </template>
+                <div>
+                    <v-list-group value="Create Expense" class="w-full">
+                        <template v-slot:activator="{ props }">
+                            <router-link to="/loanPeople">
+                                <v-list-item
+                                    v-bind="props"
+                                    :append-icon="null"
+                                    title="Create Expense"
+                                    class="-ml-12 w-full"
+                                >
+                                </v-list-item>
+                            </router-link>
+                        </template>
+                    </v-list-group>
+                    <v-list-group value="All Expense" class="w-full">
+                        <template v-slot:activator="{ props }">
+                            <router-link to="/allUser">
+                                <v-list-item
+                                    v-bind="props"
+                                    :append-icon="null"
+                                    title="All Expense"
+                                    class="-ml-12 w-full"
+                                >
+                                </v-list-item>
+                            </router-link>
+                        </template>
+                    </v-list-group>
+                    <v-list-group value="Billable Expense" class="w-full">
+                        <template v-slot:activator="{ props }">
+                            <router-link to="/allOwner">
+                                <v-list-item
+                                    v-bind="props"
+                                    :append-icon="null"
+                                    title="Billable Expense"
+                                    class="-ml-12 w-full"
+                                >
+                                </v-list-item>
+                            </router-link>
+                        </template>
+                    </v-list-group>
+                </div>
+            </v-list-group>
+        </v-list>
 
         <v-list-item
             prepend-icon="mdi-cash-marker"
@@ -28,7 +75,7 @@
                 <template v-slot:activator="{ props }">
                     <v-list-item
                         v-bind="props"
-                        prepend-icon="mdi-cog-outline"
+                        prepend-icon="mdi-transmission-tower"
                         :append-icon="null"
                         title="People"
                         value="People"

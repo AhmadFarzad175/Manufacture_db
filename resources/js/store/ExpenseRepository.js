@@ -8,6 +8,8 @@ import { useRouter } from "vue-router";
 export let useExpenseRepository = defineStore("ExpensRepository", {
     state() {
         return {
+            expense: reactive([]),
+            expenses: reactive([]),
             isLoading: false,
             error: null,
             loading: false,
@@ -23,6 +25,7 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
             itemKey: "id",
 
             Search: "",
+            expenseSearch: "",
         };
     },
     actions: {
@@ -36,7 +39,7 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
             this.symbol = currArr[0].symbol;
             console.log(currArr[0].symbol);
         },
-        async FetchCurrensiesData({ page, itemsPerPage }) {
+        async FetchExpensesData({ page, itemsPerPage }) {
             this.loading = true;
             setContentType("application/json");
 
