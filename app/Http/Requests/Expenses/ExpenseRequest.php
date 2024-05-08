@@ -20,7 +20,6 @@ class ExpenseRequest extends FormRequest
     {
         return $this->merge([
             'expense_category_id' => $this->input('expenseCategoryId'),
-            'user_id' => $this->input('addedById'),
             'expense_people_id' => $this->input('personId'),
 
         ]);
@@ -39,7 +38,6 @@ class ExpenseRequest extends FormRequest
         $rules = [
             'date' => 'required|date',
             'expense_category_id' => 'required|exists:expense_categories,id',
-            'user_id' => 'required|integer',
             'expense_people_id' => 'required|exists:expense_peoples,id',
             'amount' => 'required',
             'details' => 'nullable|string',
