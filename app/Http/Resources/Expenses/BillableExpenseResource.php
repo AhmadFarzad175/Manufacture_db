@@ -31,7 +31,7 @@ class BillableExpenseResource extends JsonResource
                 'id' => $this->supplier_id,
                 'name' => $this->supplier->name
             ],
-            'user' => [
+            'addedBy' => [
                 'id' => $this->user_id,
                 'name' => $this->user->name
             ],
