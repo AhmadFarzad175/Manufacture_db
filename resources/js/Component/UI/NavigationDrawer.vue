@@ -17,7 +17,7 @@
                 <div>
                     <v-list-group value="Create Expense" class="w-full">
                         <template v-slot:activator="{ props }">
-                            <router-link to="/loanPeople">
+                            <router-link to="/createExpenses">
                                 <v-list-item
                                     v-bind="props"
                                     :append-icon="null"

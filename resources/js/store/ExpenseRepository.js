@@ -12,6 +12,10 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
             expenses: reactive([]),
             personCategory: reactive([]),
 
+            // =======Billable Expense============\\
+            billableExpense: reactive([]),
+            billableExpenses: reactive([]),
+
             isLoading: false,
             error: null,
             loading: false,
@@ -129,6 +133,40 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
             // });
 
             this.updateDailog = false;
+            this.FetchExpensesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+
+        // =================Bilable Expense====================//
+        async FetchBillableExpensesData({ page, itemsPerPage }) {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(
+                `/billableExpenses?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
+            );
+            this.billableExpenses = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        async CreateBillableExpense(formData) {
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "POST",
+                url: "/expenses",
+                data: formData,
+            };
+
+            // Using Axios to make a GET request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Created", {
+            //     autoClose: 1000,
+            // });
+            this.createDailog = false;
             this.FetchExpensesData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,

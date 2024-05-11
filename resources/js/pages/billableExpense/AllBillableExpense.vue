@@ -1,7 +1,7 @@
 <template>
     <CreateBillableExpense v-if="ExpensRepository.createDailog" />
     <UpdateBillableExpense v-if="ExpensRepository.updateDailog" />
-    <toolbar title="Expense-" subtitle="All Expense " />
+    <toolbar title="Expense-" subtitle="Billable Expense " />
 
     <div class="w-full d-flex">
         <div class="w-full">
@@ -45,14 +45,16 @@
                                     "
                                     :headers="headers"
                                     :items-length="ExpensRepository.totalItems"
-                                    :items="ExpensRepository.expenses"
+                                    :items="ExpensRepository.billableExpenses"
                                     :loading="ExpensRepository.loading"
                                     :search="ExpensRepository.userSearch"
                                     item-value="id"
                                     @update:options="
-                                        ExpensRepository.FetchExpensesData
+                                        ExpensRepository.FetchBillableExpensesData
                                     "
-                                    :item-key="ExpensRepository.expenses"
+                                    :item-key="
+                                        ExpensRepository.billableExpenses
+                                    "
                                     itemKey="id"
                                     hover
                                 >
@@ -102,6 +104,17 @@
                                                         >
                                                         Delete
                                                     </v-list-item-title>
+                                                    <v-list-item-title
+                                                        class="cursor-pointer d-flex gap-3"
+                                                        @click="
+                                                            deleteItem(item.id)
+                                                        "
+                                                    >
+                                                        <v-icon color="gray"
+                                                            >mdi-eye-outline</v-icon
+                                                        >
+                                                        Show
+                                                    </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
                                         </v-menu>
@@ -143,22 +156,22 @@ const headers = [
     },
     {
         title: "PERSON",
-        key: "person.name",
+        key: "expensePeople.name",
 
         sortable: false,
         align: "center",
     },
     {
         title: "SUPPLIER",
-        key: "person.name",
+        key: "supplier.name",
 
         sortable: false,
         align: "center",
     },
 
     { title: "AMOUNT", key: "amount", sortable: false },
-    { title: "PAID", key: "amount", sortable: false },
-    { title: "DUE", key: "due", sortable: false },
+    { title: "PAID", key: "paid", sortable: false },
+    { title: "DUE", key: "due", align: "center", sortable: false },
 
     {
         title: "Action",
@@ -175,13 +188,13 @@ const headers = [
 //     };
 //     ExpensRepository.UpdateUserStatus(item.id, formData);
 // };
-const changeStatus = async (user) => {
-    try {
-        await axios.PUT(`/users/switch/${user.id}`, { status: user.status });
-    } catch (error) {
-        console.log("the status was not changed", error);
-    }
-};
+// const changeStatus = async (user) => {
+//     try {
+//         await axios.PUT(`/users/switch/${user.id}`, { status: user.status });
+//     } catch (error) {
+//         console.log("the status was not changed", error);
+//     }
+// };
 
 const createPopUp = () => {
     ExpensRepository.createDailog = true;

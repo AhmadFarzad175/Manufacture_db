@@ -21,7 +21,7 @@
                 <v-card-text class="py-8">
                     <v-form ref="formRef">
                         <v-row>
-                            <v-col class="d-flex w-full gap-4">
+                            <v-col class="w-full">
                                 <v-text-field
                                     v-model="formData.date"
                                     variant="outlined"
@@ -30,28 +30,6 @@
                                     density="compact"
                                     type="date"
                                 ></v-text-field>
-
-                                <v-autocomplete
-                                    type="Category"
-                                    v-model="formData.expenseCategoryId"
-                                    @create:modelValue="
-                                        ExpensRepository.GetPersonCategory(
-                                            ExpensRepository.personCategory
-                                                .expenseCategory,
-                                            formData.expenseCategory
-                                        )
-                                    "
-                                    :items="
-                                        ExpensRepository.personCategory
-                                            .expenseCategory
-                                    "
-                                    label="   Category * "
-                                    item-title="name"
-                                    item-value="id"
-                                    variant="outlined"
-                                    density="compact"
-                                    class="w-1/2"
-                                ></v-autocomplete>
                             </v-col>
                         </v-row>
                         <div class="d-flex w-100">
