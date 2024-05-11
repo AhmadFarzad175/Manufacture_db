@@ -172,5 +172,16 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
                 itemsPerPage: this.itemsPerPage,
             });
         },
+        async ExpenseAllData({ page, itemsPerPage }) {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(
+                `/billableExpenses?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
+            );
+            this.billableExpenses = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
     },
 });

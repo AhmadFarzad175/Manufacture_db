@@ -1,228 +1,234 @@
 <template>
-    <v-dialog
-        transition="dialog-top-transition"
-        width="50rem"
-        v-model="ExpensRepository.createDailog"
-    >
-        <template v-slot:default="{ isActive }">
-            <v-card class="px-3">
-                <v-card-title class="px-6 py-4 d-flex justify-space-between">
-                    <h2>Create</h2>
+    <toolbar title="Expense-" subtitle="Create Expense " />
 
-                    <v-btn variant="text" @click="isActive.value = false"
-                        ><v-icon> mdi-close </v-icon></v-btn
-                    >
-                </v-card-title>
+    <div class="w-full d-flex mt-4">
+        <div class="w-full">
+            <div class="overflow-x-auto pb-10">
+                <v-divider :thickness="2" class="border-opacity-50"></v-divider>
+                <v-app>
+                    <v-main>
+                        <div
+                            class="d-flex w-full gap-4 px-4 mt-10 justify-between"
+                        >
+                            <v-text-field
+                                v-model="formData.date"
+                                class="mt-2"
+                                variant="outlined"
+                                label="Date *"
+                                density="compact"
+                                type="date"
+                            ></v-text-field>
 
-                <v-divider></v-divider>
-                <v-spacer></v-spacer>
-                <hr />
-
-                <v-card-text class="py-8">
-                    <v-form ref="formRef">
-                        <v-row>
-                            <v-col class="w-full">
-                                <v-text-field
-                                    v-model="formData.date"
-                                    variant="outlined"
-                                    label="Date *"
-                                    :rules="[rules.required]"
-                                    density="compact"
-                                    type="date"
-                                ></v-text-field>
-                            </v-col>
-                        </v-row>
-                        <div class="d-flex w-100">
-                            <div class="w-50">
-                                <!-- <v-autocomplete
-                                    type="category"
-                                    v-model="formData.materialCategory"
-                                    @create:modelValue="
-                                        ExpensRepository.GetProducts(
-                                            ExpensRepository.productUnit
-                                                .materialCategory,
-                                            formData.materialCategory
-                                        )
-                                    "
-                                    :items="
-                                        ExpensRepository.productUnit
-                                            .materialCategory
-                                    "
-                                    item-title="name"
-                                    item-value="id"
-                                    label="   Category *"
-                                    variant="outlined"
-                                    density="compact"
-                                    class="pr-2"
-                                    :rules="[rules.required, rules.email]"
-                                ></v-autocomplete> -->
-                            </div>
-                            <div class="w-50">
-                                <!-- <v-autocomplete
-                                    type="unit"
-                                    v-model="formData.unitId"
-                                    @create:modelValue="
-                                        ExpensRepository.GetProducts(
-                                            ExpensRepository.productUnit.unit,
-                                            formData.productUnit
-                                        )
-                                    "
-                                    :items="ExpensRepository.productUnit.unit"
-                                    item-title="name"
-                                    item-value="id"
-                                    label="  UNIT *"
-                                    variant="outlined"
-                                    density="compact"
-                                    class="pr-2"
-                                    :rules="[rules.required, rules.email]"
-                                ></v-autocomplete> -->
+                            <v-autocomplete
+                                class="mt-2"
+                                variant="outlined"
+                                label="Person *"
+                                density="compact"
+                            ></v-autocomplete>
+                            <v-autocomplete
+                                class="mt-2"
+                                variant="outlined"
+                                label="Supplier *"
+                                density="compact"
+                            ></v-autocomplete>
+                            <v-text-field
+                                class="mt-2"
+                                variant="outlined"
+                                label="Invoice Number * *"
+                                density="compact"
+                            ></v-text-field>
+                        </div>
+                        <div class="px-4">
+                            <v-text-field
+                                variant="outlined"
+                                label="Search"
+                                density="compact"
+                                append-inner-icon="mdi-magnify"
+                                clearable
+                                class="border-none"
+                            ></v-text-field>
+                            <div class="rounded shadow-lg px-5 mb-12 w-[83vw]">
+                                <div>
+                                    <div>
+                                        <p
+                                            class="cursor-pointer pb-2.5 hover:bg-red"
+                                        ></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="d-flex w-100 mt-2">
-                            <div class="w-full d-flex">
-                                <v-autocomplete
-                                    v-model="formData.personId"
-                                    @create:modelValue="
-                                        ExpensRepository.GetPersonCategory(
-                                            ExpensRepository.personCategory
-                                                .expensePeople,
-                                            formData.expensePeople
-                                        )
-                                    "
-                                    :items="
-                                        ExpensRepository.personCategory
-                                            .expensePeople
-                                    "
-                                    item-title="name"
-                                    item-value="id"
-                                    label="   Person *"
-                                    variant="outlined"
-                                    density="compact"
-                                    class="pr-2 w-1/2"
-                                    :rules="[rules.required]"
-                                >
-                                    <!-- <span -->
-                                    <!-- class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-600" -->
-                                    <!-- >kkkk -->
-                                    <!-- {{ MoneyAccountRepository.symbol }} -->
-                                    <!-- </span> -->
-                                </v-autocomplete>
+                        <div>
+                            <table
+                                class="w-full text-sm text-left bg-blue-darken-500 w-100"
+                            >
+                                <thead class="bg-gray-200">
+                                    <tr>
+                                        <th
+                                            scope="col"
+                                            class="px-6 py-3 text-start"
+                                        >
+                                            PRODUCTS
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            class="px-6 py-3 text-start"
+                                        >
+                                            PRICE
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            class="px-6 py-3 text-start"
+                                        >
+                                            AMOUNT
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            class="px-6 py-3 text-start"
+                                        >
+                                            GRAND TOTAL
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            class="px-6 py-3 text-end"
+                                        >
+                                            ACTIONS
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="px-3 py-3 text-start"></td>
+
+                                        <td
+                                            class="py-3 px-2 pt-8 text-start flex-row justify-"
+                                        >
+                                            <v-text-field
+                                                variant="outlined"
+                                                density="compact"
+                                                type="number"
+                                                class="w-50"
+                                            ></v-text-field>
+                                        </td>
+
+                                        <td
+                                            class="py-3 px-2 pt-8 text-start create-input"
+                                            dir="auto"
+                                        >
+                                            <v-text-field
+                                                variant="outlined"
+                                                density="compact"
+                                                type="number"
+                                                class="w-50"
+                                            >
+                                                <span
+                                                    class="bg-[#ecf1f4] span"
+                                                ></span>
+                                            </v-text-field>
+                                        </td>
+                                        <td class="text-start">
+                                            <span></span>
+                                        </td>
+
+                                        <td class="py-2 pr-6 px-2 text-end">
+                                            <v-icon
+                                                color="red"
+                                                class="mdi mdi-trash-can-outline"
+                                            ></v-icon>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pt-12 w-100 discount">
+                            <span class="total"> </span>
+
+                            <div class="w-25">
                                 <v-text-field
-                                    v-model="formData.amount"
-                                    :counter="10"
-                                    label="  Amount * "
+                                    v-model="formData.discount"
                                     variant="outlined"
-                                    density="compact"
-                                    class="w-1/2 relative"
+                                    class="w-100 input"
+                                    type="number"
                                 >
-                                    <span
-                                        class="absolute right-0 top-0 bottom-0 pt-2 px-2 h-full bg-slate-200"
-                                        >USD</span
-                                    >
+                                    <span class="span">{{
+                                        ExpenseRepository.symbol
+                                    }}</span>
                                 </v-text-field>
                             </div>
                         </div>
-                        <v-textarea
-                            v-model="formData.details"
-                            label="  Details * "
-                            variant="outlined"
-                            density="compact"
-                        ></v-textarea>
-                    </v-form>
-                </v-card-text>
-                <div class="d-flex flex-row mb-6 mx-6">
-                    <v-btn color="primary" @click="createExpense">
-                        Submit</v-btn
-                    >
-                </div>
-            </v-card>
-        </template>
-    </v-dialog>
+                        <div class="d-flex flex-row-reverse mb-16 mx-6">
+                            <v-btn color="primary" @click="createExpense">
+                                Create</v-btn
+                            >
+                        </div>
+                    </v-main>
+                </v-app>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
-import { useExpenseRepository } from "@/store/ExpenseRepository";
-const ExpensRepository = useExpenseRepository();
-// ExpensRepository.GetUnit();
-formData.date = VisaRepository.getCurrentDate();
-ExpensRepository.GetPersonCategory();
+import { reactive, computed, ref, watch } from "vue";
+const items = ref([]);
+import Toolbar from "../../Component/UI/Toolbar.vue";
+import { useExpenseRepository } from "../../store/ExpenseRepository";
+const ExpenseRepository = useExpenseRepository();
+
+const clearSearch = () => {
+    ExpenseRepository.earningSearch.value = "";
+};
+
+const removeProduct = (index) => {
+    ExpenseRepository.expense.splice(index, 1);
+    console.log(ExpenseRepository.expense);
+};
 
 const formData = reactive({
+    ncy: null,
+    earningDetails: ExpenseRepository.expense,
+    grandTotal: "",
+    discount: null,
     date: "",
+    note: "",
+});
+const multiple = (pro) => {
+    const add = pro.quentity * pro.price;
+    return add || 0;
+};
+watch(
+    () => ExpenseRepository.expense,
+    () => {
+        ExpenseRepository.expense.forEach((expense) => {
+            // Update the 'subtotal' property for each service
+            expense.total = multiple(expense);
+            console.log(expense);
+        });
+    },
+    { deep: true }
+);
 
-    personId: "",
-    expenseCategoryId: "",
-
-    amount: "",
-    details: "",
+const totalSum = computed(() => {
+    const total = ExpenseRepository.expense.reduce(
+        (acc, item) => acc + multiple(item),
+        0
+    );
+    formData.grandTotal = total;
+    return total;
 });
 
-const formRef = ref(null);
-const rules = {
-    required: (value) => !!value || "Field is required. ",
-    name: (value) => /^[a-zA-Z\s]*$/.test(value) || "Invalid Name",
-    // email: (value) =>
-    //     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || "Invalid Email",
-    // //     password: (value) =>
-    //         /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(value) ||
-    //         "Password must be at least 8 characters long and contain at least one letter and one number",
-};
-
 const createExpense = async () => {
-    const isValid = await formRef.value.validate();
-    if (isValid) {
-        ExpensRepository.CreateExpense(formData);
-    }
+    formData.earningDetails.map((data) => (data.expense = data.id));
+    await ExpenseRepository.CreateBillableExpense(formData);
 };
-console.log(createExpense());
+
+const saveData = async (id) => {
+    await ExpenseRepository.fetchProduct(id);
+};
+
+const deleteItem = async (item) => {
+    await ExpenseRepository.deleteEarning(item.id);
+};
+formData.date = ExpenseRepository.getCurrentDate();
+// ExpenseRepository.ExpenseAllData();
 </script>
-<style scoped>
-span {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.switch {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    border: 1px solid #000;
-}
-.file-input-button {
-    display: block;
-    width: 7.6rem;
-    height: 7.6rem;
-    border: 2px dashed #ccc;
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
-    position: relative;
-}
-
-.file-input-button img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-
-    /* Make the image cover the entire area */
-}
-
-.file-input-button::before {
-    content: ""; /* Hide the "Choose File" text */
-    display: block;
-    text-align: center;
-    font-size: 16px;
-    color: #666;
-}
-
-.file-input-button:hover {
-    background-color: #f0f0f0; /* Change the background color on hover */
-}
-
-.hidden {
-    display: none;
-}
-</style>

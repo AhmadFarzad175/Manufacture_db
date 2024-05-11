@@ -18,7 +18,7 @@ import AllOwner from "./pages/owner/AllOwner.vue";
 import AllUser from "./pages/user/AllUser.vue";
 import AllExpenses from "./pages/AllExpense/AllExpenses.vue";
 import AllBillableExpense from "./pages/billableExpense/AllBillableExpense.vue";
-import CreateExpenses from "./pages/createExpenses/CreateExpenses.vue";
+import CreateBillableExpense from "./pages/billableExpense/CreateBillableExpense.vue";
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -41,8 +41,7 @@ const router = createRouter({
         { path: "/allUser", component: AllUser },
         { path: "/allExpenses", component: AllExpenses },
         { path: "/allBillableExpense", component: AllBillableExpense },
-
-        { path: "/createExpenses", component: CreateExpenses },
+        { path: "/ceateBillableExpense", component: CreateBillableExpense },
     ],
 });
 

@@ -168,7 +168,7 @@ import { reactive, ref } from "vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 const ExpensRepository = useExpenseRepository();
 // ExpensRepository.GetUnit();
-formData.date = VisaRepository.getCurrentDate();
+
 ExpensRepository.GetPersonCategory();
 
 const formData = reactive({
@@ -180,6 +180,7 @@ const formData = reactive({
     amount: "",
     details: "",
 });
+formData.date = ExpensRepository.getCurrentDate();
 
 const formRef = ref(null);
 const rules = {

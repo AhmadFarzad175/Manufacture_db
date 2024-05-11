@@ -1,5 +1,5 @@
 <template>
-    <CreateBillableExpense v-if="ExpensRepository.createDailog" />
+    <!-- <CreateBillableExpense v-if="ExpensRepository.createDailog" /> -->
     <UpdateBillableExpense v-if="ExpensRepository.updateDailog" />
     <toolbar title="Expense-" subtitle="Billable Expense " />
 
@@ -22,14 +22,16 @@
                             <v-icon>mdi-filter-outline</v-icon>
                             <span class="">FILTER</span>
                         </v-btn>
-                        <v-btn
-                            @click="createPopUp"
-                            color="light-blue-darken-1"
-                            size="large"
-                        >
-                            <span>Create</span>
-                            <v-icon right large>mdi-plus</v-icon>
-                        </v-btn>
+                        <router-link to="/ceateBillableExpense">
+                            <v-btn
+                                @click="createPopUp"
+                                color="light-blue-darken-1"
+                                size="large"
+                            >
+                                <span>Create</span>
+                                <v-icon right large>mdi-plus</v-icon>
+                            </v-btn>
+                        </router-link>
                     </v-col>
                 </v-row>
             </v-layout>
@@ -131,7 +133,7 @@
 
 <script setup>
 import { useExpenseRepository } from "../../store/ExpenseRepository";
-import CreateBillableExpense from "./CreateBillableExpense.vue";
+// import CreateBillableExpense from "./CreateBillableExpense.vue";
 import UpdateBillableExpense from "./UpdateBillableExpense.vue";
 
 import Toolbar from "../../Component/UI/Toolbar.vue";
