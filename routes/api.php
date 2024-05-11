@@ -150,7 +150,7 @@ Route::apiResource('/ownerPaymentReceiveds', OwnerPaymentReceivedController::cla
 Route::get('/currency', [AllController::class, 'currency']);
 Route::get('unitCategories',[AllController::class, 'unitCategory'] );
 Route::get('personCategory',[AllController::class, 'personCategory'] );
-
+Route::get('personExpenseProduct',[AllController::class, 'personExpenseProduct'] );
 
 
 
