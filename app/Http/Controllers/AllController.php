@@ -7,6 +7,7 @@ use App\Models\Settings\Unit;
 use App\Models\Settings\Account;
 use App\Models\Settings\Currency;
 use App\Models\Peoples\ExpensePeople;
+use App\Models\Settings\ExpenseProduct;
 use App\Models\Settings\ExpenseCategory;
 use App\Models\Settings\MaterialCategory;
 
@@ -39,6 +40,15 @@ class AllController extends Controller
         $allData = [
             'expensePeople' => ExpensePeople::select('id', 'name')->get(),
             'expenseCategory' => ExpenseCategory::select('id', 'name')->get(),
+        ];
+
+        return response()->json(['data'=>$allData]);
+    }
+
+    public function personExpenseProduct(){
+        $allData = [
+            'expenseProduct' => ExpenseProduct::select('id', 'name', 'price', 'code')->get(),
+            'expensePeople' => ExpensePeople::select('id', 'name')->get(),
         ];
 
         return response()->json(['data'=>$allData]);
