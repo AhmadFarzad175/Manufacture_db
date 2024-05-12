@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Settings\Unit;
-use App\Models\Settings\Account;
+use App\Models\Peoples\Supplier;
 use App\Models\Settings\Currency;
 use App\Models\Peoples\ExpensePeople;
 use App\Models\Settings\ExpenseProduct;
@@ -47,11 +46,13 @@ class AllController extends Controller
 
     public function personExpenseProduct(){
         $allData = [
-            'expenseProduct' => ExpenseProduct::select('id', 'name', 'price', 'code')->get(),
+            'supplier' => Supplier::select('id', 'name')->get(),
             'expensePeople' => ExpensePeople::select('id', 'name')->get(),
+            'expenseProduct' => ExpenseProduct::select('id', 'name', 'price', 'code')->get(),
         ];
-
+    
         return response()->json(['data'=>$allData]);
     }
+    
   
 }
