@@ -511,7 +511,7 @@ export let usePeopleRepository = defineStore("PeopleRepository", {
             this.user = response.data.data; // Assign the fetched data directly to this.people
         },
         async UpdateUser(id, data) {
-            console.log(data);
+            console.log(data, "men");
 
             // Adding a custom header to the Axios request
             setContentType("multipart/form-data");

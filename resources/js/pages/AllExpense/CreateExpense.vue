@@ -2,7 +2,7 @@
     <v-dialog
         transition="dialog-top-transition"
         width="50rem"
-        v-model="ExpensRepository.createDailog"
+        v-model="ExpenseRepository.createDailog"
     >
         <template v-slot:default="{ isActive }">
             <v-card class="px-3">
@@ -35,14 +35,14 @@
                                     type="Category"
                                     v-model="formData.expenseCategoryId"
                                     @create:modelValue="
-                                        ExpensRepository.GetPersonCategory(
-                                            ExpensRepository.personCategory
+                                        ExpenseRepository.GetPersonCategory(
+                                            ExpenseRepository.personCategory
                                                 .expenseCategory,
                                             formData.expenseCategory
                                         )
                                     "
                                     :items="
-                                        ExpensRepository.personCategory
+                                        ExpenseRepository.personCategory
                                             .expenseCategory
                                     "
                                     label="   Category * "
@@ -60,14 +60,14 @@
                                     type="category"
                                     v-model="formData.materialCategory"
                                     @create:modelValue="
-                                        ExpensRepository.GetProducts(
-                                            ExpensRepository.productUnit
+                                        ExpenseRepository.GetProducts(
+                                            ExpenseRepository.productUnit
                                                 .materialCategory,
                                             formData.materialCategory
                                         )
                                     "
                                     :items="
-                                        ExpensRepository.productUnit
+                                        ExpenseRepository.productUnit
                                             .materialCategory
                                     "
                                     item-title="name"
@@ -84,12 +84,12 @@
                                     type="unit"
                                     v-model="formData.unitId"
                                     @create:modelValue="
-                                        ExpensRepository.GetProducts(
-                                            ExpensRepository.productUnit.unit,
+                                        ExpenseRepository.GetProducts(
+                                            ExpenseRepository.productUnit.unit,
                                             formData.productUnit
                                         )
                                     "
-                                    :items="ExpensRepository.productUnit.unit"
+                                    :items="ExpenseRepository.productUnit.unit"
                                     item-title="name"
                                     item-value="id"
                                     label="  UNIT *"
@@ -106,14 +106,14 @@
                                 <v-autocomplete
                                     v-model="formData.personId"
                                     @create:modelValue="
-                                        ExpensRepository.GetPersonCategory(
-                                            ExpensRepository.personCategory
+                                        ExpenseRepository.GetPersonCategory(
+                                            ExpenseRepository.personCategory
                                                 .expensePeople,
                                             formData.expensePeople
                                         )
                                     "
                                     :items="
-                                        ExpensRepository.personCategory
+                                        ExpenseRepository.personCategory
                                             .expensePeople
                                     "
                                     item-title="name"
@@ -165,11 +165,11 @@
 
 <script setup>
 import { reactive, ref } from "vue";
-import { useExpenseRepository } from "@/store/ExpenseRepository";
-const ExpensRepository = useExpenseRepository();
-// ExpensRepository.GetUnit();
+import { useExpenseRepository } from "../../store/ExpenseRepository";
+const ExpenseRepository = useExpenseRepository();
+// ExpenseRepository.GetUnit();
 
-ExpensRepository.GetPersonCategory();
+ExpenseRepository.GetPersonCategory();
 
 const formData = reactive({
     date: "",
@@ -180,7 +180,7 @@ const formData = reactive({
     amount: "",
     details: "",
 });
-formData.date = ExpensRepository.getCurrentDate();
+formData.date = ExpenseRepository.getCurrentDate();
 
 const formRef = ref(null);
 const rules = {
@@ -196,7 +196,7 @@ const rules = {
 const createExpense = async () => {
     const isValid = await formRef.value.validate();
     if (isValid) {
-        ExpensRepository.CreateExpense(formData);
+        ExpenseRepository.CreateExpense(formData);
     }
 };
 console.log(createExpense());

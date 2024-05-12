@@ -5,7 +5,7 @@ import { reactive, ref } from "vue";
 import { axios, setContentType } from "../axios";
 // import { toast } from "vue3-toastify";
 import { useRouter } from "vue-router";
-export let useExpenseRepository = defineStore("ExpensRepository", {
+export let useExpenseRepository = defineStore("ExpenseRepository", {
     state() {
         return {
             expense: reactive([]),
@@ -17,6 +17,7 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
             billableExpenses: reactive([]),
             product: reactive([]),
             expenseAllData: reactive([]),
+            expenseProduct: reactive([]),
 
             isLoading: false,
             error: null,
@@ -144,13 +145,28 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
         },
 
         // =================Bilable Expense====================//
+        async GetPersonSuplier() {
+            this.loading = true;
+            setContentType("application/json");
 
+            const response = await axios.get(`/personExpenseProduct`);
+            this.expenseAllData = response.data.data;
+            console.log(response.data.data);
+            this.loading = false;
+        },
+        async ExpenseAllData() {
+            const config = {
+                url: "/personExpenseProduct",
+            };
+            const response = await axios(config);
+            this.expenseAllData = response.data.data;
+        },
         async SearchFetchData() {
             console.log(this.expenseSearch);
             this.loading = true;
 
             const response = await axios.get(
-                ` billableExpenses?&search=${this.expenseSearch}`
+                `personExpenseProduct?&search=${this.expenseSearch}`
             );
             this.searchFetch = response.data.data;
             this.loading = false;
@@ -159,7 +175,7 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
         async fetchProduct(id, isUpdate = false) {
             // this.error = null;
             try {
-                const response = await axios.get(`expense_products/${id}`);
+                const response = await axios.get(`/personExpenseProduct${id}`);
 
                 // console.log("id", response.data.data.id);
                 if (isUpdate) {
@@ -167,7 +183,7 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
                 }
                 console.log(response.data.data, "fetchProduct");
                 this.expenseProduct.push(response.data.data);
-                this.billExpense.expenseDetails.push(response.data.data);
+                // this.billExpense.expenseDetails.push(response.data.data);
 
                 this.searchFetch = [];
             } catch (err) {
@@ -183,45 +199,6 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
                 `/billableExpenses?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
             );
             this.billableExpenses = response.data.data;
-            this.totalItems = response.data.meta.total;
-            this.loading = false;
-        },
-        async ExpenseAllData() {
-            const config = {
-                url: "expense_all_data",
-            };
-            const response = await axios(config);
-            this.expenseAllData = response.data.data;
-        },
-        async CreateBillableExpense(formData) {
-            // Adding a custom header to the Axios request
-            setContentType("application/json");
-
-            const config = {
-                method: "POST",
-                url: "/expenses",
-                data: formData,
-            };
-
-            // Using Axios to make a GET request with async/await and custom headers
-            const response = await axios(config);
-            // toast.success("Customer Succesfully Created", {
-            //     autoClose: 1000,
-            // });
-            this.createDailog = false;
-            this.FetchExpensesData({
-                page: this.page,
-                itemsPerPage: this.itemsPerPage,
-            });
-        },
-        async productAllData() {
-            this.loading = true;
-            setContentType("application/json");
-
-            const response = await axios.get(
-                `/billableExpenses?search=${this.Search}`
-            );
-            this.product = response.data.data;
             this.totalItems = response.data.meta.total;
             this.loading = false;
         },

@@ -13,8 +13,9 @@ const UpdateData = reactive({
     password: PeopleRepository.user.password,
     // role: PeopleRepository.user.role?.id,
     status: PeopleRepository.user.status,
-    image: "",
+    image: PeopleRepository.user.image,
 });
+
 // Image Upload Code ----------------------------------------------------------------------------
 let imageSrc = ref(PeopleRepository.user.image);
 const inputRef = ref(null);
@@ -32,6 +33,7 @@ const CloseWindow = () => {
     formData.image = null;
 };
 
+console.log(UpdateData, "this is the data");
 // ---------------------------------------------
 const updateUser = async () => {
     formRef.value.validate().then((validate) => {
