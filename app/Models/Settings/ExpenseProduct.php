@@ -23,6 +23,11 @@ class ExpenseProduct extends Model
         'details',
     ];
 
+    public function getAmountAttribute()
+    {
+        return 1; // Return the fixed amount you want
+    }
+
     public function scopeSearch($query, $search)
     {
         if (!$search) {
