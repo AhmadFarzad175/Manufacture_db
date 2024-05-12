@@ -15,6 +15,8 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
             // =======Billable Expense============\\
             billableExpense: reactive([]),
             billableExpenses: reactive([]),
+            product: reactive([]),
+            expenseAllData: reactive([]),
 
             isLoading: false,
             error: null,
@@ -32,6 +34,8 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
 
             Search: "",
             expenseSearch: "",
+            searchFetch: "",
+            clearSearch: "",
         };
     },
     actions: {
@@ -140,6 +144,37 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
         },
 
         // =================Bilable Expense====================//
+
+        async SearchFetchData() {
+            console.log(this.expenseSearch);
+            this.loading = true;
+
+            const response = await axios.get(
+                ` billableExpenses?&search=${this.expenseSearch}`
+            );
+            this.searchFetch = response.data.data;
+            this.loading = false;
+            // this.searchFetch = "";
+        },
+        async fetchProduct(id, isUpdate = false) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`expense_products/${id}`);
+
+                // console.log("id", response.data.data.id);
+                if (isUpdate) {
+                    delete response.data.data.id;
+                }
+                console.log(response.data.data, "fetchProduct");
+                this.expenseProduct.push(response.data.data);
+                this.billExpense.expenseDetails.push(response.data.data);
+
+                this.searchFetch = [];
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+
         async FetchBillableExpensesData({ page, itemsPerPage }) {
             this.loading = true;
             setContentType("application/json");
@@ -150,6 +185,13 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
             this.billableExpenses = response.data.data;
             this.totalItems = response.data.meta.total;
             this.loading = false;
+        },
+        async ExpenseAllData() {
+            const config = {
+                url: "expense_all_data",
+            };
+            const response = await axios(config);
+            this.expenseAllData = response.data.data;
         },
         async CreateBillableExpense(formData) {
             // Adding a custom header to the Axios request
@@ -172,14 +214,14 @@ export let useExpenseRepository = defineStore("ExpensRepository", {
                 itemsPerPage: this.itemsPerPage,
             });
         },
-        async ExpenseAllData({ page, itemsPerPage }) {
+        async productAllData() {
             this.loading = true;
             setContentType("application/json");
 
             const response = await axios.get(
-                `/billableExpenses?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
+                `/billableExpenses?search=${this.Search}`
             );
-            this.billableExpenses = response.data.data;
+            this.product = response.data.data;
             this.totalItems = response.data.meta.total;
             this.loading = false;
         },

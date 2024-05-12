@@ -40,6 +40,10 @@
                         </div>
                         <div class="px-4">
                             <v-text-field
+                                v-model="ExpenseRepository.expenseSearch"
+                                @keyup.enter="ExpenseRepository.SearchFetchData"
+                                @input="ExpenseRepository.SearchFetchData"
+                                @click:clear="clearSearch"
                                 variant="outlined"
                                 label="Search"
                                 density="compact"
@@ -47,10 +51,21 @@
                                 clearable
                                 class="border-none"
                             ></v-text-field>
-                            <div class="rounded shadow-lg px-5 mb-12 w-[83vw]">
+                            <div
+                                class="rounded shadow-lg px-5 mb-12 w-[83vw]"
+                                v-if="ExpenseRepository.searchFetch.length > 0"
+                            >
                                 <div>
-                                    <div>
+                                    <div
+                                        v-for="index in EarningRepository.searchFetch"
+                                        :key="index"
+                                    >
                                         <p
+                                            @click="
+                                                EarningRepository.fetchProduct(
+                                                    index.id
+                                                )
+                                            "
                                             class="cursor-pointer pb-2.5 hover:bg-red"
                                         ></p>
                                     </div>
@@ -74,14 +89,15 @@
                                             scope="col"
                                             class="px-6 py-3 text-start"
                                         >
-                                            PRICE
+                                            AMOUNT
                                         </th>
                                         <th
                                             scope="col"
                                             class="px-6 py-3 text-start"
                                         >
-                                            AMOUNT
+                                            PRICE
                                         </th>
+
                                         <th
                                             scope="col"
                                             class="px-6 py-3 text-start"
@@ -97,18 +113,29 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="px-3 py-3 text-start"></td>
+                                    <tr
+                                        class=""
+                                        v-for="(
+                                            pro, index
+                                        ) in ExpenseRepository.product"
+                                        :key="index"
+                                    >
+                                        <td class="px-3 py-3 text-start">
+                                            {{ pro.name }}
+                                        </td>
 
                                         <td
                                             class="py-3 px-2 pt-8 text-start flex-row justify-"
+                                            dir="rtl"
                                         >
                                             <v-text-field
+                                                v-model="pro.amount"
                                                 variant="outlined"
                                                 density="compact"
                                                 type="number"
                                                 class="w-50"
-                                            ></v-text-field>
+                                                >1</v-text-field
+                                            >
                                         </td>
 
                                         <td
@@ -116,15 +143,12 @@
                                             dir="auto"
                                         >
                                             <v-text-field
+                                                v-model="pro.price"
                                                 variant="outlined"
                                                 density="compact"
                                                 type="number"
                                                 class="w-50"
-                                            >
-                                                <span
-                                                    class="bg-[#ecf1f4] span"
-                                                ></span>
-                                            </v-text-field>
+                                            ></v-text-field>
                                         </td>
                                         <td class="text-start">
                                             <span></span>
@@ -133,6 +157,7 @@
                                         <td class="py-2 pr-6 px-2 text-end">
                                             <v-icon
                                                 color="red"
+                                                @click="removeProduct(index)"
                                                 class="mdi mdi-trash-can-outline"
                                             ></v-icon>
                                         </td>
@@ -142,18 +167,21 @@
                         </div>
                         <div class="pt-12 w-100 discount">
                             <span class="total"> </span>
+                            <div class="pt-12 w-100 discount" dir="rtl">
+                                <span class="total">Total: {{ totalSum }}</span>
 
-                            <div class="w-25">
-                                <v-text-field
-                                    v-model="formData.discount"
-                                    variant="outlined"
-                                    class="w-100 input"
-                                    type="number"
-                                >
-                                    <span class="span">{{
-                                        ExpenseRepository.symbol
-                                    }}</span>
-                                </v-text-field>
+                                <div class="w-25">
+                                    <v-text-field
+                                        v-model="formData.discount"
+                                        variant="outlined"
+                                        class="w-100 input"
+                                        type="number"
+                                    >
+                                        <span class="span">{{
+                                            ExpenseRepository.symbol
+                                        }}</span>
+                                    </v-text-field>
+                                </div>
                             </div>
                         </div>
                         <div class="d-flex flex-row-reverse mb-16 mx-6">
@@ -174,6 +202,7 @@ const items = ref([]);
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import { useExpenseRepository } from "../../store/ExpenseRepository";
 const ExpenseRepository = useExpenseRepository();
+// const staticAmount = ref(1);
 
 const clearSearch = () => {
     ExpenseRepository.earningSearch.value = "";
@@ -193,7 +222,7 @@ const formData = reactive({
     note: "",
 });
 const multiple = (pro) => {
-    const add = pro.quentity * pro.price;
+    const add = pro.amount * pro.price;
     return add || 0;
 };
 watch(
