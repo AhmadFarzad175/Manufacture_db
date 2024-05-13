@@ -17,42 +17,51 @@ class AllController extends Controller
      */
     public function currency()
     {   //all controller 
-            $allData = [
-                'currencies' => Currency::select('id', 'symbol')->get(),
-                
-            ];
-    
-            return response()->json(['data'=>$allData]);
+        $allData = [
+            'currencies' => Currency::select('id', 'symbol')->get(),
+
+        ];
+
+        return response()->json(['data' => $allData]);
     }
 
     public function unitCategory()
     {   //all controller 
-            $allData = [
-                'unit' => Unit::select('id', 'name')->get(),
-                'materialCategory' => MaterialCategory::select('id', 'name')->get(),
-            ];
-    
-            return response()->json(['data'=>$allData]);
+        $allData = [
+            'unit' => Unit::select('id', 'name')->get(),
+            'materialCategory' => MaterialCategory::select('id', 'name')->get(),
+        ];
+
+        return response()->json(['data' => $allData]);
     }
 
-    public function personCategory(){
+    public function personCategory()
+    {
         $allData = [
             'expensePeople' => ExpensePeople::select('id', 'name')->get(),
             'expenseCategory' => ExpenseCategory::select('id', 'name')->get(),
         ];
 
-        return response()->json(['data'=>$allData]);
+        return response()->json(['data' => $allData]);
     }
 
-    public function personExpenseProduct(){
+    public function personExpenseProduct()
+    {
         $allData = [
             'supplier' => Supplier::select('id', 'name')->get(),
             'expensePeople' => ExpensePeople::select('id', 'name')->get(),
             'expenseProduct' => ExpenseProduct::select('id', 'name', 'price', 'code')->get(),
         ];
-    
-        return response()->json(['data'=>$allData]);
+
+        return response()->json(['data' => $allData]);
     }
-    
-  
+
+    public function expenseProduct()
+    {
+        $allData = [
+            'expenseProduct' => ExpenseProduct::select('id', 'name', 'price', 'code')->get(),
+        ];
+
+        return response()->json(['data' => $allData]);
+    }
 }
