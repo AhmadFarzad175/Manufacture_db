@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Settings\Unit;
 use App\Models\Peoples\Supplier;
 use App\Models\Settings\Currency;
@@ -56,12 +57,30 @@ class AllController extends Controller
         return response()->json(['data' => $allData]);
     }
 
-    public function expenseProduct()
-    {
-        $allData = [
-            'expenseProduct' => ExpenseProduct::select('id', 'name', 'price', 'code')->get(),
-        ];
+    public function expenseProduct(Request $request)
+{
+    // Get the search query parameter
+    $search = $request->input('search');
 
-        return response()->json(['data' => $allData]);
+    // Query the ExpenseProduct model
+    $query = ExpenseProduct::select('id', 'name', 'price', 'code','amount');
+
+    // If a search parameter is provided, filter the results
+    if ($search) {
+        $query->where('name', 'like', '%' . $search . '%')
+              ->orWhere('code', 'like', '%' . $search . '%');
     }
+
+    // Get the results
+    $expenseProducts = $query->get();
+
+    // Prepare the response data
+    $allData = [
+        'expenseProduct' => $expenseProducts,
+    ];
+
+    // Return the response as JSON
+    return response()->json(['data' => $allData]);
+}
+
 }
