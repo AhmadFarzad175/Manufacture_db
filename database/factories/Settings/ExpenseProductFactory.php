@@ -23,7 +23,7 @@ class ExpenseProductFactory extends Factory
             'expense_category_id' => $this->faker->numberBetween(1, 10),
             'unit_id' => $this->faker->numberBetween(1, 10),
             'price' => $this->faker->randomNumber(5),
-            'stock' => $this->faker->randomNumber(3),
+            'amount' => $this->faker->randomNumber(3),
             'stock_alert' => $this->faker->randomNumber(3),
             'details' => $this->faker->paragraph,
         ];

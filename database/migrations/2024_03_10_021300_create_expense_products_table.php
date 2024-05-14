@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignIdFor(ExpenseCategory::class)->constrained();
             $table->foreignIdFor(Unit::class)->constrained();
             $table->decimal('price', 20, 2);
-            $table->integer('stock')->default(0);
+            $table->integer('amount')->default(1);
             $table->integer('stock_alert');
             $table->text('details')->nullable();
             $table->timestamps();
