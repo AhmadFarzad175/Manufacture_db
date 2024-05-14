@@ -76,11 +76,11 @@ class AllController extends Controller
 
     // Prepare the response data
     $allData = [
-        'expenseProduct' => $expenseProducts,
+        'data' => $expenseProducts,
     ];
 
     // Return the response as JSON
-    return response()->json(['data' => $allData]);
+    return response()->json($allData);
 }
 
 }
