@@ -22,7 +22,7 @@ class ExpenseProductResource extends JsonResource
             'name' => $this->name,
             'image' => $imageUrl,
             'price' => $this->price,
-            'stock' => $this->stock,
+            'amount' => $this->amount,
             'stockAlert' => $this->stock_alert,
             'materialCategory' => [
                 'id' => $this->expenseCategory->id,
