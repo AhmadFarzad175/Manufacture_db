@@ -24,7 +24,6 @@ class BillableExpenseFactory extends Factory
             'invoice_number' => $this->faker->randomNumber(),
             'paid' => $this->faker->randomFloat(2, 100, 1000),
             'total' => $this->faker->randomFloat(2, 1000, 100000),
-            'due' => $this->faker->randomFloat(2, 1000, 100000),
             'currency_id' => rand(1, 10),
             'details' => $this->faker->text,
         ];

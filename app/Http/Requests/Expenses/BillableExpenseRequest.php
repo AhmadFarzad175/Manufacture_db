@@ -59,7 +59,6 @@ class BillableExpenseRequest extends FormRequest
             'invoice_number' => 'required|integer',
             'paid' => 'required|min:0',
             'total' => 'required|min:0',
-            'due' => 'required',
             'currency_id' => 'required|exists:currencies,id',
             'details' => 'nullable|string',
 
