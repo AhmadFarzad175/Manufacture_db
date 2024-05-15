@@ -25,7 +25,7 @@ class BillableExpenseRequest extends FormRequest
         // Inside prepareForValidation method
         foreach ($expenseDetails as $key => $expenseDetail) {
             $transformedExpenseDetails[] = [
-                'expense_product_id' => $expenseDetail['productId'],
+                'expense_product_id' => $expenseDetail['id'],
                 'quantity' => $expenseDetail['quantity'],
                 'price' => $expenseDetail['price'],
             ];
