@@ -23,7 +23,6 @@ class BillableExpense extends Model
         'invoice_number',
         'paid',
         'total',
-        'due',
         'details'
     ];
 
@@ -39,7 +38,6 @@ class BillableExpense extends Model
                 ->orWhere('invoice_number', 'like', '%' . $search . '%')
                 ->orWhere('paid', 'like', '%' . $search . '%')
                 ->orWhere('total', 'like', '%' . $search . '%')
-                ->orWhere('due', 'like', '%' . $search . '%')
                 ->orWhere('details', 'like', '%' . $search . '%')
                 ->orWhereHas('expensePeople', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');

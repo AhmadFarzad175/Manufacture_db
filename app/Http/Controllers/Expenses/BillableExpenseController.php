@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Expenses;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Expenses\BillableExpense;
 use App\Http\Requests\Expenses\BillableExpenseRequest;
 use App\Http\Resources\Expenses\BillableExpenseResource;
@@ -30,8 +31,10 @@ class BillableExpenseController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(BillableExpenseRequest $request)
-    { {
-            $billExpense = BillableExpense::create($request->validated());
+    { 
+            $validated = $request->validated();
+            $validated['user_id'] = Auth::id() ?? 1;
+            $billExpense = BillableExpense::create($validated);
 
             foreach ($request->input('expenseDetails') as $expenseDetail) {
                 $billExpense->expenseProduct()->attach($expenseDetail['expense_product_id'], [
@@ -40,7 +43,7 @@ class BillableExpenseController extends Controller
                 ]);
             }
             return BillableExpenseResource::make($billExpense);
-        }
+        
     }
 
     /**
@@ -56,7 +59,9 @@ class BillableExpenseController extends Controller
      */
     public function update(BillableExpenseRequest $request, BillableExpense $billableExpense)
     {
-        $billableExpense->update($request->validated());
+        $validated = $request->validated();
+        $validated['user_id'] = Auth::id() ?? 1;
+        $billableExpense->update($validated);
 
         // Update purchase details if necessary
         if ($request->has('expenseDetails')) {

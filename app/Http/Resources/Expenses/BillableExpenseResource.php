@@ -21,7 +21,7 @@ class BillableExpenseResource extends JsonResource
             'invoiceNumber' => $this->invoice_number,
             'paid' => $this->paid,
             'total' => $this->total,
-            'due' => $this->due,
+            'due' => $this->total - $this->paid,
             'details' => $this->details,
             'expensePeople' => [
                 'id' => $this->expense_people_id,
