@@ -1,336 +1,91 @@
-<!-- <template>
-    <toolbar title="Expense-" subtitle="Create Expense " />
-
-    <div class="w-full d-flex mt-4">
-        <div class="w-full">
-            <div class="overflow-x-auto pb-10">
-                <v-divider :thickness="2" class="border-opacity-50"></v-divider>
-                <v-app>
-                    <v-main>
-                        <div
-                            class="d-flex w-full gap-4 px-4 mt-10 justify-between"
-                        >
-                            <v-text-field
-                                v-model="formData.date"
-                                class="mt-2"
-                                variant="outlined"
-                                label="Date *"
-                                density="compact"
-                                type="date"
-                            ></v-text-field>
-
-                            <v-autocomplete
-                                type="person"
-                                v-model="formData.personId"
-                                @create:modelValue="
-                                    ExpenseRepository.GetPersonSuplier(
-                                        ExpenseRepository.expenseAllData
-                                            .expensePeople,
-                                        formData.expensePeople
-                                    )
-                                "
-                                :items="
-                                    ExpenseRepository.expenseAllData
-                                        .expensePeople
-                                "
-                                class="mt-2"
-                                variant="outlined"
-                                label="Person *"
-                                density="compact"
-                                item-value="id"
-                                item-title="name"
-                            ></v-autocomplete>
-                            <v-autocomplete
-                                v-model="formData.supplier"
-                                @create:modelValue="
-                                    ExpenseRepository.GetPersonSuplier(
-                                        ExpenseRepository.expenseAllData
-                                            .supplier,
-                                        formData.supplier
-                                    )
-                                "
-                                :items="
-                                    ExpenseRepository.expenseAllData.supplier
-                                "
-                                class="mt-2"
-                                variant="outlined"
-                                label="Supplier *"
-                                density="compact"
-                                item-value="id"
-                                item-title="name"
-                            ></v-autocomplete>
-                            <v-text-field
-                                class="mt-2"
-                                variant="outlined"
-                                label="Invoice Number * *"
-                                density="compact"
-                            ></v-text-field>
-                        </div>
-                        <div class="px-4">
-                            <v-text-field
-                                v-model="ExpenseRepository.expenseSearch"
-                                @keyup.enter="ExpenseRepository.SearchFetchData"
-                                @input="ExpenseRepository.SearchFetchData"
-                                @click:clear="clearSearch"
-                                variant="outlined"
-                                label="Search"
-                                density="compact"
-                                append-inner-icon="mdi-magnify"
-                                clearable
-                                class="border-none"
-                            ></v-text-field>
-                            <div
-                                class="rounded shadow-lg px-5 mb-12 w-[83vw]"
-                                v-if="ExpenseRepository.searchFetch.length > 0"
-                            >
-                                <div>
-                                    <div
-                                        v-for="index in EarningRepository.searchFetch"
-                                        :key="index"
-                                    >
-                                        <p
-                                            @click="
-                                                EarningRepository.fetchProduct(
-                                                    index.id
-                                                )
-                                            "
-                                            class="cursor-pointer pb-2.5 hover:bg-red"
-                                        >
-                                            {{ index.name }}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <table
-                                class="w-full text-sm text-left bg-blue-darken-500 w-100"
-                            >
-                                <thead class="bg-gray-200">
-                                    <tr>
-                                        <th
-                                            scope="col"
-                                            class="px-6 py-3 text-start"
-                                        >
-                                            PRODUCTS
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            class="px-6 py-3 text-start"
-                                        >
-                                            AMOUNT
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            class="px-6 py-3 text-start"
-                                        >
-                                            PRICE
-                                        </th>
-
-                                        <th
-                                            scope="col"
-                                            class="px-6 py-3 text-start"
-                                        >
-                                            GRAND TOTAL
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            class="px-6 py-3 text-end"
-                                        >
-                                            ACTIONS
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="px-3 py-3 text-start">
-                                            hello
-                                        </td>
-
-                                        <td
-                                            class="py-3 px-2 pt-8 text-start flex-row justify-"
-                                            dir="rtl"
-                                        >
-                                            <v-text-field
-                                                v-model="pro.amount"
-                                                variant="outlined"
-                                                density="compact"
-                                                type="number"
-                                                class="w-50"
-                                                >1</v-text-field
-                                            >
-                                        </td>
-
-                                        <td
-                                            class="py-3 px-2 pt-8 text-start create-input"
-                                            dir="auto"
-                                        >
-                                            <v-text-field
-                                                v-model="pro.price"
-                                                variant="outlined"
-                                                density="compact"
-                                                type="number"
-                                                class="w-50"
-                                            ></v-text-field>
-                                        </td>
-
-                                        <td class="text-start">
-                                            <span>{{ multiple(pro) }}</span>
-                                        </td>
-
-                                        <td class="py-2 pr-6 px-2 text-end">
-                                            <v-icon
-                                                color="red"
-                                                @click="removeProduct(index)"
-                                                class="mdi mdi-trash-can-outline"
-                                            ></v-icon>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="pt-12 w-100 discount">
-                            <span class="total"> </span>
-                            <div class="pt-12 w-100 discount" dir="rtl">
-                                <span class="total">Total: {{ totalSum }}</span>
-
-                                <div class="w-25">
-                                    <v-text-field
-                                        v-model="formData.discount"
-                                        variant="outlined"
-                                        class="w-100 input"
-                                        type="number"
-                                    >
-                                        <span class="span">{{
-                                            ExpenseRepository.symbol
-                                        }}</span>
-                                    </v-text-field>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex flex-row-reverse mb-16 mx-6">
-                            <v-btn color="primary" @click="createExpense">
-                                Create</v-btn
-                            >
-                        </div>
-                    </v-main>
-                </v-app>
-            </div>
-        </div>
-    </div>
-</template>
-
-<script setup> -->
-<!-- import { reactive, computed, ref, watch } from "vue";
-const items = ref([]);
-import Toolbar from "../../Component/UI/Toolbar.vue";
-import { useExpenseRepository } from "@/store/ExpenseRepository";
-const ExpenseRepository = useExpenseRepository();
-// const staticAmount = ref(1);
-
-ExpenseRepository.GetPersonSuplier();
-
-const clearSearch = () => {
-    ExpenseRepository.expenseSearch.value = "";
-};
-
-const removeProduct = (index) => {
-    ExpenseRepository.expense.splice(index, 1);
-    console.log(ExpenseRepository.expense);
-};
-
-const formData = reactive({
-    ncy: null,
-
-    grandTotal: "",
-    discount: null,
-    date: "",
-    note: "",
-});
-const multiple = (pro) => {
-    const add = pro.amount * pro.price;
-    return add || 0;
-};
-watch(
-    () => ExpenseRepository.expense,
-    () => {
-        ExpenseRepository.expense.forEach((expense) => {
-            // Update the 'subtotal' property for each service
-            expense.total = multiple(expense);
-            console.log(expense);
-        });
-    },
-    { deep: true }
-);
-
-const totalSum = computed(() => {
-    const total = ExpenseRepository.expense.reduce(
-        (acc, item) => acc + multiple(item),
-        0
-    );
-    formData.grandTotal = total;
-    return total;
-});
-
-const createExpense = async () => {
-    formData.earningDetails.map((data) => (data.expense = data.id));
-    await ExpenseRepository.CreateBillableExpense(formData);
-};
-
-const saveData = async (id) => {
-    await ExpenseRepository.fetchProduct(id);
-};
-
-const deleteItem = async (item) => {
-    await ExpenseRepository.deleteEarning(item.id);
-};
-formData.date = ExpenseRepository.getCurrentDate();
-// ExpenseRepository.ExpenseAllData();
-</script> -->
 <template>
-    <toolbar title="Expense-" subtitle="Create Expense " />
-    <div class="all-expense w-full rounded-xl m-4">
-        <div class="card rounded-xl w-full bg-white">
+    <div class="all-expense rounded-xl m-4">
+        <div class="card rounded-xl bg-white">
+            <toolbar title="Expense-" subtitle="CreateExpense " />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
                 color="success"
             ></v-divider>
-            <div class="d-flex w-full pt-12">
+            <div class="d-flex w-full gap-4 pt-12">
+                <!-- <v-autocomplete
+                    v-model="formData.currency"
+                    @update:modelValue="
+                        ExpenseRepository.GetCurrency(
+                            ExpenseRepository.expenseAllData.currencies,
+                            formData.currency
+                        )
+                    "
+                    :items="ExpenseRepository.expenseAllData.currencies"
+                    :return-object="false"
+                    variant="outlined"
+                    label=" * واحد پولی"
+                    class="pb-4 pl-4 input"
+                    style="width: 45%"
+                    item-value="id"
+                    item-title="symbol"
+                    color="customPrimary"
+                    base-color="customPrimary"
+                ></v-autocomplete> -->
                 <v-text-field
                     type="Date"
                     v-model="formData.date"
                     :return-object="false"
                     variant="outlined"
                     label=" * Date"
-                    class="pb-4 pl-4 input"
+                    class="pb-4 input"
+                    style="width: 45%"
                     color="#d3e2f8"
+                    density="compact"
                 ></v-text-field>
+
                 <v-autocomplete
+                    :items="ExpenseRepository.expenseAllData.supplier"
+                    v-model="formData.supplierId"
+                    :return-object="false"
                     variant="outlined"
-                    label="  Person *"
-                    class="pb-4 pl-4 input"
+                    label=" * Supplier "
+                    class="pb-4 input"
+                    style="width: 45%"
                     item-value="id"
-                    item-title="symbol"
-                    color="customPrimary"
-                    base-color="customPrimary"
+                    item-title="name"
+                    density="compact"
                 ></v-autocomplete>
 
                 <v-autocomplete
+                    :items="ExpenseRepository.expenseAllData.expensePeople"
+                    v-model="formData.personId"
+                    @update:modelValue="
+                        ExpenseRepository.GetCurrency(
+                            ExpenseRepository.expenseAllData.expensePeople,
+                            formData.personId
+                        )
+                    "
+                    :return-object="false"
                     variant="outlined"
-                    label=" * Person"
-                    class="pb-4 pl-4 input"
+                    label=" * person "
+                    class="pb-4 input"
+                    style="width: 45%"
                     item-value="id"
                     item-title="name"
+                    density="compact"
                 ></v-autocomplete>
+                <v-text-field
+                    v-model="formData.invoiceNumber"
+                    :return-object="false"
+                    variant="outlined"
+                    label=" Invoice Number *"
+                    class="pb-4 input"
+                    style="width: 45%"
+                    density="compact"
+                ></v-text-field>
             </div>
             <v-card class="rounded px-5 py-4 mb-20 w-full pb-10">
                 <v-divider></v-divider>
                 <v-row no-gutters class="justify-space-between">
                     <v-col cols="full" class="w-50" sm="12" md="12">
                         <v-text-field
-                            v-model="ExpenseRepository.earningSearch"
+                            v-model="ExpenseRepository.billExpenseSearch"
                             @keyup.enter="ExpenseRepository.SearchFetchData"
                             @input="ExpenseRepository.SearchFetchData"
                             @click:clear="clearSearch"
@@ -341,6 +96,7 @@ formData.date = ExpenseRepository.getCurrentDate();
                             clearable
                             class="border-none"
                         ></v-text-field>
+
                         <div
                             class="rounded shadow-lg px-5 mb-12 w-[83vw]"
                             v-if="ExpenseRepository.searchFetch.length > 0"
@@ -351,11 +107,7 @@ formData.date = ExpenseRepository.getCurrentDate();
                                     :key="index"
                                 >
                                     <p
-                                        @click="
-                                            ExpenseRepository.fetchProduct(
-                                                index.id
-                                            )
-                                        "
+                                        @click="saveData(index)"
                                         class="cursor-pointer pb-2.5 hover:bg-red"
                                     >
                                         {{ index.name }}
@@ -366,20 +118,24 @@ formData.date = ExpenseRepository.getCurrentDate();
                     </v-col>
 
                     <div class="overflow-x-auto pb-6 table">
-                        <table class="w-full w-100">
-                            <thead class="text-lg bg-slate-200 thead">
+                        <table
+                            class="w-full text-sm text-left bg-blue-darken-500 w-100"
+                        >
+                            <thead
+                                class="text-xs text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400 thead"
+                            >
                                 <tr>
                                     <th
                                         scope="col"
                                         class="px-6 py-3 text-start"
                                     >
-                                        Product
+                                        product
                                     </th>
                                     <th
                                         scope="col"
                                         class="px-6 py-3 text-start"
                                     >
-                                        Amount
+                                        amount
                                     </th>
                                     <th
                                         scope="col"
@@ -391,14 +147,9 @@ formData.date = ExpenseRepository.getCurrentDate();
                                         scope="col"
                                         class="px-6 py-3 text-start"
                                     >
-                                        Gound total
+                                        Grand total
                                     </th>
-                                    <th
-                                        scope="col"
-                                        class="px-6 py-3 text-start"
-                                    >
-                                        Action
-                                    </th>
+                                    <th scope="col" class="py-3">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -406,20 +157,23 @@ formData.date = ExpenseRepository.getCurrentDate();
                                     class=""
                                     v-for="(
                                         pro, index
-                                    ) in ExpenseRepository.product"
+                                    ) in ExpenseRepository.expenseProduct"
                                     :key="index"
                                 >
                                     <td class="px-3 py-3 text-start">
-                                        {{ pro.name }}
+                                        {{
+                                            pro.name
+                                                ? pro.name
+                                                : "Product Removed"
+                                        }}
                                     </td>
 
                                     <td
-                                        class="py-3 px-2 pt-8 text-start flex-row justify-"
+                                        class="py-3 px-2 pt-8 text-start flex-row"
                                     >
                                         <v-text-field
-                                            v-model="pro.quentity"
+                                            v-model="pro.quantity"
                                             variant="outlined"
-                                            direction="rtl"
                                             density="compact"
                                             type="number"
                                             class="w-50"
@@ -427,23 +181,29 @@ formData.date = ExpenseRepository.getCurrentDate();
                                     </td>
 
                                     <td
-                                        class="py-3 px-2 pt-8 text-start create-input"
+                                        class="py-3 px-2 pt-8 text-end"
+                                        style="
+                                            display: flex;
+                                            justify-content: flex-start;
+                                        "
                                     >
                                         <v-text-field
+                                            v-if="formData.personId !== null"
                                             v-model="pro.price"
-                                            direction="rtl"
                                             variant="outlined"
                                             density="compact"
+                                            class="custom-width"
                                             type="number"
-                                            class="w-50"
                                         >
-                                            <span class="bg-[#ecf1f4] span">{{
-                                                ExpenseRepository.symbol
-                                            }}</span>
+                                            <span class="span">
+                                                {{
+                                                    ExpenseRepository.getCurrencySymbol
+                                                }}
+                                            </span>
                                         </v-text-field>
                                     </td>
-                                    <td class="text-start">
-                                        <span>{{ multiple(pro) }}</span>
+                                    <td class="text-center">
+                                        <span>{{ multiple(pro) }} </span>
                                     </td>
 
                                     <td class="py-2 pr-6 px-2 text-start">
@@ -460,29 +220,30 @@ formData.date = ExpenseRepository.getCurrentDate();
                 </v-row>
             </v-card>
 
-            <div class="pt-12 w-100 discount" dir="rtl">
-                <span dir="rtl" class="total"> Total : {{ totalSum }}</span>
-
-                <div class="w-25">
+            <div class="pt-12 w-100 discount">
+                <div>
                     <v-text-field
-                        dir="rtl"
-                        direction="ltr"
-                        v-model="formData.discount"
+                        v-model="formData.paid"
                         variant="outlined"
-                        class="w-100 input"
+                        class="absolute"
                         type="number"
+                        density="compact"
+                        label="paid*"
                     >
-                        <span class="span">{{ ExpenseRepository.symbol }}</span>
+                        <span class="span">{{
+                            ExpenseRepository.getCurrencySymbol
+                        }}</span>
                     </v-text-field>
                 </div>
+                <span class="total"> Total : {{ totalSum }}</span>
             </div>
 
             <div></div>
             <div class="d-flex mt-16 pt-16">
                 <v-textarea
-                    v-model="formData.note"
+                    v-model="formData.details"
                     class="textArea"
-                    label="Ditails"
+                    label="details"
                     variant="outlined"
                 >
                 </v-textarea>
@@ -496,11 +257,15 @@ formData.date = ExpenseRepository.getCurrentDate();
 
 <script setup>
 import { reactive, computed, ref, watch } from "vue";
+import Toolbar from "../../Component/UI/Toolbar.vue";
 const items = ref([]);
 
-import Toolbar from "../../Component/UI/Toolbar.vue";
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 const ExpenseRepository = useExpenseRepository();
+
+// console.log(ExpenseRepository.expenseAllData.peoples);
+
+console.log(ExpenseRepository.expenseProduct, "thisi ");
 
 // const removeProduct = (index) => {
 //     const product = ExpenseRepository.searchFetch[index];
@@ -510,73 +275,138 @@ const ExpenseRepository = useExpenseRepository();
 //     console.log(index);
 // };
 const clearSearch = () => {
-    ExpenseRepository.earningSearch.value = "";
+    ExpenseRepository.billExpenseSearch = "";
+    ExpenseRepository.searchResults = [];
 };
 
+// console.log(ExpenseRepository.expenseAllData.peoples.currencySymbol, "jawad");
+
 const removeProduct = (index) => {
-    ExpenseRepository.product.splice(index, 1);
-    console.log(ExpenseRepository.product);
+    ExpenseRepository.expenseProduct.splice(index, 1);
+    console.log(ExpenseRepository.expenseProduct);
+};
+const RemoveProduct = (index) => {
+    ExpenseRepository.expenseProduct[index].name = ""; // or null
 };
 
 const formData = reactive({
-    ncy: null,
-    earningDetails: ExpenseRepository.product,
+    expenseDetails: ExpenseRepository.expenseProduct,
+    total: "",
+    personId: "",
+    currencyId: "",
     grandTotal: "",
-    discount: null,
+    invoiceNumber: "",
+
     date: "",
-    note: "",
+    details: "",
+    paid: "",
 });
+const getCurrencySymbol = () => {
+    if (formData.value && formData.value.peopleId !== null) {
+        const person =
+            ExpenseRepository.expenseAllData.peoples.currencySymbol.find(
+                (person) => person === formData.value.peopleId
+            );
+        return person.currencySymbol;
+    } else {
+        return "";
+    }
+};
+
+console.log(getCurrencySymbol(), "man");
 const multiple = (pro) => {
-    const add = pro.quentity * pro.price;
+    // console.log(pro);
+    const add = pro.quantity * pro.price;
+    console.log(add);
     return add || 0;
 };
 watch(
-    () => ExpenseRepository.product,
+    () => ExpenseRepository.expenseProduct,
     () => {
-        ExpenseRepository.product.forEach((product) => {
-            // Update the 'subtotal' property for each service
-            product.total = multiple(product);
-            console.log(product);
+        ExpenseRepository.expenseProduct.forEach((expenseProduct) => {
+            // Update the 'total' property for each product
+            expenseProduct.total = multiple(expenseProduct);
+            // console.log(" the expense changed");
         });
+        // Recalculate the total sum whenever expenseProduct changes
+        totalSum.value; // This triggers the computed property
     },
     { deep: true }
 );
 
+watch(
+    () => formData.paid,
+    () => {
+        // Deduct the paid amount from the total sum
+        const paid = parseFloat(formData.paid) || 0;
+        formData.grandTotal = totalSum.value - paid;
+        // console.log("paid changed");
+    }
+);
+
 const totalSum = computed(() => {
-    const total = ExpenseRepository.product.reduce(
+    const total = ExpenseRepository.expenseProduct.reduce(
         (acc, item) => acc + multiple(item),
         0
     );
     formData.grandTotal = total;
+    formData.total = total;
     return total;
 });
 
+// const totalSum = computed(() => {
+//     const total = ExpenseRepository.expenseProduct.reduce(
+//         (acc, item) => acc + multiple(item),
+//         0
+//     );
+//     formData.grandTotal = total;
+//     return total;
+// });
+
 const createEarning = async () => {
-    formData.earningDetails.map((data) => (data.product = data.id));
-    await ExpenseRepository.CreateEarning(formData);
+    // Map the selected product ID to expenseProduct
+    formData.expenseDetails.map(
+        (data) => (
+            (data.expenseProduct = data.productId), data.price, data.quantity
+        )
+    );
+    await ExpenseRepository.CreateBillExpense(formData);
+    // Clear search results after creating earning
+    clearSearch();
 };
 
-const saveData = async (id) => {
-    await ExpenseRepository.fetchProduct(id);
+const saveData = async (index) => {
+    await ExpenseRepository.fetchProduct(index.id);
+    // Clear search results after selecting a product
+    clearSearch();
 };
 
 const deleteItem = async (item) => {
     await ExpenseRepository.deleteEarning(item.id);
 };
-formData.date = ExpenseRepository.getCurrentDate();
+formData.date = ExpenseRepository.getTodaysDate();
 ExpenseRepository.ExpenseAllData();
 </script>
 
 <style scoped>
+.all-expense {
+    width: 100%;
+}
 .input > :nth-child(1) > :nth-child(1) {
     height: 3rem;
     border: none;
 }
 
+/* color: #5784c8; */
+
+.total {
+    border-top: 2px dashed #d3e2f8;
+    border-bottom: 2px dashed #d3e2f8;
+}
 .product-table {
     display: flex;
     justify-content: space-between;
-
+    background-color: #ecf1f4;
     border-right: 4px solid #fecd07;
 }
 .table-row {
@@ -585,10 +415,11 @@ ExpenseRepository.ExpenseAllData();
     padding: 20px;
 }
 .table {
-    width: 100rem;
+    width: 70rem;
 }
 .thead {
     border-right: 4px solid #fecd07;
+    background-color: #ecf1f4;
 }
 .v-input__control {
     width: 70rem;
@@ -598,5 +429,8 @@ ExpenseRepository.ExpenseAllData();
     width: 100%;
     justify-content: space-between;
     align-items: center;
+}
+.custom-width {
+    width: 110px; /* Set your desired width here */
 }
 </style>

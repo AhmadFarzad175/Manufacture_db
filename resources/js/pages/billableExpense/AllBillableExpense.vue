@@ -1,5 +1,5 @@
 <template>
-    <!-- <CreateBillableExpense v-if="ExpensRepository.createDailog" /> -->
+    <CreateBillableExpense v-if="ExpensRepository.createEarning" />
     <UpdateBillableExpense v-if="ExpensRepository.updateDailog" />
     <toolbar title="Expense-" subtitle="Billable Expense " />
 
@@ -23,11 +23,7 @@
                             <span class="">FILTER</span>
                         </v-btn>
                         <router-link to="/ceateBillableExpense">
-                            <v-btn
-                                @click="createPopUp"
-                                color="light-blue-darken-1"
-                                size="large"
-                            >
+                            <v-btn color="light-blue-darken-1" size="large">
                                 <span>Create</span>
                                 <v-icon right large>mdi-plus</v-icon>
                             </v-btn>
@@ -47,16 +43,14 @@
                                     "
                                     :headers="headers"
                                     :items-length="ExpensRepository.totalItems"
-                                    :items="ExpensRepository.billableExpenses"
+                                    :items="ExpensRepository.billExpenses"
                                     :loading="ExpensRepository.loading"
                                     :search="ExpensRepository.userSearch"
                                     item-value="id"
                                     @update:options="
-                                        ExpensRepository.FetchBillableExpensesData
+                                        ExpensRepository.FetchBillExpenses
                                     "
-                                    :item-key="
-                                        ExpensRepository.billableExpenses
-                                    "
+                                    :item-key="ExpensRepository.billExpenses"
                                     itemKey="id"
                                     hover
                                 >
@@ -135,6 +129,7 @@
 import { useExpenseRepository } from "../../store/ExpenseRepository";
 // import CreateBillableExpense from "./CreateBillableExpense.vue";
 import UpdateBillableExpense from "./UpdateBillableExpense.vue";
+// import CreateBillableExpense from "./CreateBillableExpense.vue";
 
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
@@ -207,7 +202,7 @@ const deleteItem = (id) => {
 const editItem = (id) => {
     ExpensRepository.expense = {};
     if (Object.keys(ExpensRepository.expense).length === 0) {
-        ExpensRepository.FetchExpenseData(id)
+        ExpensRepository.FetchBillExpenses(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
                 ExpensRepository.updateDailog = true;

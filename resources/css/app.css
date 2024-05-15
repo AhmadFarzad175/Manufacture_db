@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.v-data-table__thead {
+    background-color: #f2f3f6;
+    border-left: 8px solid #5591f5;
+}
+.v-data-table__tr {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+
+    border-left: 8px solid #5591f5;
+}
+.v-table__wrapper {
+    /* background-color: #5591f5; */
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}

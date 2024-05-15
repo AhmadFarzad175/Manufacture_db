@@ -8,16 +8,21 @@ import { useRouter } from "vue-router";
 export let useExpenseRepository = defineStore("ExpenseRepository", {
     state() {
         return {
+            router: useRouter(),
+            currency: reactive([]),
+
             expense: reactive([]),
             expenses: reactive([]),
             personCategory: reactive([]),
 
             // =======Billable Expense============\\
-            billableExpense: reactive([]),
-            billableExpenses: reactive([]),
-            product: reactive([]),
+            billExpenseSearch: ref(""),
+            billExpenses: reactive([]),
+            billExpense: reactive([]),
             expenseAllData: reactive([]),
+            searchFetch: reactive([]),
             expenseProduct: reactive([]),
+            symbol: ref(""),
 
             isLoading: false,
             error: null,
@@ -34,12 +39,20 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             itemKey: "id",
 
             Search: "",
-            expenseSearch: "",
+
             searchFetch: "",
             clearSearch: "",
         };
     },
     actions: {
+        GetCurrency(account, id) {
+            console.log(account, id, "this is what i need ");
+            const array = account.filter((acc) => acc.id == id);
+
+            this.getCurrencySymbol = array[0].currencySymbol;
+            console.log(array[0].currencySymbol, "the currency symbol");
+            console.log(this.getCurrencySymbol);
+        },
         getCurrentDate() {
             const today = new Date();
             const year = today.getFullYear();
@@ -52,11 +65,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             this.name = accArr[0].name;
             console.log(currArr[0].name);
         },
-        GetCurrency(currency, id) {
-            const currArr = currency.filter((curr) => curr.id == id);
-            this.symbol = currArr[0].symbol;
-            console.log(currArr[0].symbol);
-        },
+
         async GetPersonCategory() {
             this.loading = true;
             setContentType("application/json");
@@ -145,62 +154,160 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
         },
 
         // =================Bilable Expense====================//
-        async GetPersonSuplier() {
-            this.loading = true;
-            setContentType("application/json");
-
-            const response = await axios.get(`/personExpenseProduct`);
-            this.expenseAllData = response.data.data;
-            console.log(response.data.data);
-            this.loading = false;
+        getTodaysDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, "0");
+            const day = String(today.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}`;
         },
+        // GetCurrency(expenseAllData, id) {
+        //     const currArr = expenseAllData.filter((curr) => curr.id == id);
+        //     this.symbol = currArr[0].symbol;
+        //     console.log(currArr[0].symbol);
+        // },
+
+        // entigrating data for create Earnings
         async ExpenseAllData() {
             const config = {
-                url: "/personExpenseProduct",
+                url: "personExpenseProduct",
             };
             const response = await axios(config);
             this.expenseAllData = response.data.data;
+            // console.log(this.expenseAllData, "man");
         },
         async SearchFetchData() {
-            console.log(this.expenseSearch);
+            console.log(this.billExpenseSearch);
             this.loading = true;
 
             const response = await axios.get(
-                `personExpenseProduct?&search=${this.expenseSearch}`
+                `/expenseProducts?&search=${this.billExpenseSearch}`
             );
+
             this.searchFetch = response.data.data;
+            // console.log(this.SearchFetchData.data);
+            // console.log(this.searchFetch, "mann");
             this.loading = false;
             // this.searchFetch = "";
         },
         async fetchProduct(id, isUpdate = false) {
             // this.error = null;
             try {
-                const response = await axios.get(`/personExpenseProduct${id}`);
+                const response = await axios.get(`expenseProducts/${id}`);
 
-                // console.log("id", response.data.data.id);
+                console.log("id", response.data.data.id);
                 if (isUpdate) {
                     delete response.data.data.id;
                 }
                 console.log(response.data.data, "fetchProduct");
                 this.expenseProduct.push(response.data.data);
-                // this.billExpense.expenseDetails.push(response.data.data);
+                console.log(this.expenseProduct, "data");
+                this.billExpense.expenseDetails.push(response.data.data);
 
-                this.searchFetch = [];
+                console.log("Fetched product data:", response.data.data); // Console log the fetched data
+
+                // this.searchFetch = [];
             } catch (err) {
                 // this.error = err.message;
             }
         },
 
-        async FetchBillableExpensesData({ page, itemsPerPage }) {
+        async FetchBillExpenses({ page, itemsPerPage }) {
             this.loading = true;
-            setContentType("application/json");
 
             const response = await axios.get(
-                `/billableExpenses?page=${page}&perPage=${itemsPerPage}&search=${this.Search}`
+                `billableExpenses?page=${page}&perPage=${itemsPerPage}&search=${this.billExpenseSearch}`
             );
-            this.billableExpenses = response.data.data;
+            this.billExpenses = response.data.data;
             this.totalItems = response.data.meta.total;
             this.loading = false;
+        },
+        async FetchBillExpense(id) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`billableExpenses/${id}`);
+
+                this.billExpense = response.data.data;
+                this.expenseProduct = response.data.data.expenseDetails;
+
+                this.expenseProduct = this.expenseProduct.map((data) => {
+                    return { ...data, name: data.expenseProduct.name };
+                });
+
+                console.log(this.expenseProduct, "fetchBillExpense");
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+        async CreateBillExpense(formData) {
+            console.log(formData);
+            try {
+                // Adding a custom header to the Axios request
+                const config = {
+                    method: "POST",
+                    url: "billableExpenses",
+
+                    data: formData,
+                };
+
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.router.push("/expenseProducts");
+
+                this.FetchBillExpenses({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
+        },
+        async UpdateBillExpense(id, data) {
+            console.log(data);
+            try {
+                const config = {
+                    method: "PUT",
+                    url: `expenseProducts/${id}`,
+
+                    data: data,
+                };
+
+                // Using Axios to make a post request with async/await and custom headers
+                const response = await axios(config);
+
+                this.router.push("/billExpense");
+
+                this.FetchBillExpenses({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the store
+                this.error = err;
+            }
+        },
+        async DeleteBillExpense(id) {
+            this.isLoading = true;
+            this.Expenses = [];
+            this.error = null;
+
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "bill_expenses/" + id,
+                };
+
+                const response = await axios(config);
+
+                this.supplier = response.data.data;
+                this.FetchBillExpenses({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
         },
     },
 });
