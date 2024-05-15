@@ -57,7 +57,7 @@
                     v-model="formData.personId"
                     @update:modelValue="
                         ExpenseRepository.GetCurrency(
-                            ExpenseRepository.expenseAllData.expensePeople,
+                            ExpenseRepository.expenseAllData.currency,
                             formData.personId
                         )
                     "
@@ -160,6 +160,9 @@
                                     ) in ExpenseRepository.expenseProduct"
                                     :key="index"
                                 >
+                                    {{
+                                        pro.id
+                                    }}
                                     <td class="px-3 py-3 text-start">
                                         {{
                                             pro.name
@@ -197,7 +200,7 @@
                                         >
                                             <span class="span">
                                                 {{
-                                                    ExpenseRepository.getCurrencySymbol
+                                                    ExpenseRepository.currsymbol
                                                 }}
                                             </span>
                                         </v-text-field>
@@ -231,7 +234,7 @@
                         label="paid*"
                     >
                         <span class="span">{{
-                            ExpenseRepository.getCurrencySymbol
+                            ExpenseRepository.currsymbol
                         }}</span>
                     </v-text-field>
                 </div>
@@ -261,6 +264,7 @@ import Toolbar from "../../Component/UI/Toolbar.vue";
 const items = ref([]);
 
 import { useExpenseRepository } from "@/store/ExpenseRepository";
+// import { useMoneyAccountRepository } from "../../store/MoneyAccountRepository ";
 const ExpenseRepository = useExpenseRepository();
 
 // console.log(ExpenseRepository.expenseAllData.peoples);
@@ -296,7 +300,6 @@ const formData = reactive({
     currencyId: "",
     grandTotal: "",
     invoiceNumber: "",
-
     date: "",
     details: "",
     paid: "",

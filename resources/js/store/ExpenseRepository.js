@@ -42,16 +42,24 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
 
             searchFetch: "",
             clearSearch: "",
+            currsymbol: reactive([]),
         };
     },
     actions: {
-        GetCurrency(account, id) {
-            console.log(account, id, "this is what i need ");
-            const array = account.filter((acc) => acc.id == id);
+        GetCurrency(currency, id) {
+            console.log(currency, id, "this is curr");
+            const currArr = currency.filter((curr) => curr.id == id);
+            this.currsymbol = currArr[0].symbol;
+            console.log(currArr[0].symbol, this.currsymbol);
+        },
+        async GetAccounts() {
+            this.loading = true;
+            setContentType("application/json");
 
-            this.getCurrencySymbol = array[0].currencySymbol;
-            console.log(array[0].currencySymbol, "the currency symbol");
-            console.log(this.getCurrencySymbol);
+            const response = await axios.get(`/currency`);
+            this.currency = response.data.data;
+            console.log(response.data.data);
+            this.loading = false;
         },
         getCurrentDate() {
             const today = new Date();
@@ -253,7 +261,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
                 this.createDialog = false;
-                this.router.push("/expenseProducts");
+                this.router.push("/allBillableExpense");
 
                 this.FetchBillExpenses({
                     page: this.page,
