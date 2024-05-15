@@ -35,7 +35,6 @@ class BillableExpenseRequest extends FormRequest
             'expenseDetails' => $transformedExpenseDetails,
             'expense_people_id' => $this->input('personId'),
             'supplier_id' => $this->input('supplierId'),
-            'user_id' => $this->input('addedById'),
             'currency_id' => $this->input('currencyId'),
             'invoice_number' => $this->input('invoiceNumber'),
         ]);
@@ -55,7 +54,6 @@ class BillableExpenseRequest extends FormRequest
             'date' => 'required|date',
             'expense_people_id' => 'required|exists:expense_peoples,id',
             'supplier_id' => 'required|exists:suppliers,id',
-            'user_id' => 'required|exists:users,id',
             'invoice_number' => 'required|integer',
             'paid' => 'required|min:0',
             'total' => 'required|min:0',
