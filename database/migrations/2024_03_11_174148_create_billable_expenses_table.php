@@ -25,7 +25,8 @@ return new class extends Migration
             $table->integer('invoice_number');
             $table->decimal('paid', 20, 2);
             $table->decimal('total', 20, 2);
-            $table->foreignIdFor(Currency::class)->constrained();
+            $table->integer('currency_id')->nullable();
+            // $table->foreignIdFor(Currency::class)->constrained();
             $table->text('details')->nullable();
             $table->timestamps();
             $table->softDeletes();
