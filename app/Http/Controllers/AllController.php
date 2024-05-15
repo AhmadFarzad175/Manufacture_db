@@ -51,7 +51,7 @@ class AllController extends Controller
         $allData = [
             'supplier' => Supplier::select('id', 'name')->get(),
             'expensePeople' => ExpensePeople::select('id', 'name')->get(),
-            'currency' => Currency::select('id', 'name')->get(),
+            'currency' => Currency::select('id', 'name','symbol')->get(),
         ];
 
         return response()->json(['data' => $allData]);
