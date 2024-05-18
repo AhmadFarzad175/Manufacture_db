@@ -1,5 +1,5 @@
 <template>
-    <CreatePayment v-if="ExpenseRepository.createPayment" />
+    <CreatePayment v-if="ExpenseRepository.createDailog" />
     <ViewCreatePayment v-if="ExpenseRepository.ViewEarning" />
     <toolbar title="Expennse-" subtitle="BillableExpense" />
     <div class="all-expense rounded-xl w-full">
@@ -75,20 +75,18 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
-                                                    <v-list-item-title
-                                                        class="cursor-pointer d-flex gap-3 py-1"
-                                                        @click="
-                                                            CreatePaymentDialog(
-                                                                item.id
-                                                            )
-                                                        "
-                                                    >
-                                                        <v-icon color="gray"
-                                                            >mdi
-                                                            mdi-cash-edit</v-icon
+                                                    <v-list-item>
+                                                        <v-button
+                                                            class="cursor-pointer d-flex gap-3 py-1"
+                                                            @click="createPopUp"
                                                         >
-                                                        &nbsp; CreatePayment
-                                                    </v-list-item-title>
+                                                            <v-icon color="gray"
+                                                                >mdi
+                                                                mdi-cash-edit</v-icon
+                                                            >
+                                                            CreatePayment
+                                                        </v-button>
+                                                    </v-list-item>
 
                                                     <v-list-item-title
                                                         class="cursor-pointer d-flex gap-3 py-1"
@@ -150,6 +148,7 @@
 <script setup>
 import { useExpenseRepository } from "@/store/ExpenseRepository";
 import toolbar from "../../Component/UI/Toolbar.vue";
+import CreatePayment from "./CreatePayment.vue";
 
 // ignore
 
@@ -162,6 +161,23 @@ const ExpenseRepository = useExpenseRepository();
 // delete and update
 const deleteItem = async (item) => {
     await ExpenseRepository.DeleteBillExpense(item.id);
+};
+const createPopUp = () => {
+    ExpenseRepository.createDailog = true;
+};
+const editItem = (id) => {
+    ExpenseRepository.expense = {};
+    if (Object.keys(ExpenseRepository.expense).length === 0) {
+        ExpenseRepository.FetchExpenseData(id)
+            .then(() => {
+                // Data has been fetched successfully, now set dialog to true
+                ExpenseRepository.updateDailog = true;
+            })
+            .catch((error) => {
+                console.error("Error fetching data:", error);
+                // Display  message
+            });
+    }
 };
 
 const headers = [

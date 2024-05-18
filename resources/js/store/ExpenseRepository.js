@@ -322,5 +322,26 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 this.error = err;
             }
         },
+        async CreatePayment(formData) {
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+
+            const config = {
+                method: "POST",
+                url: "/billablePayments/",
+                data: formData,
+            };
+
+            // Using Axios to make a GET request with async/await and custom headers
+            const response = await axios(config);
+            // toast.success("Customer Succesfully Created", {
+            //     autoClose: 1000,
+            // });
+            this.createDailog = false;
+            this.FetchExpensesData({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
     },
 });

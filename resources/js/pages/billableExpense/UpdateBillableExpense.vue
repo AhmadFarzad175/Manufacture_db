@@ -7,25 +7,6 @@
                 color="success"
             ></v-divider>
             <div class="d-flex pt-12 w-full">
-                <!-- <v-autocomplete
-                    v-model="formData.currency"
-                    @update:modelValue="
-                        ExpenseRepository.GetCurrency(
-                            ExpenseRepository.expenseAllData.currencies,
-                            formData.currency
-                        )
-                    "
-                    :items="ExpenseRepository.expenseAllData.currencies"
-                    :return-object="false"
-                    variant="outlined"
-                    label=" * واحد پولی"
-                    class="pb-4 pl-4 input"
-                    style="width: 45%"
-                    item-value="id"
-                    item-title="symbol"
-                    color="customPrimary"
-                    base-color="customPrimary"
-                ></v-autocomplete> -->
                 <v-text-field
                     v-model="formData.invoiceNumber"
                     variant="outlined"
