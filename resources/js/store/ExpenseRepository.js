@@ -43,6 +43,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             searchFetch: "",
             clearSearch: "",
             currsymbol: reactive([]),
+            currsymbolId: reactive([]),
         };
     },
     actions: {
@@ -50,8 +51,10 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             console.log(currency, id, "this is curr");
             const currArr = currency.filter((curr) => curr.id == id);
             this.currsymbol = currArr[0].symbol;
-            console.log(currArr[0].symbol, this.currsymbol);
+            this.currsymbolId = currArr[0].id;
+            console.log(this.currsymbolId);
         },
+
         async GetAccounts() {
             this.loading = true;
             setContentType("application/json");
@@ -272,29 +275,31 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             }
         },
         async UpdateBillExpense(id, data) {
-            console.log(data);
+            console.log(`Updating bill expense with id: ${id}`, data);
             try {
                 const config = {
                     method: "PUT",
-                    url: `expenseProducts/${id}`,
-
+                    url: `/billableExpenses/${id}`,
                     data: data,
                 };
 
                 // Using Axios to make a post request with async/await and custom headers
                 const response = await axios(config);
 
-                this.router.push("/billExpense");
+                console.log("Update response:", response);
+
+                this.router.push("/allBillableExpense");
 
                 this.FetchBillExpenses({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                // If there's an error, set the error in the store
+                console.error("Error updating bill expense:", err);
                 this.error = err;
             }
         },
+
         async DeleteBillExpense(id) {
             this.isLoading = true;
             this.Expenses = [];
@@ -303,7 +308,7 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: "bill_expenses/" + id,
+                    url: "billableExpenses/" + id,
                 };
 
                 const response = await axios(config);

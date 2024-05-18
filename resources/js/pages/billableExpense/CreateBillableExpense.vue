@@ -160,9 +160,6 @@
                                     ) in ExpenseRepository.expenseProduct"
                                     :key="index"
                                 >
-                                    {{
-                                        pro.id
-                                    }}
                                     <td class="px-3 py-3 text-start">
                                         {{
                                             pro.name
@@ -198,7 +195,7 @@
                                             class="custom-width"
                                             type="number"
                                         >
-                                            <span class="span">
+                                            <span class="span mr-2">
                                                 {{
                                                     ExpenseRepository.currsymbol
                                                 }}
@@ -233,7 +230,7 @@
                         density="compact"
                         label="paid*"
                     >
-                        <span class="span">{{
+                        <span class="span ml-8">{{
                             ExpenseRepository.currsymbol
                         }}</span>
                     </v-text-field>
@@ -289,15 +286,18 @@ const removeProduct = (index) => {
     ExpenseRepository.expenseProduct.splice(index, 1);
     console.log(ExpenseRepository.expenseProduct);
 };
+// console.log(
+// ExpenseRepository.ExpenseAllData.currency,
+// "iddddddddddddddddddddddddddd"
+// );
 const RemoveProduct = (index) => {
     ExpenseRepository.expenseProduct[index].name = ""; // or null
 };
-
 const formData = reactive({
     expenseDetails: ExpenseRepository.expenseProduct,
     total: "",
     personId: "",
-    currencyId: "",
+    currencyId: null,
     grandTotal: "",
     invoiceNumber: "",
     date: "",

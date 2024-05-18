@@ -1,69 +1,68 @@
 <template>
-    <CreateBillableExpense v-if="ExpensRepository.createEarning" />
-    <UpdateBillableExpense v-if="ExpensRepository.updateDailog" />
-    <toolbar title="Expense-" subtitle="Billable Expense " />
+    <CreatePayment v-if="ExpenseRepository.createPayment" />
+    <ViewCreatePayment v-if="ExpenseRepository.ViewEarning" />
+    <toolbar title="Expennse-" subtitle="BillableExpense" />
+    <div class="all-expense rounded-xl w-full">
+        <div class="card rounded-xl bg-white">
+            <v-divider
+                :thickness="1"
+                class="border-opacity-100"
+                color="success"
+            ></v-divider>
 
-    <div class="w-full d-flex">
-        <div class="w-full">
-            <v-layout class="py-5">
-                <v-row class="justify-space-between mt-6">
-                    <v-col cols="12" sm="3">
-                        <v-text-field
-                            v-model="ExpensRepository.Search"
-                            label="Search"
-                            prepend-inner-icon="mdi-magnify"
-                            variant="outlined"
-                            name="search"
-                            density="compact"
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="2" class="d-flex mr-28 gap-2">
-                        <v-btn color="blue" variant="outlined" size="large">
-                            <v-icon>mdi-filter-outline</v-icon>
-                            <span class="">FILTER</span>
-                        </v-btn>
-                        <router-link to="/ceateBillableExpense">
-                            <v-btn color="light-blue-darken-1" size="large">
-                                <span>Create</span>
-                                <v-icon right large>mdi-plus</v-icon>
-                            </v-btn>
-                        </router-link>
-                    </v-col>
-                </v-row>
-            </v-layout>
+            <div class="btn-search pt-12 full pb-6 d-flex justify-between">
+                <div class="text-field w-1/5">
+                    <v-text-field
+                        :loading="loading"
+                        color="#D3E2F8"
+                        density="compact"
+                        variant="outlined"
+                        label="Search templates"
+                        append-inner-icon="mdi-magnify"
+                        single-line
+                        hide-details
+                        v-model="ExpenseRepository.billExpenseSearch"
+                    ></v-text-field>
+                </div>
+                <div class="btn d-flex gap-4">
+                    <v-btn variant="outlined" color="#112F53 ">Filter</v-btn>
 
-            <div class="overflow-x-auto pb-10">
+                    <router-link to="/ceateBillableExpense">
+                        <v-btn color="primary" variant="flat"> Create</v-btn>
+                    </router-link>
+                </div>
+            </div>
+            <!-- v-table server  -->
+            <div class="overflow-x-hidden">
                 <v-app>
-                    <v-main>
+                    <v-main class="main">
                         <v-row>
                             <v-col>
                                 <v-data-table-server
+                                    theme="cursor-pointer"
                                     v-model:items-per-page="
-                                        ExpensRepository.itemsPerPage
+                                        ExpenseRepository.itemsPerPage
                                     "
                                     :headers="headers"
-                                    :items-length="ExpensRepository.totalItems"
-                                    :items="ExpensRepository.billExpenses"
-                                    :loading="ExpensRepository.loading"
-                                    :search="ExpensRepository.userSearch"
-                                    item-value="id"
-                                    @update:options="
-                                        ExpensRepository.FetchBillExpenses
+                                    :items-length="ExpenseRepository.totalItems"
+                                    :items="ExpenseRepository.billExpenses"
+                                    :loading="ExpenseRepository.loading"
+                                    :search="
+                                        ExpenseRepository.billExpenseSearch
                                     "
-                                    :item-key="ExpensRepository.billExpenses"
-                                    itemKey="id"
+                                    @update:options="
+                                        ExpenseRepository.FetchBillExpenses
+                                    "
+                                    :item-key="ExpenseRepository.billExpenses"
                                     hover
+                                    class="w-full mx-auto"
                                 >
                                     <template v-slot:item.due="{ item }">
-                                        <!-- Status Cell -->
-                                        <div v-bind:class="dueColor(item.due)">
-                                            {{ item.due }}
-                                        </div>
+                                        <span class="text-red">{{
+                                            item.due
+                                        }}</span>
                                     </template>
-                                    <template
-                                        v-slot:item.actions="{ item }"
-                                        class="right"
-                                    >
+                                    <template v-slot:item.action="{ item }">
                                         <v-menu>
                                             <template
                                                 v-slot:activator="{ props }"
@@ -74,42 +73,65 @@
                                                     variant="text"
                                                 ></v-btn>
                                             </template>
-
                                             <v-list>
                                                 <v-list-item>
                                                     <v-list-item-title
+                                                        class="cursor-pointer d-flex gap-3 py-1"
                                                         @click="
-                                                            editItem(item.id)
+                                                            CreatePaymentDialog(
+                                                                item.id
+                                                            )
                                                         "
-                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
                                                         <v-icon color="gray"
-                                                            >mdi-square-edit-outline</v-icon
+                                                            >mdi
+                                                            mdi-cash-edit</v-icon
                                                         >
-                                                        Edit
+                                                        &nbsp; CreatePayment
                                                     </v-list-item-title>
+
+                                                    <v-list-item-title
+                                                        class="cursor-pointer d-flex gap-3 py-1"
+                                                        @click="
+                                                            ViewPaymentDialog(
+                                                                item
+                                                            )
+                                                        "
+                                                    >
+                                                        <v-icon color="gray"
+                                                            >mdi
+                                                            mdi-cash-sync</v-icon
+                                                        >
+                                                        &nbsp; ViewPayment
+                                                    </v-list-item-title>
+
+                                                    <router-link
+                                                        :to="
+                                                            '/billableExpenses/' +
+                                                            item.id
+                                                        "
+                                                    >
+                                                        <v-list-item-title
+                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
+                                                        >
+                                                            <v-icon color="gray"
+                                                                >mdi
+                                                                mdi-square-edit-outline</v-icon
+                                                            >
+                                                            Edit
+                                                        </v-list-item-title>
+                                                    </router-link>
 
                                                     <v-list-item-title
                                                         class="cursor-pointer d-flex gap-3"
                                                         @click="
-                                                            deleteItem(item.id)
+                                                            deleteItem(item)
                                                         "
                                                     >
                                                         <v-icon color="gray"
                                                             >mdi-delete-outline</v-icon
                                                         >
-                                                        Delete
-                                                    </v-list-item-title>
-                                                    <v-list-item-title
-                                                        class="cursor-pointer d-flex gap-3"
-                                                        @click="
-                                                            deleteItem(item.id)
-                                                        "
-                                                    >
-                                                        <v-icon color="gray"
-                                                            >mdi-eye-outline</v-icon
-                                                        >
-                                                        Show
+                                                        &nbsp; Delete
                                                     </v-list-item-title>
                                                 </v-list-item>
                                             </v-list>
@@ -126,91 +148,72 @@
 </template>
 
 <script setup>
-import { useExpenseRepository } from "../../store/ExpenseRepository";
-// import CreateBillableExpense from "./CreateBillableExpense.vue";
-import UpdateBillableExpense from "./UpdateBillableExpense.vue";
-// import CreateBillableExpense from "./CreateBillableExpense.vue";
+import { useExpenseRepository } from "@/store/ExpenseRepository";
+import toolbar from "../../Component/UI/Toolbar.vue";
 
-import Toolbar from "../../Component/UI/Toolbar.vue";
-import Search from "../../Component/UI/Search.vue";
-import CreateButton from "../../Component/UI/CreateButton.vue";
+// ignore
 
-let ExpensRepository = useExpenseRepository();
-const dueColor = (due) => {
-    // Always return classes to make text red
-    return "text-red-500 text-center rounded";
+// import CreatePayment from "../paymentSent/CreatePaymentSents.vue";
+// import ViewCreatePayment from "./ViewCreatePayment.vue";
+// import Menu from "@/components/UI/Menu.vue";
+
+const ExpenseRepository = useExpenseRepository();
+
+// delete and update
+const deleteItem = async (item) => {
+    await ExpenseRepository.DeleteBillExpense(item.id);
 };
 
 const headers = [
-    { title: "DATE", key: "date", sortable: false },
-
-    { title: "REFERENCE", key: "reference", sortable: false },
-    {
-        title: "ADDED BY",
-        key: "addedBy.name",
-        sortable: false,
-        align: "center",
-    },
-    {
-        title: "PERSON",
-        key: "expensePeople.name",
-
-        sortable: false,
-        align: "center",
-    },
-    {
-        title: "SUPPLIER",
-        key: "supplier.name",
-
-        sortable: false,
-        align: "center",
-    },
-
-    { title: "AMOUNT", key: "amount", sortable: false },
-    { title: "PAID", key: "paid", sortable: false },
-    { title: "DUE", key: "due", align: "center", sortable: false },
+    { title: "DATE", key: "date", align: "start", sortable: false },
 
     {
-        title: "Action",
-        key: "actions",
-        sortable: false,
+        title: "   PAID",
+        key: "paid",
         align: "end",
+        sortable: false,
     },
+
+    {
+        title: "SUPLIER  ",
+        key: "supplier.name",
+        align: "end",
+        sortable: false,
+    },
+    {
+        title: "PERSON ",
+        key: "expensePeople.name",
+        align: "end",
+        sortable: false,
+    },
+    {
+        title: "ADDED BY  ",
+        key: "addedBy.name",
+        align: "end",
+        sortable: false,
+    },
+    { title: "REFERENCE ", key: "reference", align: "end", sortable: false },
+    {
+        title: "DUE",
+        align: "end",
+        sortable: false,
+        key: "due",
+        color: "red",
+    },
+
+    { title: "ACTION", key: "action", align: "start", sortable: false },
 ];
 
-// const changeStatus = (item) => {
-//     console.log(item.status);
-//     const formData = {
-//         status: !item.status,
-//     };
-//     ExpensRepository.UpdateUserStatus(item.id, formData);
+const CreateDialogShow = () => {
+    ExpenseRepository.createDialog = true;
+};
+const CreatePaymentDialog = (id) => {
+    ExpenseRepository.productId = id;
+    ExpenseRepository.createPayment = true;
+};
+// const ViewPaymentDialog = () => {
+//     ExpenseRepository.ViewEarning = true;
 // };
-// const changeStatus = async (user) => {
-//     try {
-//         await axios.PUT(`/users/switch/${user.id}`, { status: user.status });
-//     } catch (error) {
-//         console.log("the status was not changed", error);
-//     }
-// };
-
-const createPopUp = () => {
-    ExpensRepository.createDailog = true;
-};
-const deleteItem = (id) => {
-    ExpensRepository.DeleteExpense(id);
-};
-const editItem = (id) => {
-    ExpensRepository.expense = {};
-    if (Object.keys(ExpensRepository.expense).length === 0) {
-        ExpensRepository.FetchBillExpenses(id)
-            .then(() => {
-                // Data has been fetched successfully, now set dialog to true
-                ExpensRepository.updateDailog = true;
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-                // Display  message
-            });
-    }
-};
 </script>
+
+<style scoped></style>
