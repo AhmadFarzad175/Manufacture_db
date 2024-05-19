@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Settings\Unit;
 use App\Models\Peoples\Supplier;
 use App\Models\Settings\Currency;
+use App\Models\Settings\Warehouse;
 use App\Models\Peoples\ExpensePeople;
 use App\Models\Settings\ExpenseProduct;
 use App\Models\Settings\ExpenseCategory;
 use App\Models\Settings\MaterialCategory;
+use App\Models\Settings\WarehouseMaterial;
 
 class AllController extends Controller
 {
@@ -54,6 +56,22 @@ class AllController extends Controller
             'currency' => Currency::select('id', 'name','symbol')->get(),
         ];
 
+        return response()->json(['data' => $allData]);
+    }
+
+    public function wHouse()
+    {
+        $allData = [
+            'warehouse' => Warehouse::select('id', 'name')->get()
+        ];
+        return response()->json(['data' => $allData]);
+    }
+
+    public function wHouseMaterial()
+    {
+        $allData = [
+            'warehouseMaterial' => WarehouseMaterial::select('id', 'name')->get()
+        ];
         return response()->json(['data' => $allData]);
     }
 

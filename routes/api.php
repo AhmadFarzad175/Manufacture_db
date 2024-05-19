@@ -152,7 +152,8 @@ Route::get('unitCategories',[AllController::class, 'unitCategory'] );
 Route::get('personCategory',[AllController::class, 'personCategory'] );
 Route::get('personExpenseProduct',[AllController::class, 'personExpenseProduct'] );
 Route::get('expenseProduct',[AllController::class, 'expenseProduct'] );
-
+Route::get('wHouse',[AllController::class, 'wHouse'] );
+Route::get('wHouseMaterial',[AllController::class, 'wHouseMaterial'] );
 
 
 

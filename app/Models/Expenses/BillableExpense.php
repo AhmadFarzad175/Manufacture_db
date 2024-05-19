@@ -23,7 +23,10 @@ class BillableExpense extends Model
         'invoice_number',
         'paid',
         'total',
-        'details'
+        'details',
+        'expense_categories',
+        'expense_people_id',
+        "how"
     ];
 
 
