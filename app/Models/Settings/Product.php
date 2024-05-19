@@ -24,27 +24,23 @@ class Product extends Model
         'details',
     ];
 
-    public function scopeSearch($query, $search)
+    public function scopeSearch($query, $search, $wareHouse)
     {
-        if (!$search) {
+        if (!$search && !$wareHouse) {
             return $query;
         }
 
-        return $query->where(function ($query) use ($search) {
-            $query->where('name', 'like', '%' . $search . '%')
-                ->orWhere('code', 'like', '%' . $search . '%')
-                ->orWhere('price', 'like', '%' . $search . '%')
-                ->orWhere('stock_alert', 'like', '%' . $search . '%')
-                ->orWhere('details', 'like', '%' . $search . '%')
-                ->orWhere(function ($query) use ($search) {
-                    $query->whereHas('unit', function ($query) use ($search) {
-                        $query->where('name', 'like', '%' . $search . '%');
-                    })
-                        ->orWhereHas('materialCategory', function ($query) use ($search) {
-                            $query->where('name', 'like', '%' . $search . '%');
-                        });
-                });
-        });
+        if ($search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('code', 'like', '%' . $search . '%');
+            });
+        }
+        if ($wareHouse) {
+            $query->whereHas('warehouseProducts', function ($wareHouseQuery) use ($wareHouse) {
+                return $wareHouseQuery->where('warehouse_id', '=', $wareHouse);
+            });
+        }
     }
 
 
@@ -73,4 +69,3 @@ class Product extends Model
         return $this->belongsToMany(Produce::class, 'produce_details')->withPivot('quantity')->withTimestamps();
     }
 }
-
