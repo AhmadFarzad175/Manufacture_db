@@ -47,7 +47,6 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
 
             Search: "",
 
-            searchFetch: "",
             clearSearch: "",
             currsymbol: reactive([]),
             currsymbolId: reactive([]),
@@ -179,11 +178,6 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             const day = String(today.getDate()).padStart(2, "0");
             return `${year}-${month}-${day}`;
         },
-        // GetCurrency(expenseAllData, id) {
-        //     const currArr = expenseAllData.filter((curr) => curr.id == id);
-        //     this.symbol = currArr[0].symbol;
-        //     console.log(currArr[0].symbol);
-        // },
 
         // entigrating data for create Earnings
         async ExpenseAllData() {

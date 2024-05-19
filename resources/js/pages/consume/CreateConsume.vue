@@ -22,8 +22,11 @@
                     </v-col>
                     <v-col cols="12" md="6">
                         <v-autocomplete
-                            :items="ExpenseRepository.expenseAllData.supplier"
-                            v-model="formData.supplierId"
+                            :items="
+                                ProductManagementRepository.expenseAllData
+                                    .warehouse
+                            "
+                            v-model="formData.warehouse"
                             variant="outlined"
                             label=" Warehouse *"
                             class="pb-4 input"
@@ -40,9 +43,13 @@
                 <v-row no-gutters class="justify-space-between">
                     <v-col cols="full" class="w-50" sm="12" md="12">
                         <v-text-field
-                            v-model="ExpenseRepository.billExpenseSearch"
-                            @keyup.enter="ExpenseRepository.SearchFetchData"
-                            @input="ExpenseRepository.SearchFetchData"
+                            v-model="
+                                ProductManagementRepository.billExpenseSearch
+                            "
+                            @keyup.enter="
+                                ProductManagementRepository.SearchFetchData
+                            "
+                            @input="ProductManagementRepository.SearchFetchData"
                             @click:clear="clearSearch"
                             variant="outlined"
                             label="Products"
@@ -54,11 +61,14 @@
 
                         <div
                             class="rounded shadow-lg px-5 mb-12 w-[83vw]"
-                            v-if="ExpenseRepository.searchFetch.length > 0"
+                            v-if="
+                                ProductManagementRepository.searchFetch.length >
+                                0
+                            "
                         >
                             <div>
                                 <div
-                                    v-for="index in ExpenseRepository.searchFetch"
+                                    v-for="index in ProductManagementRepository.searchFetch"
                                     :key="index"
                                 >
                                     <p
@@ -101,7 +111,7 @@
                                     class=""
                                     v-for="(
                                         pro, index
-                                    ) in ExpenseRepository.expenseProduct"
+                                    ) in ProductManagementRepository.expenseProduct"
                                     :key="index"
                                 >
                                     <td class="px-3 py-3 text-start">
@@ -122,32 +132,6 @@
                                             type="number"
                                             class="w-50"
                                         ></v-text-field>
-                                    </td>
-
-                                    <td
-                                        class="py-3 px-2 pt-8 text-end"
-                                        style="
-                                            display: flex;
-                                            justify-content: flex-start;
-                                        "
-                                    >
-                                        <v-text-field
-                                            v-if="formData.personId !== null"
-                                            v-model="pro.price"
-                                            variant="outlined"
-                                            density="compact"
-                                            class="custom-width"
-                                            type="number"
-                                        >
-                                            <span class="span mr-2">
-                                                {{
-                                                    ExpenseRepository.currsymbol
-                                                }}
-                                            </span>
-                                        </v-text-field>
-                                    </td>
-                                    <td class="text-center">
-                                        <span>{{ multiple(pro) }} </span>
                                     </td>
 
                                     <td class="py-2 pr-6 px-2 text-start">
@@ -186,41 +170,42 @@ import { reactive, computed, ref, watch } from "vue";
 import Toolbar from "../../Component/UI/Toolbar.vue";
 const items = ref([]);
 
-import { useExpenseRepository } from "@/store/ExpenseRepository";
+import { useProductManagementRepository } from "@/store/ProductManagementRepository";
 // import { useMoneyAccountRepository } from "../../store/MoneyAccountRepository ";
-const ExpenseRepository = useExpenseRepository();
+const ProductManagementRepository = useProductManagementRepository();
 
-// console.log(ExpenseRepository.expenseAllData.peoples);
+// console.log(ProductManagementRepository.expenseAllData.peoples);
 
-console.log(ExpenseRepository.expenseProduct, "thisi ");
+console.log(ProductManagementRepository.expenseProduct, "thisi ");
 
 // const removeProduct = (index) => {
-//     const product = ExpenseRepository.searchFetch[index];
-//     ExpenseRepository.searchFetch.splice(index, 1);
+//     const product = ProductManagementRepository.searchFetch[index];
+//     ProductManagementRepository.searchFetch.splice(index, 1);
 //     index.deleted = true;
 
 //     console.log(index);
 // };
 const clearSearch = () => {
-    ExpenseRepository.billExpenseSearch = "";
-    ExpenseRepository.searchResults = [];
+    ProductManagementRepository.billExpenseSearch = "";
+    ProductManagementRepository.searchResults = [];
+    ExpenseRepository.searchFetch = "";
 };
 
-// console.log(ExpenseRepository.expenseAllData.peoples.currencySymbol, "jawad");
+// console.log(ProductManagementRepository.expenseAllData.peoples.currencySymbol, "jawad");
 
 const removeProduct = (index) => {
-    ExpenseRepository.expenseProduct.splice(index, 1);
-    console.log(ExpenseRepository.expenseProduct);
+    ProductManagementRepository.expenseProduct.splice(index, 1);
+    console.log(ProductManagementRepository.expenseProduct);
 };
 // console.log(
-// ExpenseRepository.ExpenseAllData.currency,
+// ProductManagementRepository.ExpenseAllData.currency,
 // "iddddddddddddddddddddddddddd"
 // );
 const RemoveProduct = (index) => {
-    ExpenseRepository.expenseProduct[index].name = ""; // or null
+    ProductManagementRepository.expenseProduct[index].name = ""; // or null
 };
 const formData = reactive({
-    expenseDetails: ExpenseRepository.expenseProduct,
+    expenseDetails: ProductManagementRepository.expenseProduct,
     total: "",
     personId: "",
     currencyId: null,
@@ -233,7 +218,7 @@ const formData = reactive({
 const getCurrencySymbol = () => {
     if (formData.value && formData.value.peopleId !== null) {
         const person =
-            ExpenseRepository.expenseAllData.peoples.currencySymbol.find(
+            ProductManagementRepository.expenseAllData.peoples.currencySymbol.find(
                 (person) => person === formData.value.peopleId
             );
         return person.currencySymbol;
@@ -250,9 +235,9 @@ const multiple = (pro) => {
     return add || 0;
 };
 watch(
-    () => ExpenseRepository.expenseProduct,
+    () => ProductManagementRepository.expenseProduct,
     () => {
-        ExpenseRepository.expenseProduct.forEach((expenseProduct) => {
+        ProductManagementRepository.expenseProduct.forEach((expenseProduct) => {
             // Update the 'total' property for each product
             expenseProduct.total = multiple(expenseProduct);
             // console.log(" the expense changed");
@@ -274,7 +259,7 @@ watch(
 );
 
 const totalSum = computed(() => {
-    const total = ExpenseRepository.expenseProduct.reduce(
+    const total = ProductManagementRepository.expenseProduct.reduce(
         (acc, item) => acc + multiple(item),
         0
     );
@@ -284,7 +269,7 @@ const totalSum = computed(() => {
 });
 
 // const totalSum = computed(() => {
-//     const total = ExpenseRepository.expenseProduct.reduce(
+//     const total = ProductManagementRepository.expenseProduct.reduce(
 //         (acc, item) => acc + multiple(item),
 //         0
 //     );
@@ -299,22 +284,22 @@ const createEarning = async () => {
             (data.expenseProduct = data.productId), data.price, data.quantity
         )
     );
-    await ExpenseRepository.CreateBillExpense(formData);
+    await ProductManagementRepository.CreateBillExpense(formData);
     // Clear search results after creating earning
     clearSearch();
 };
 
 const saveData = async (index) => {
-    await ExpenseRepository.fetchProduct(index.id);
+    await ProductManagementRepository.fetchProduct(index.id);
     // Clear search results after selecting a product
     clearSearch();
 };
 
 const deleteItem = async (item) => {
-    await ExpenseRepository.deleteEarning(item.id);
+    await ProductManagementRepository.deleteEarning(item.id);
 };
-formData.date = ExpenseRepository.getTodaysDate();
-ExpenseRepository.ExpenseAllData();
+formData.date = ProductManagementRepository.getTodaysDate();
+ProductManagementRepository.ExpenseAllData();
 </script>
 
 <style scoped>
