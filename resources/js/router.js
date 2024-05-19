@@ -20,6 +20,8 @@ import AllExpenses from "./pages/AllExpense/AllExpenses.vue";
 import AllBillableExpense from "./pages/billableExpense/AllBillableExpense.vue";
 import CreateBillableExpense from "./pages/billableExpense/CreateBillableExpense.vue";
 import UpdateBillableExpense from "./pages/billableExpense/UpdateBillableExpense.vue";
+import AllConsume from "./pages/consume/AllConsume.vue";
+import CreateConsume from "./pages/consume/CreateConsume.vue";
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -43,11 +45,14 @@ const router = createRouter({
         { path: "/allExpenses", component: AllExpenses },
         { path: "/allBillableExpense", component: AllBillableExpense },
         { path: "/ceateBillableExpense", component: CreateBillableExpense },
+
         {
             path: "/billableExpenses/:id",
             name: "UpdateBillableExpense",
             component: UpdateBillableExpense,
         },
+        { path: "/allConsume", component: AllConsume },
+        { path: "/createConsume", component: CreateConsume },
     ],
 });
 

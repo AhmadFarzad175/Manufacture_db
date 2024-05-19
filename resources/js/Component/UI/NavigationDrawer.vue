@@ -2,6 +2,47 @@
     <img src="../../assets/logo black (1) 4.png" alt="" class="mx-auto" />
     <div class="side w-full">
         <!-- <v-card class="mx-auto card" width="300"> -->
+        <v-list v-model:opened="open">
+            <v-list-group class="side" value="Product Management">
+                <template v-slot:activator="{ props }">
+                    <v-list-item
+                        v-bind="props"
+                        prepend-icon="mdi-tools"
+                        :append-icon="null"
+                        title="Product Management"
+                        value="Product Management"
+                    ></v-list-item>
+                </template>
+                <div>
+                    <v-list-group value="Consume" class="w-full">
+                        <template v-slot:activator="{ props }">
+                            <router-link to="/allConsume">
+                                <v-list-item
+                                    v-bind="props"
+                                    :append-icon="null"
+                                    title="Consume"
+                                    class="-ml-12 w-full"
+                                >
+                                </v-list-item>
+                            </router-link>
+                        </template>
+                    </v-list-group>
+                    <v-list-group value="Produce" class="w-full">
+                        <template v-slot:activator="{ props }">
+                            <router-link to="/allBillableExpense">
+                                <v-list-item
+                                    v-bind="props"
+                                    :append-icon="null"
+                                    title="Produce"
+                                    class="-ml-12 w-full"
+                                >
+                                </v-list-item>
+                            </router-link>
+                        </template>
+                    </v-list-group>
+                </div>
+            </v-list-group>
+        </v-list>
 
         <v-list v-model:opened="open">
             <v-list-group class="side" value="Expense">
@@ -15,17 +56,6 @@
                     ></v-list-item>
                 </template>
                 <div>
-                    <v-list-group value="Create Expense" class="w-full">
-                        <template v-slot:activator="{ props }">
-                            <v-list-item
-                                v-bind="props"
-                                :append-icon="null"
-                                title="Create Expense"
-                                class="-ml-12 w-full"
-                            >
-                            </v-list-item>
-                        </template>
-                    </v-list-group>
                     <v-list-group value="All Expense" class="w-full">
                         <template v-slot:activator="{ props }">
                             <router-link to="/allExpenses">

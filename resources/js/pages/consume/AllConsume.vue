@@ -1,7 +1,7 @@
 <template>
-    <CreatePayment v-if="ExpenseRepository.createDailog" />
-    <ShowRefunds v-if="ExpenseRepository.showRefundDailog" />
-    <toolbar title="Expennse-" subtitle="BillableExpense" />
+    <CreatePayment v-if="ProductManagementRepository.createDailog" />
+    <ShowPayments v-if="ProductManagementRepository.ShowPaymentDialog" />
+    <toolbar title="Product Management-" subtitle="Consume" />
     <div class="all-expense rounded-xl w-full">
         <div class="card rounded-xl bg-white">
             <v-divider
@@ -21,13 +21,13 @@
                         append-inner-icon="mdi-magnify"
                         single-line
                         hide-details
-                        v-model="ExpenseRepository.billExpenseSearch"
+                        v-model="ProductManagementRepository.consumeSearch"
                     ></v-text-field>
                 </div>
                 <div class="btn d-flex gap-4">
                     <v-btn variant="outlined" color="#112F53 ">Filter</v-btn>
 
-                    <router-link to="/ceateBillableExpense">
+                    <router-link to="/createConsume">
                         <v-btn color="primary" variant="flat"> Create</v-btn>
                     </router-link>
                 </div>
@@ -41,27 +41,30 @@
                                 <v-data-table-server
                                     theme="cursor-pointer"
                                     v-model:items-per-page="
-                                        ExpenseRepository.itemsPerPage
+                                        ProductManagementRepository.itemsPerPage
                                     "
                                     :headers="headers"
-                                    :items-length="ExpenseRepository.totalItems"
-                                    :items="ExpenseRepository.billExpenses"
-                                    :loading="ExpenseRepository.loading"
+                                    :items-length="
+                                        ProductManagementRepository.totalItems
+                                    "
+                                    :items="
+                                        ProductManagementRepository.consumes
+                                    "
+                                    :loading="
+                                        ProductManagementRepository.loading
+                                    "
                                     :search="
-                                        ExpenseRepository.billExpenseSearch
+                                        ProductManagementRepository.consumeSearch
                                     "
                                     @update:options="
-                                        ExpenseRepository.FetchBillExpenses
+                                        ProductManagementRepository.FetchConsumesData
                                     "
-                                    :item-key="ExpenseRepository.billExpenses"
+                                    :item-key="
+                                        ProductManagementRepository.consumes
+                                    "
                                     hover
                                     class="w-full mx-auto"
                                 >
-                                    <template v-slot:item.due="{ item }">
-                                        <span class="text-red">{{
-                                            item.due
-                                        }}</span>
-                                    </template>
                                     <template v-slot:item.action="{ item }">
                                         <v-menu>
                                             <template
@@ -75,28 +78,6 @@
                                             </template>
                                             <v-list>
                                                 <v-list-item>
-                                                    <v-list-item
-                                                        class="cursor-pointer flex gap-3 pb-3"
-                                                        @click="createPopUp"
-                                                    >
-                                                        <v-icon
-                                                            >mdi
-                                                            mdi-cash-edit</v-icon
-                                                        >
-                                                        CreatePayment
-                                                    </v-list-item>
-                                                    <v-list-item-title
-                                                        class="cursor-pointer flex justify-start items-center gap-3 pb-3"
-                                                        @click="
-                                                            showRefunds(item)
-                                                        "
-                                                    >
-                                                        <v-icon
-                                                            >mdi-domain</v-icon
-                                                        >
-                                                        Show Payment
-                                                    </v-list-item-title>
-
                                                     <router-link
                                                         :to="
                                                             '/billableExpenses/' +
@@ -140,8 +121,10 @@
 </template>
 
 <script setup>
-import { useExpenseRepository } from "@/store/ExpenseRepository";
+import { useProductManagementRepository } from "../../store/ProductManagementRepository";
 import toolbar from "../../Component/UI/Toolbar.vue";
+// import CreatePayment from "./CreatePayment.vue";
+// import ShowPayments from "./ShowPayments.vue";
 
 // ignore
 
@@ -149,87 +132,38 @@ import toolbar from "../../Component/UI/Toolbar.vue";
 // import ViewCreatePayment from "./ViewCreatePayment.vue";
 // import Menu from "@/components/UI/Menu.vue";
 
-const ExpenseRepository = useExpenseRepository();
+let ProductManagementRepository = useProductManagementRepository();
 
 // delete and update
 const deleteItem = async (item) => {
-    await ExpenseRepository.DeleteBillExpense(item.id);
+    await ProductManagementRepository.DeleteBillExpense(item.id);
 };
-// const createPopUp = () => {
-//     ExpenseRepository.createDailog = true;
-// };
-const showRefunds = async (item) => {
-    ExpenseRepository.showRefundDailog = true;
-    await ExpenseRepository.ShowRefund(item.visaId);
+const createPopUp = () => {
+    ProductManagementRepository.createDailog = true;
 };
-const showPayment = async (item) => {
-    ExpenseRepository.ShowPaymentDialog = true;
-    await ExpenseRepository.ShowPayment(item.id);
-};
-const editItem = (id) => {
-    ExpenseRepository.expense = {};
-    if (Object.keys(ExpenseRepository.expense).length === 0) {
-        ExpenseRepository.FetchExpenseData(id)
-            .then(() => {
-                // Data has been fetched successfully, now set dialog to true
-                ExpenseRepository.updateDailog = true;
-            })
-            .catch((error) => {
-                console.error("Error fetching data:", error);
-                // Display  message
-            });
-    }
-};
-
 const headers = [
     { title: "DATE", key: "date", align: "start", sortable: false },
 
-    {
-        title: "   PAID",
-        key: "paid",
-        align: "end",
-        sortable: false,
-    },
-
-    {
-        title: "SUPLIER  ",
-        key: "supplier.name",
-        align: "end",
-        sortable: false,
-    },
-    {
-        title: "PERSON ",
-        key: "expensePeople.name",
-        align: "end",
-        sortable: false,
-    },
-    {
-        title: "ADDED BY  ",
-        key: "addedBy.name",
-        align: "end",
-        sortable: false,
-    },
-    { title: "REFERENCE ", key: "reference", align: "end", sortable: false },
-    {
-        title: "DUE",
-        align: "end",
-        sortable: false,
-        key: "due",
-        color: "red",
-    },
-
-    { title: "ACTION", key: "action", align: "start", sortable: false },
+    { title: "ACTION", key: "action", align: "end", sortable: false },
 ];
 
-const CreateDialogShow = () => {
-    ExpenseRepository.createDialog = true;
-};
-const CreatePaymentDialog = (id) => {
-    ExpenseRepository.productId = id;
-    ExpenseRepository.createPayment = true;
-};
+// const editItem = (id) => {
+//     ProductManagementRepository.consume = {};
+//     if (Object.keys(ProductManagementRepository.consume).length === 0) {
+//         ProductManagementRepository.FetchExpenseData(id)
+//             .then(() => {
+//                 // Data has been fetched successfully, now set dialog to true
+//                 ProductManagementRepository.updateDailog = true;
+//             })
+//             .catch((error) => {
+//                 console.error("Error fetching data:", error);
+//                 // Display  message
+//             });
+//     }
+// };
+
 // const ViewPaymentDialog = () => {
-//     ExpenseRepository.ViewEarning = true;
+//     ProductManagementRepository.ViewEarning = true;
 // };
 </script>
 

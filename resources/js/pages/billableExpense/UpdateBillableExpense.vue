@@ -24,6 +24,7 @@
                     style="width: 45%"
                     item-title="name"
                     item-value="id"
+                    :return-object="false"
                     density="compact"
                 ></v-autocomplete>
 
@@ -244,6 +245,7 @@ const ExpenseRepository = useExpenseRepository();
 // };
 const clearSearch = () => {
     ExpenseRepository.earningSearch.value = "";
+    ExpenseRepository.searchFetch = "";
 };
 // console.log(ExpenseRepository.expenseAllData.peoples.currencySymbol, "jawad");
 

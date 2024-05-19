@@ -1,85 +1,40 @@
 <template>
     <div class="all-expense rounded-xl m-4">
         <div class="card rounded-xl bg-white">
-            <toolbar title="Expense-" subtitle="CreateExpense " />
+            <toolbar title="Product Management-" subtitle="Create Consume " />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
                 color="success"
             ></v-divider>
-            <div class="d-flex w-full gap-4 pt-12">
-                <!-- <v-autocomplete
-                    v-model="formData.currency"
-                    @update:modelValue="
-                        ExpenseRepository.GetCurrency(
-                            ExpenseRepository.expenseAllData.currencies,
-                            formData.currency
-                        )
-                    "
-                    :items="ExpenseRepository.expenseAllData.currencies"
-                    :return-object="false"
-                    variant="outlined"
-                    label=" * واحد پولی"
-                    class="pb-4 pl-4 input"
-                    style="width: 45%"
-                    item-value="id"
-                    item-title="symbol"
-                    color="customPrimary"
-                    base-color="customPrimary"
-                ></v-autocomplete> -->
-                <v-text-field
-                    type="Date"
-                    v-model="formData.date"
-                    :return-object="false"
-                    variant="outlined"
-                    label=" * Date"
-                    class="pb-4 input"
-                    style="width: 45%"
-                    color="#d3e2f8"
-                    density="compact"
-                ></v-text-field>
+            <v-container fluid>
+                <v-row class="pt-12" align="start">
+                    <v-col cols="12" md="6">
+                        <v-text-field
+                            type="date"
+                            v-model="formData.date"
+                            variant="outlined"
+                            label="* Date"
+                            class="pb-4 input"
+                            color="#d3e2f8"
+                            density="compact"
+                        ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <v-autocomplete
+                            :items="ExpenseRepository.expenseAllData.supplier"
+                            v-model="formData.supplierId"
+                            variant="outlined"
+                            label=" Warehouse *"
+                            class="pb-4 input"
+                            item-value="id"
+                            item-title="name"
+                            density="compact"
+                        ></v-autocomplete>
+                    </v-col>
+                </v-row>
+            </v-container>
 
-                <v-autocomplete
-                    :items="ExpenseRepository.expenseAllData.supplier"
-                    v-model="formData.supplierId"
-                    :return-object="false"
-                    variant="outlined"
-                    label=" * Supplier "
-                    class="pb-4 input"
-                    style="width: 45%"
-                    item-value="id"
-                    item-title="name"
-                    density="compact"
-                ></v-autocomplete>
-
-                <v-autocomplete
-                    :items="ExpenseRepository.expenseAllData.expensePeople"
-                    v-model="formData.personId"
-                    @update:modelValue="
-                        ExpenseRepository.GetCurrency(
-                            ExpenseRepository.expenseAllData.currency,
-                            formData.personId
-                        )
-                    "
-                    :return-object="false"
-                    variant="outlined"
-                    label=" * person "
-                    class="pb-4 input"
-                    style="width: 45%"
-                    item-value="id"
-                    item-title="name"
-                    density="compact"
-                ></v-autocomplete>
-                <v-text-field
-                    v-model="formData.invoiceNumber"
-                    :return-object="false"
-                    variant="outlined"
-                    label=" Invoice Number *"
-                    class="pb-4 input"
-                    style="width: 45%"
-                    density="compact"
-                ></v-text-field>
-            </div>
             <v-card class="rounded px-5 py-4 mb-20 w-full pb-10">
                 <v-divider></v-divider>
                 <v-row no-gutters class="justify-space-between">
@@ -129,26 +84,15 @@
                                         scope="col"
                                         class="px-6 py-3 text-start"
                                     >
-                                        product
+                                        RAW MATERIAL
                                     </th>
                                     <th
                                         scope="col"
                                         class="px-6 py-3 text-start"
                                     >
-                                        amount
+                                        QTY
                                     </th>
-                                    <th
-                                        scope="col"
-                                        class="px-6 py-3 text-start"
-                                    >
-                                        Price
-                                    </th>
-                                    <th
-                                        scope="col"
-                                        class="px-6 py-3 text-start"
-                                    >
-                                        Grand total
-                                    </th>
+
                                     <th scope="col" class="py-3">Action</th>
                                 </tr>
                             </thead>
@@ -220,24 +164,6 @@
                 </v-row>
             </v-card>
 
-            <div class="pt-12 w-100 discount">
-                <div>
-                    <v-text-field
-                        v-model="formData.paid"
-                        variant="outlined"
-                        class="absolute"
-                        type="number"
-                        density="compact"
-                        label="paid*"
-                    >
-                        <span class="span ml-8">{{
-                            ExpenseRepository.currsymbol
-                        }}</span>
-                    </v-text-field>
-                </div>
-                <span class="total"> Total : {{ totalSum }}</span>
-            </div>
-
             <div></div>
             <div class="d-flex mt-16 pt-16">
                 <v-textarea
@@ -276,9 +202,8 @@ console.log(ExpenseRepository.expenseProduct, "thisi ");
 //     console.log(index);
 // };
 const clearSearch = () => {
-    ExpenseRepository.billExpenseSearch = null;
+    ExpenseRepository.billExpenseSearch = "";
     ExpenseRepository.searchResults = [];
-    ExpenseRepository.searchFetch = "";
 };
 
 // console.log(ExpenseRepository.expenseAllData.peoples.currencySymbol, "jawad");

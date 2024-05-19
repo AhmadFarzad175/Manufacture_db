@@ -13,7 +13,9 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
 
             expense: reactive([]),
             expenses: reactive([]),
+            expenseSearch: ref(""),
             personCategory: reactive([]),
+            showDialog: ref(false),
 
             // =======Billable Expense============\\
             billExpenseSearch: ref(""),
@@ -24,11 +26,16 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
             expenseProduct: reactive([]),
             symbol: ref(""),
 
+            // ============Payment========\\\
+            payments: reactive([]),
+
             isLoading: false,
+            dailog: false,
             error: null,
             loading: false,
             createDailog: false,
             updateDailog: false,
+            showRefundDailog: false,
             page: 1,
             itemsPerPage: 7,
             selectedItems: [],
@@ -342,6 +349,28 @@ export let useExpenseRepository = defineStore("ExpenseRepository", {
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });
+        },
+        async ShowRefund(id) {
+            setContentType("application/json");
+            const response = await axios.get(`billablePayments/${id}`);
+
+            this.refunds = response.data.data; // Assign the fetched data directly to this.people
+            console.log(this.refunds);
+        },
+
+        async fetchRefund(id) {
+            setContentType("application/json");
+
+            const response = await axios.get(`billablePayments/${id}`);
+
+            this.refund = response.data.data; // Assign the fetched data directly to this.people
+        },
+        async fetchPayment(id) {
+            setContentType("application/json");
+
+            const response = await axios.get(`billablePayments/${id}`);
+
+            this.payment = response.data.data; // Assign the fetched data directly to this.people
         },
     },
 });

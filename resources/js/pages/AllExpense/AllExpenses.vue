@@ -9,7 +9,7 @@
                 <v-row class="justify-space-between mt-6">
                     <v-col cols="12" sm="3">
                         <v-text-field
-                            v-model="ExpensRepository.Search"
+                            v-model="ExpensRepository.expenseSearch"
                             label="Search"
                             prepend-inner-icon="mdi-magnify"
                             variant="outlined"
@@ -47,7 +47,7 @@
                                     :items-length="ExpensRepository.totalItems"
                                     :items="ExpensRepository.expenses"
                                     :loading="ExpensRepository.loading"
-                                    :search="ExpensRepository.userSearch"
+                                    :search="ExpensRepository.expenseSearch"
                                     item-value="id"
                                     @update:options="
                                         ExpensRepository.FetchExpensesData
