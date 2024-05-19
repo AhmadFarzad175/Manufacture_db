@@ -53,7 +53,7 @@ class AllController extends Controller
         $allData = [
             'supplier' => Supplier::select('id', 'name')->get(),
             'expensePeople' => ExpensePeople::select('id', 'name')->get(),
-            'currency' => Currency::select('id', 'name','symbol')->get(),
+            'currency' => Currency::select('id', 'name', 'symbol')->get(),
         ];
 
         return response()->json(['data' => $allData]);
@@ -67,13 +67,16 @@ class AllController extends Controller
         return response()->json(['data' => $allData]);
     }
 
-    public function wHouseMaterial()
+    public function wHouseMaterial(Request $request, $id)
     {
+        $warehouseMaterials = WarehouseMaterial::with(['material:id,name,code'])
+        ->where('warehouse_id', $id)
+        
+            ->select('id', 'material_id') // specify the columns from warehouse_materials
+            ->get();
         $allData = [
-            'warehouseMaterial' => WarehouseMaterial::select('id', 'name')->get()
+            'warehouseMaterial' => $warehouseMaterials
         ];
         return response()->json(['data' => $allData]);
     }
-
-
 }

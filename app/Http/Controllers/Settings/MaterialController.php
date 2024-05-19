@@ -22,9 +22,10 @@ class MaterialController extends Controller
     {
         $perPage = $request->input('perPage');
         $search = $request->input('search');
+        $wareHouse = $request->input('wareHouse');
 
         // Eager load relationships and apply search
-        $materials = Material::with(['materialCategory', 'unit'])->search($search);
+        $materials = Material::with(['materialCategory', 'unit'])->search($search, $wareHouse);
 
         $materials = $perPage ? $materials->latest()->paginate($perPage) : $materials->latest()->get();
 
