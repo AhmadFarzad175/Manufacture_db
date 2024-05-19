@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AllController;
+use App\Models\Settings\WarehouseMaterial;
 use App\Http\Controllers\Sales\SaleController;
 use App\Http\Controllers\PaymentSentController;
 use App\Http\Controllers\Peoples\UserController;
@@ -152,8 +153,8 @@ Route::get('unitCategories',[AllController::class, 'unitCategory'] );
 Route::get('personCategory',[AllController::class, 'personCategory'] );
 Route::get('personExpenseProduct',[AllController::class, 'personExpenseProduct'] );
 Route::get('expenseProduct',[AllController::class, 'expenseProduct'] );
-Route::get('wHouse',[AllController::class, 'wHouse'] );
-Route::get('wHouseMaterial',[AllController::class, 'wHouseMaterial'] );
+Route::get('wHouses',[AllController::class, 'wHouse'] );
+Route::get('wHouseMaterials/{id}',[AllController::class, 'wHouseMaterial'] );
 
 
 
