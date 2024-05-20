@@ -22,9 +22,11 @@ class ProductController extends Controller
     {
         $perPage = $request->input('perPage');
         $search = $request->input('search');
+        $wareHouse = $request->input('wareHouse');
+
 
         // Eager load relationships and apply search
-        $products = Product::with(['materialCategory', 'unit'])->search($search);
+        $products = Product::with(['materialCategory', 'unit'])->search($search, $wareHouse);
 
         $products = $perPage ? $products->latest()->paginate($perPage) : $products->latest()->get();
 

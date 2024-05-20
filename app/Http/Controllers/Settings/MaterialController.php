@@ -20,14 +20,14 @@ class MaterialController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = $request->input('perPage');
+        $perPage = $request->input('perPage', 10);
         $search = $request->input('search');
         $wareHouse = $request->input('wareHouse');
 
         // Eager load relationships and apply search
         $materials = Material::with(['materialCategory', 'unit'])->search($search, $wareHouse);
 
-        $materials = $perPage ? $materials->latest()->paginate($perPage) : $materials->latest()->get();
+        $materials = $materials->latest()->paginate($perPage);
 
         return MaterialResource::collection($materials);
     }
