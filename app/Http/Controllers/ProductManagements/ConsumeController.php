@@ -40,17 +40,17 @@ class ConsumeController extends Controller
 
             foreach ($request->input('consumeDetails') as $consumeDetail) {
                 //MERGE THE NAME OF MATERIAL ID
-                $consumeDetail['material_id'] = $consumeDetail['materialId'];
+                $consumeDetail['material_id'] = $consumeDetail['id'];
 
                 $consume->materials()->attach($consumeDetail['material_id'], [
                     'quantity' => $consumeDetail['quantity'],
                 ]);
-
+                
                 // Find the corresponding warehouse material for this consume detail
                 $warehouseMaterial = WarehouseMaterial::where('warehouse_id', $request->warehouseId)
                     ->where('material_id', $consumeDetail['material_id'])
                     ->firstOrFail();
-
+                    
                 // Check if there's enough quantity in the warehouse
                 if ($warehouseMaterial->quantity < $consumeDetail['quantity']) {
                     throw new \Exception('Insufficient quantity in the warehouse for material ID: ' . $consumeDetail['material_id']);

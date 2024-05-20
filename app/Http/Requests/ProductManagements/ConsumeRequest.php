@@ -34,11 +34,12 @@ class ConsumeRequest extends FormRequest
      */
     public function rules(): array
     {
+        // dd(Request());
         $rules = [
             'date' => 'required|date',
-            'warehouse_id' => 'required|exists:warehouses,id',
+            'warehouse_id' => 'required',
             'details' => 'nullable|string',
-            'consumeDetails.*.materialId' => 'required|exists:materials,id',
+            'consumeDetails.*.id' => 'required',
             'consumeDetails.*.quantity' => 'required',
         ];
 
