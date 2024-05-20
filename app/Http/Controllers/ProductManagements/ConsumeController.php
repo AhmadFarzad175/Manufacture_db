@@ -93,7 +93,7 @@ class ConsumeController extends Controller
         // Attach updated materials
         $syncData = [];
         foreach ($request->input('consumeDetails') as $consumeDetail) {
-            $consumeDetail['material_id'] = $consumeDetail['materialId'];
+            $consumeDetail['material_id'] = $consumeDetail['id'];
 
 
             // Find the corresponding warehouse material for this consume detail
