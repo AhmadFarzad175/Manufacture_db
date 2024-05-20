@@ -28,7 +28,7 @@
                             "
                             v-model="formData.warehouse"
                             variant="outlined"
-                            label=" Warehouse *"
+                            label="Warehouse *"
                             class="pb-4 input"
                             item-value="id"
                             item-title="name"

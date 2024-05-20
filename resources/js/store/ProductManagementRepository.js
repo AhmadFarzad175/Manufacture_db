@@ -57,7 +57,7 @@ export let useProductManagementRepository = defineStore(
             // entigrating data for create Earnings
             async ExpenseAllData() {
                 const config = {
-                    url: "wHouse",
+                    url: "wHouses",
                 };
                 const response = await axios(config);
                 this.expenseAllData = response.data.data;
@@ -65,19 +65,17 @@ export let useProductManagementRepository = defineStore(
             },
             async SearchFetchData(id) {
                 console.log(this.billExpenseSearch);
-                console.log(id, "man");
+
                 this.loading = true;
 
                 const response = await axios.get(
-                    `/expenseProducts?wareHouse=${id}&search=${this.billExpenseSearch}`
+                    `/materials?wareHouse=${id}&search=${this.billExpenseSearch}`
                 );
 
                 this.searchFetch = response.data.data;
-                // console.log(this.SearchFetchData.data);
-                // console.log(this.searchFetch, "mann");
                 this.loading = false;
-                // this.searchFetch = "";
             },
+
             async fetchProduct(id, isUpdate = false) {
                 // this.error = null;
                 try {
