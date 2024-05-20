@@ -64,13 +64,14 @@ export let useProductManagementRepository = defineStore(
                 // console.log(this.expenseAllData, "man");
             },
             async SearchFetchData(id) {
-                console.log(this.billExpenseSearch);
+                console.log(this.consumeSearch);
 
                 this.loading = true;
 
                 const response = await axios.get(
-                    `/materials?wareHouse=${id}&search=${this.billExpenseSearch}`
+                    `materials?wareHouse=${id}&search=${this.consumeSearch}`
                 );
+                //
 
                 this.searchFetch = response.data.data;
                 this.loading = false;
@@ -98,46 +99,38 @@ export let useProductManagementRepository = defineStore(
                 }
             },
 
-            async FetchBillExpense(id) {
+            async FetchConsume(id) {
                 // this.error = null;
                 try {
-                    const response = await axios.get(`billableExpenses/${id}`);
+                    const response = await axios.get(`consumes/${id}`);
 
-                    this.billExpense = response.data.data;
-                    this.expenseProduct = response.data.data.expenseDetails;
-
-                    this.expenseProduct = this.expenseProduct.map((data) => {
-                        return { ...data, name: data.expenseProduct.name };
-                    });
-
-                    console.log(this.expenseProduct, "fetchBillExpense");
+                    this.consume = response.data.data;
                 } catch (err) {
                     // this.error = err.message;
                 }
             },
-            async CreateBillExpense(formData) {
+            async CreateConsume(formData) {
                 console.log(formData);
-                try {
-                    // Adding a custom header to the Axios request
-                    const config = {
-                        method: "POST",
-                        url: "billableExpenses",
+                // Adding a custom header to the Axios request
+                setContentType("application/json");
 
-                        data: formData,
-                    };
+                const config = {
+                    method: "POST",
+                    url: "/consumes",
+                    data: formData,
+                };
 
-                    // Using Axios to make a GET request with async/await and custom headers
-                    const response = await axios(config);
-                    this.createDialog = false;
-                    this.router.push("/allBillableExpense");
-
-                    this.FetchBillExpenses({
-                        page: this.page,
-                        itemsPerPage: this.itemsPerPage,
-                    });
-                } catch (err) {
-                    // If there's an error, set the error in the stor
-                }
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                console.log(response.data, "this is data");
+                // toast.success("Customer Succesfully Created", {
+                //     autoClose: 1000,
+                // });
+                // this.createDailog = false;
+                this.FetchConsumesData({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
             },
             async UpdateBillExpense(id, data) {
                 console.log(`Updating bill expense with id: ${id}`, data);
