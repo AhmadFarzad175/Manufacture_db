@@ -80,7 +80,9 @@ export let useProductManagementRepository = defineStore(
             async fetchProduct(id, isUpdate = false) {
                 // this.error = null;
                 try {
-                    const response = await axios.get(`expenseProducts/${id}`);
+                    const response = await axios.get(
+                        `materials?wareHouse/${id}`
+                    );
 
                     console.log("id", response.data.data.id);
                     if (isUpdate) {
@@ -123,6 +125,7 @@ export let useProductManagementRepository = defineStore(
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
                 console.log(response.data, "this is data");
+                this.router.push("/allConsume");
                 // toast.success("Customer Succesfully Created", {
                 //     autoClose: 1000,
                 // });
@@ -137,7 +140,7 @@ export let useProductManagementRepository = defineStore(
                 try {
                     const config = {
                         method: "PUT",
-                        url: `/billableExpenses/${id}`,
+                        url: `/consumes/${id}`,
                         data: data,
                     };
 
@@ -166,13 +169,13 @@ export let useProductManagementRepository = defineStore(
                 try {
                     const config = {
                         method: "DELETE",
-                        url: "billableExpenses/" + id,
+                        url: "consumes/" + id,
                     };
 
                     const response = await axios(config);
 
-                    this.supplier = response.data.data;
-                    this.FetchBillExpenses({
+                    this.consume = response.data.data;
+                    this.FetchConsumesData({
                         page: this.page,
                         itemsPerPage: this.itemsPerPage,
                     });

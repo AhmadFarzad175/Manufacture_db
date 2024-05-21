@@ -1,6 +1,4 @@
 <template>
-    <CreatePayment v-if="ProductManagementRepository.createDailog" />
-    <ShowPayments v-if="ProductManagementRepository.ShowPaymentDialog" />
     <toolbar title="Product Management-" subtitle="Consume" />
     <div class="all-expense rounded-xl w-full">
         <div class="card rounded-xl bg-white">
@@ -80,7 +78,7 @@
                                                 <v-list-item>
                                                     <router-link
                                                         :to="
-                                                            '/billableExpenses/' +
+                                                            '/updateConsume/' +
                                                             item.id
                                                         "
                                                     >

@@ -1,44 +1,40 @@
 <template>
     <div class="all-expense rounded-xl m-4">
         <div class="card rounded-xl bg-white">
-            <toolbar title="Product Management-" subtitle="Create Consume " />
+            <toolbar title="Product Management-" subtitle="Update Consume " />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
                 color="success"
             ></v-divider>
-            <v-container>
-                <v-row class="pt-10" align="start">
-                    <v-col cols="12" md="6">
-                        <v-text-field
-                            type="date"
-                            v-model="formData.date"
-                            variant="outlined"
-                            label="* Date"
-                            class="input"
-                            color="#d3e2f8"
-                            density="compact"
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                        <v-autocomplete
-                            :items="
-                                ProductManagementRepository.expenseAllData
-                                    .warehouse
-                            "
-                            v-model="formData.warehouseId"
-                            variant="outlined"
-                            label="Warehouse *"
-                            class="input"
-                            item-value="id"
-                            item-title="name"
-                            density="compact"
-                        ></v-autocomplete>
-                    </v-col>
-                </v-row>
-            </v-container>
-
-            <v-card class="w-[97%] mx-auto">
+            <div class="d-flex pt-12 w-[100%] gap-4 px-4">
+                <v-text-field
+                    type="date"
+                    v-model="formData.date"
+                    :return-object="false"
+                    variant="outlined"
+                    label=" Date*"
+                    class="pb-2"
+                    style="width: 50%"
+                    color="#d3e2f8"
+                    density="compact"
+                ></v-text-field>
+                <v-autocomplete
+                    :items="
+                        ProductManagementRepository.expenseAllData.warehouse
+                    "
+                    v-model="formData.warehouseId"
+                    :return-object="false"
+                    variant="outlined"
+                    label="  Warehouse * "
+                    class="pb-2"
+                    style="width: 50%"
+                    item-title="name"
+                    item-value="id"
+                    density="compact"
+                ></v-autocomplete>
+            </div>
+            <v-card class="rounded px-5 py-4 mb-20 w-[100%] mx-auto pb-10">
                 <v-divider></v-divider>
                 <v-row no-gutters class="justify-space-between">
                     <v-col cols="full" class="w-50" sm="12" md="12">
@@ -62,7 +58,6 @@
                             clearable
                             class="border-none"
                         ></v-text-field>
-
                         <div
                             class="rounded shadow-lg px-5 mb-12 w-[83vw]"
                             v-if="
@@ -76,7 +71,12 @@
                                     :key="index"
                                 >
                                     <p
-                                        @click="saveData(index)"
+                                        @click="
+                                            ProductManagementRepository.fetchProduct(
+                                                index.id,
+                                                true
+                                            )
+                                        "
                                         class="cursor-pointer pb-2.5 hover:bg-red"
                                     >
                                         {{ index.name }}
@@ -87,9 +87,7 @@
                     </v-col>
 
                     <div class="overflow-x-auto pb-6 table">
-                        <table
-                            class="w-full text-sm text-left bg-blue-darken-500 w-100"
-                        >
+                        <table class="w-full text-sm bg-blue-darken-500 w-100">
                             <thead class="text-xs thead">
                                 <tr>
                                     <th
@@ -105,7 +103,9 @@
                                         QTY
                                     </th>
 
-                                    <th scope="col" class="py-3">Action</th>
+                                    <th scope="col" class="px-6 py-3 text-end">
+                                        ACTION
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -114,29 +114,26 @@
                                     v-for="(
                                         pro, index
                                     ) in ProductManagementRepository.expenseProduct"
+                                    :return-object="false"
                                     :key="index"
                                 >
                                     <td class="px-3 py-3 text-start">
-                                        {{
-                                            pro.name
-                                                ? pro.name
-                                                : "Product Removed"
-                                        }}
+                                        {{ pro.name }}
                                     </td>
 
                                     <td
-                                        class="py-3 px-2 pt-8 text-start flex-row"
+                                        class="py-3 pt-8 flex-row justify-center"
                                     >
                                         <v-text-field
                                             v-model="pro.quantity"
                                             variant="outlined"
                                             density="compact"
                                             type="number"
-                                            class="w-50"
+                                            class="w-1/5"
                                         ></v-text-field>
                                     </td>
 
-                                    <td class="py-2 pr-6 px-2 text-start">
+                                    <td class="py-2 pr-6 px-2 text-end">
                                         <v-icon
                                             color="red"
                                             @click="removeProduct(index)"
@@ -150,72 +147,90 @@
                 </v-row>
             </v-card>
 
-            <div></div>
-            <div class="d-flex mt-16 pt-5 mx-4">
+            <div class="d-flex mt-16 pt-3 mx-4">
                 <v-textarea
                     v-model="formData.details"
                     class="textArea"
-                    label="details"
+                    label="Details"
                     variant="outlined"
                 >
                 </v-textarea>
             </div>
             <div class="d-flex flex-row-reverse mb-6 mx-6">
-                <v-btn color="primary" @click="createConsume"> Create</v-btn>
+                <v-btn color="primary" @click="update"> Submit</v-btn>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+// import Menu from "@/components/UI/Menu.vue";
 import { reactive, computed, ref, watch } from "vue";
-import Toolbar from "../../Component/UI/Toolbar.vue";
+import { useRoute } from "vue-router";
 const items = ref([]);
 
 import { useProductManagementRepository } from "@/store/ProductManagementRepository";
-
+import Toolbar from "../../Component/UI/Toolbar.vue";
+import productMenuVue from "../productSetup/productMenu.vue";
 const ProductManagementRepository = useProductManagementRepository();
 
-// console.log(ProductManagementRepository.expenseProduct, "thisi ");
-const formRef = ref(null);
-
 const clearSearch = () => {
-    ProductManagementRepository.consumeSearch = "";
-    ProductManagementRepository.searchResults = [];
+    ProductManagementRepository.earningSearch.value = "";
     ProductManagementRepository.searchFetch = "";
 };
-
 // console.log(ProductManagementRepository.expenseAllData.peoples.currencySymbol, "jawad");
 
 const removeProduct = (index) => {
     ProductManagementRepository.expenseProduct.splice(index, 1);
-    console.log(ProductManagementRepository.expenseProduct);
+    // console.log(ProductManagementRepository.expenseProduct);
 };
-const RemoveProduct = (index) => {
-    ProductManagementRepository.expenseProduct[index].name = ""; // or null
-};
-const formData = reactive({
-    consumeDetails: ProductManagementRepository.expenseProduct,
-    warehouseId: "",
-    date: "",
-    details: "",
+const routeParams = useRoute();
+let formData = [];
+ProductManagementRepository.FetchConsume(routeParams.params.id).then((res) => {
+    formData = reactive({
+        id: ProductManagementRepository.consume.id,
+        consumeDetails: ProductManagementRepository.consume.consumeDetails,
+
+        warehouseId: ProductManagementRepository.consume.warehouseId,
+
+        date: ProductManagementRepository.consume.date,
+        details: ProductManagementRepository.consume.details,
+    });
+
+    // console.log(formData.expenseDetails, "man");
 });
 
-const createConsume = async () => {
-    // Map the selected product ID to expenseProduct
+const update = async () => {
+    // console.log(formData);
+    formData.consumeDetails = formData.consumeDetails.map((data) => {
+        if (data.expenseProduct && data.expenseProduct.id) {
+            return {
+                ...data,
+                product: { id: data.expenseProduct.id },
+                quantity: data.quantity !== undefined ? data.quantity : null, // Ensuring quantity is set
+            };
+        } else {
+            // Handle the case where expenseProduct or its id is not defined
+            console.error(
+                "expenseProduct or expenseProduct.id is undefined",
+                data
+            );
+            return data;
+        }
+    });
 
-    formData.consumeDetails.map(
-        (data) => ((data.expenseProduct = data.id), data.quantity)
-    );
-    await ProductManagementRepository.CreateConsume(formData);
-    // Clear search results after creating earning
-    clearSearch();
+    try {
+        await ProductManagementRepository.UpdateBillExpense(
+            formData.id,
+            formData
+        );
+    } catch (error) {
+        console.error("Failed to update bill expense:", error);
+    }
 };
-console.log(formData.value);
-const saveData = async (index) => {
-    await ProductManagementRepository.fetchProduct(index.id);
-    // Clear search results after selecting a product
-    clearSearch();
+
+const saveData = async (id) => {
+    await ProductManagementRepository.fetchProduct(id);
 };
 
 const deleteItem = async (item) => {
@@ -229,13 +244,8 @@ ProductManagementRepository.ExpenseAllData();
 .all-expense {
     width: 100%;
 }
-.input > :nth-child(1) > :nth-child(1) {
-    height: 3rem;
-    border: none;
-}
 
 /* color: #5784c8; */
-
 .total {
     border-top: 2px dashed #d3e2f8;
     border-bottom: 2px dashed #d3e2f8;
@@ -244,7 +254,7 @@ ProductManagementRepository.ExpenseAllData();
     display: flex;
     justify-content: space-between;
     background-color: #ecf1f4;
-    border-right: 4px solid #086ada;
+    border-right: 4px solid #fecd07;
 }
 .table-row {
     display: flex;
@@ -255,19 +265,14 @@ ProductManagementRepository.ExpenseAllData();
     width: 70rem;
 }
 .thead {
-    border-left: 4px solid #0b77be;
+    border-left: 4px solid #1175e7;
     background-color: #ecf1f4;
 }
-.v-input__control {
-    width: 70rem;
-}
+
 .discount {
     display: flex;
     width: 100%;
     justify-content: space-between;
     align-items: center;
-}
-.custom-width {
-    width: 110px; /* Set your desired width here */
 }
 </style>
