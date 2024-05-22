@@ -20,13 +20,13 @@
                     density="compact"
                 ></v-text-field>
                 <v-autocomplete
-                    :items="
-                        ProductManagementRepository.expenseAllData.warehouse
-                    "
                     v-model="formData.warehouseId"
                     :return-object="false"
                     variant="outlined"
                     label="  Warehouse * "
+                    :items="
+                        ProductManagementRepository.consumeAllData.warehouse
+                    "
                     class="pb-2"
                     style="width: 50%"
                     item-title="name"
@@ -72,7 +72,7 @@
                                 >
                                     <p
                                         @click="
-                                            ProductManagementRepository.fetchProduct(
+                                            ProductManagementRepository.fetchMaterial(
                                                 index.id,
                                                 true
                                             )
@@ -113,7 +113,7 @@
                                     class=""
                                     v-for="(
                                         pro, index
-                                    ) in ProductManagementRepository.expenseProduct"
+                                    ) in ProductManagementRepository.consumeMaterial"
                                     :return-object="false"
                                     :key="index"
                                 >
@@ -181,8 +181,8 @@ const clearSearch = () => {
 // console.log(ProductManagementRepository.expenseAllData.peoples.currencySymbol, "jawad");
 
 const removeProduct = (index) => {
-    ProductManagementRepository.expenseProduct.splice(index, 1);
-    // console.log(ProductManagementRepository.expenseProduct);
+    ProductManagementRepository.consumeMaterial.splice(index, 1);
+    // console.log(ProductManagementRepository.consumeMaterial);
 };
 const routeParams = useRoute();
 let formData = [];
@@ -199,45 +199,60 @@ ProductManagementRepository.FetchConsume(routeParams.params.id).then((res) => {
 
     // console.log(formData.expenseDetails, "man");
 });
-
 const update = async () => {
     // console.log(formData);
-    formData.consumeDetails = formData.consumeDetails.map((data) => {
-        if (data.expenseProduct && data.expenseProduct.id) {
-            return {
-                ...data,
-                product: { id: data.expenseProduct.id },
-                quantity: data.quantity !== undefined ? data.quantity : null, // Ensuring quantity is set
-            };
+    formData.consumeDetails.map((data) => {
+        if (data.consumeMaterial && data.consumeMaterial.id) {
+            data.matrial = { id: data.consumeMaterial.id };
         } else {
             // Handle the case where expenseProduct or its id is not defined
             console.error(
                 "expenseProduct or expenseProduct.id is undefined",
                 data
             );
-            return data;
         }
     });
 
     try {
-        await ProductManagementRepository.UpdateBillExpense(
-            formData.id,
-            formData
-        );
+        await ProductManagementRepository.UpdateConsume(formData.id, formData);
     } catch (error) {
         console.error("Failed to update bill expense:", error);
     }
 };
 
+// const update = async () => {
+//     console.log(formData);
+//     formData.consumeDetails = formData.consumeDetails.map((data) => {
+//         if (data.consumeMaterial && data.consumeMaterial.id) {
+//             return {
+//                 quantity: data.quantity !== undefined ? data.quantity : null, // Ensuring quantity is set
+//             };
+//         } else {
+//             // Handle the case where consumeMaterial or its id is not defined
+//             console.error(
+//                 "consumeMaterial or consumeMaterial.id is undefined",
+//                 data
+//             );
+//             return data;
+//         }
+//     });
+
+//     try {
+//         await ProductManagementRepository.UpdateConsume(formData.id, formData);
+//     } catch (error) {
+//         console.error("Failed to update bill expense:", error);
+//     }
+// };
+
 const saveData = async (id) => {
-    await ProductManagementRepository.fetchProduct(id);
+    await ProductManagementRepository.fetchMaterial(id);
 };
 
 const deleteItem = async (item) => {
     await ProductManagementRepository.deleteEarning(item.id);
 };
 formData.date = ProductManagementRepository.getTodaysDate();
-ProductManagementRepository.ExpenseAllData();
+ProductManagementRepository.GetWharehose();
 </script>
 
 <style scoped>

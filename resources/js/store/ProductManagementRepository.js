@@ -14,8 +14,10 @@ export let useProductManagementRepository = defineStore(
                 consumeSearch: ref(""),
                 consumes: reactive([]),
                 consume: reactive([]),
-                expenseAllData: reactive([]),
-                expenseProduct: reactive([]),
+
+                consumeAllData: reactive([]),
+                consumeMaterial: reactive([]),
+
                 searchFetch: reactive([]),
                 isLoading: false,
                 error: null,
@@ -55,13 +57,13 @@ export let useProductManagementRepository = defineStore(
             },
 
             // entigrating data for create Earnings
-            async ExpenseAllData() {
+            async GetWharehose() {
                 const config = {
                     url: "wHouses",
                 };
                 const response = await axios(config);
-                this.expenseAllData = response.data.data;
-                // console.log(this.expenseAllData, "man");
+                this.consumeAllData = response.data.data;
+                // console.log(this.consumeAllData, "man");
             },
             async SearchFetchData(id) {
                 console.log(this.consumeSearch);
@@ -77,34 +79,32 @@ export let useProductManagementRepository = defineStore(
                 this.loading = false;
             },
 
-            async fetchProduct(id, isUpdate = false) {
+            async fetchMaterial(id, isUpdate = false) {
                 // this.error = null;
                 try {
-                    const response = await axios.get(
-                        `materials?wareHouse/${id}`
-                    );
+                    const response = await axios.get(`materials/${id}`);
 
-                    console.log("id", response.data.data.id);
+                    console.log("name", response.data.data.name);
                     if (isUpdate) {
                         delete response.data.data.id;
                     }
                     console.log(response.data.data, "fetchProduct");
-                    this.expenseProduct.push(response.data.data);
-                    console.log(this.expenseProduct, "data");
-                    this.billExpense.expenseDetails.push(response.data.data);
+                    this.consumeMaterial.push(response.data.data);
+                    console.log(this.consumeMaterial, "data");
+                    // this.consume.expenseProduct.push(response.data.data);
 
                     console.log("Fetched product data:", response.data.data); // Console log the fetched data
 
                     // this.searchFetch = [];
                 } catch (err) {
-                    // this.error = err.message;
+                    this.error = err.message;
                 }
             },
 
             async FetchConsume(id) {
                 // this.error = null;
                 try {
-                    const response = await axios.get(`consumes/${id}`);
+                    const response = await axios.get(`/consumes/${id}`);
 
                     this.consume = response.data.data;
                 } catch (err) {
@@ -135,8 +135,8 @@ export let useProductManagementRepository = defineStore(
                     itemsPerPage: this.itemsPerPage,
                 });
             },
-            async UpdateBillExpense(id, data) {
-                console.log(`Updating bill expense with id: ${id}`, data);
+            async UpdateConsume(id, data) {
+                console.log(`Updating consume expense with id: ${id}`, data);
                 try {
                     const config = {
                         method: "PUT",
@@ -149,19 +149,19 @@ export let useProductManagementRepository = defineStore(
 
                     console.log("Update response:", response);
 
-                    this.router.push("/allBillableExpense");
+                    this.router.push("/allConsume");
 
-                    this.FetchBillExpenses({
+                    this.FetchConsumesData({
                         page: this.page,
                         itemsPerPage: this.itemsPerPage,
                     });
                 } catch (err) {
-                    console.error("Error updating bill expense:", err);
+                    console.error("Error updating consume expense:", err);
                     this.error = err;
                 }
             },
 
-            async DeleteBillExpense(id) {
+            async DeleteConsume(id) {
                 this.isLoading = true;
                 this.Expenses = [];
                 this.error = null;

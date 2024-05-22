@@ -87,6 +87,7 @@ class ConsumeController extends Controller
     { //! if we store 2 records and in update we just send one record. it makes a problem!
         // DB::beginTransaction();
 
+        
         // try {
         $consume->update($request->validated());
 

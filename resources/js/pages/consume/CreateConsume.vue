@@ -23,7 +23,7 @@
                     <v-col cols="12" md="6">
                         <v-autocomplete
                             :items="
-                                ProductManagementRepository.expenseAllData
+                                ProductManagementRepository.consumeAllData
                                     .warehouse
                             "
                             v-model="formData.warehouseId"
@@ -100,7 +100,7 @@
                                     </th>
                                     <th
                                         scope="col"
-                                        class="px-6 py-3 text-start"
+                                        class="px-6 py-1 text-start"
                                     >
                                         QTY
                                     </th>
@@ -113,26 +113,22 @@
                                     class=""
                                     v-for="(
                                         pro, index
-                                    ) in ProductManagementRepository.expenseProduct"
+                                    ) in ProductManagementRepository.consumeMaterial"
                                     :key="index"
                                 >
                                     <td class="px-3 py-3 text-start">
-                                        {{
-                                            pro.name
-                                                ? pro.name
-                                                : "Product Removed"
-                                        }}
+                                        {{ pro.name }}
                                     </td>
 
                                     <td
-                                        class="py-3 px-2 pt-8 text-start flex-row"
+                                        class="py-3 pt-8 flex-row justify-center"
                                     >
                                         <v-text-field
                                             v-model="pro.quantity"
                                             variant="outlined"
                                             density="compact"
                                             type="number"
-                                            class="w-50"
+                                            class="w-1/5"
                                         ></v-text-field>
                                     </td>
 
@@ -176,8 +172,7 @@ import { useProductManagementRepository } from "@/store/ProductManagementReposit
 
 const ProductManagementRepository = useProductManagementRepository();
 
-// console.log(ProductManagementRepository.expenseProduct, "thisi ");
-const formRef = ref(null);
+// console.log(ProductManagementRepository.consumeMaterial, "thisi ");
 
 const clearSearch = () => {
     ProductManagementRepository.consumeSearch = "";
@@ -188,24 +183,24 @@ const clearSearch = () => {
 // console.log(ProductManagementRepository.expenseAllData.peoples.currencySymbol, "jawad");
 
 const removeProduct = (index) => {
-    ProductManagementRepository.expenseProduct.splice(index, 1);
-    console.log(ProductManagementRepository.expenseProduct);
+    ProductManagementRepository.consumeMaterial.splice(index, 1);
+    console.log(ProductManagementRepository.consumeMaterial);
 };
 const RemoveProduct = (index) => {
-    ProductManagementRepository.expenseProduct[index].name = ""; // or null
+    ProductManagementRepository.consumeMaterial[index].name = ""; // or null
 };
 const formData = reactive({
-    consumeDetails: ProductManagementRepository.expenseProduct,
+    consumeDetails: ProductManagementRepository.consumeMaterial,
     warehouseId: "",
     date: "",
     details: "",
 });
 
 const createConsume = async () => {
-    // Map the selected product ID to expenseProduct
+    // Map the selected product ID to consumeMaterial
 
     formData.consumeDetails.map(
-        (data) => ((data.expenseProduct = data.id), data.quantity)
+        (data) => ((data.consumeMaterial = data.id), data.quantity)
     );
     await ProductManagementRepository.CreateConsume(formData);
     // Clear search results after creating earning
@@ -213,7 +208,8 @@ const createConsume = async () => {
 };
 console.log(formData.value);
 const saveData = async (index) => {
-    await ProductManagementRepository.fetchProduct(index.id);
+    await ProductManagementRepository.fetchMaterial(index.id);
+
     // Clear search results after selecting a product
     clearSearch();
 };
@@ -222,7 +218,7 @@ const deleteItem = async (item) => {
     await ProductManagementRepository.deleteEarning(item.id);
 };
 formData.date = ProductManagementRepository.getTodaysDate();
-ProductManagementRepository.ExpenseAllData();
+ProductManagementRepository.GetWharehose();
 </script>
 
 <style scoped>
