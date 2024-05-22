@@ -39,7 +39,7 @@ class ConsumeRequest extends FormRequest
             'warehouse_id' => 'required',
             'details' => 'nullable|string',
             'consumeDetails.*.id' => 'required',
-            'consumeDetails.*.details.quantity' => 'required',
+            'consumeDetails.*.pivot.quantity' => 'required',
         ];
 
         $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;

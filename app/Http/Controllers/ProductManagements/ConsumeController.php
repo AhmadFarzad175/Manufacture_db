@@ -44,7 +44,7 @@ class ConsumeController extends Controller
                 $consumeDetail['material_id'] = $consumeDetail['id'];
 
                 $consume->materials()->attach($consumeDetail['material_id'], [
-                    'quantity' => $consumeDetail['details']['quantity'],
+                    'quantity' => $consumeDetail['pivot']['quantity'],
                 ]);
                 
                 // Find the corresponding warehouse material for this consume detail
@@ -53,12 +53,12 @@ class ConsumeController extends Controller
                     ->firstOrFail();
                     
                 // Check if there's enough quantity in the warehouse
-                if ($warehouseMaterial->quantity < $consumeDetail['details']['quantity']) {
+                if ($warehouseMaterial->quantity < $consumeDetail['pivot']['quantity']) {
                     throw new \Exception('Insufficient quantity in the warehouse for material ID: ' . $consumeDetail['material_id']);
                 }
 
                 // Decrease the quantity in the warehouseMaterial
-                $warehouseMaterial->decrement('quantity', $consumeDetail['details']['quantity']);
+                $warehouseMaterial->decrement('quantity', $consumeDetail['pivot']['quantity']);
             }
 
             DB::commit();
@@ -103,7 +103,7 @@ class ConsumeController extends Controller
                 ->first();
 
             // 1_ old quantity update for warehouse product 
-            $newQty = $consumeDetail['details']['quantity'];
+            $newQty = $consumeDetail['pivot']['quantity'];
             $oldQty = ConsumeDetails::where('consume_id', $consume->id)->where('material_id', $consumeDetail['material_id'])
                 ->pluck('quantity')->first();
 
@@ -120,7 +120,7 @@ class ConsumeController extends Controller
 
 
             $syncData[$consumeDetail['material_id']] = [
-                'quantity' => $consumeDetail['details']['quantity'],
+                'quantity' => $consumeDetail['pivot']['quantity'],
             ];
         }
         $consume->materials()->sync($syncData);
