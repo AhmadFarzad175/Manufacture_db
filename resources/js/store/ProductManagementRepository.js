@@ -57,7 +57,6 @@ export let useProductManagementRepository = defineStore(
                 return `${year}-${month}-${day}`;
             },
 
-            // entigrating data for create Earnings
             async GetWharehose() {
                 const config = {
                     url: "wHouses",
@@ -196,6 +195,19 @@ export let useProductManagementRepository = defineStore(
                 this.totalItems = response.data.meta.total;
                 this.loading = false;
             },
+            async SearchFetchProduceData(id) {
+                console.log(this.consumeSearch);
+
+                this.loading = true;
+
+                const response = await axios.get(
+                    `products?wareHouse=${id}&search=${this.consumeSearch}`
+                );
+                //
+
+                this.searchFetch = response.data.data;
+                this.loading = false;
+            },
             async FetchProduece(id) {
                 // this.error = null;
                 try {
@@ -206,7 +218,7 @@ export let useProductManagementRepository = defineStore(
                     // this.error = err.message;
                 }
             },
-            async CreateConsume(formData) {
+            async CreateProduce(formData) {
                 console.log(formData);
                 // Adding a custom header to the Axios request
                 setContentType("application/json");
@@ -229,6 +241,74 @@ export let useProductManagementRepository = defineStore(
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
+            },
+            async DeleteProduce(id) {
+                this.isLoading = true;
+                this.Expenses = [];
+                this.error = null;
+
+                try {
+                    const config = {
+                        method: "DELETE",
+                        url: "produces/" + id,
+                    };
+
+                    const response = await axios(config);
+
+                    this.consume = response.data.data;
+                    this.FetchProducesData({
+                        page: this.page,
+                        itemsPerPage: this.itemsPerPage,
+                    });
+                } catch (err) {
+                    this.error = err;
+                }
+            },
+            async fetchProducts(id, isUpdate = false) {
+                // this.error = null;
+                try {
+                    const response = await axios.get(`products/${id}`);
+
+                    console.log("name", response.data.data.name);
+                    if (isUpdate) {
+                        delete response.data.data.id;
+                    }
+                    console.log(response.data.data, "fetchProduct");
+                    this.consumeMaterial.push(response.data.data);
+                    console.log(this.consumeMaterial, "data");
+                    // this.consume.expenseProduct.push(response.data.data);
+
+                    console.log("Fetched product data:", response.data.data); // Console log the fetched data
+
+                    // this.searchFetch = [];
+                } catch (err) {
+                    this.error = err.message;
+                }
+            },
+            async UpdateProduce(id, data) {
+                console.log(`Updating consume expense with id: ${id}`, data);
+                try {
+                    const config = {
+                        method: "PUT",
+                        url: `/produces/${id}`,
+                        data: data,
+                    };
+
+                    // Using Axios to make a post request with async/await and custom headers
+                    const response = await axios(config);
+
+                    console.log("Update response:", response);
+
+                    this.router.push("/allProduce");
+
+                    this.FetchProducesData({
+                        page: this.page,
+                        itemsPerPage: this.itemsPerPage,
+                    });
+                } catch (err) {
+                    console.error("Error updating consume expense:", err);
+                    this.error = err;
+                }
             },
         },
     }

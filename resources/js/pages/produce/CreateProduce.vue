@@ -45,12 +45,12 @@
                         <v-text-field
                             v-model="ProductManagementRepository.consumeSearch"
                             @keyup.enter="
-                                ProductManagementRepository.SearchFetchData(
+                                ProductManagementRepository.SearchFetchProduceData(
                                     formData.warehouseId
                                 )
                             "
                             @input="
-                                ProductManagementRepository.SearchFetchData(
+                                ProductManagementRepository.SearchFetchProduceData(
                                     formData.warehouseId
                                 )
                             "
@@ -157,7 +157,7 @@
                 </v-textarea>
             </div>
             <div class="d-flex flex-row-reverse mb-6 mx-6">
-                <v-btn color="primary" @click="createConsume"> Create</v-btn>
+                <v-btn color="primary" @click="createProduce"> Create</v-btn>
             </div>
         </div>
     </div>
@@ -190,21 +190,21 @@ const RemoveProduct = (index) => {
     ProductManagementRepository.consumeMaterial[index].name = ""; // or null
 };
 const formData = reactive({
-    consumeDetails: ProductManagementRepository.consumeMaterial,
+    produceDetails: ProductManagementRepository.consumeMaterial,
     warehouseId: "",
     date: "",
     details: "",
 });
 
-const createConsume = async () => {
+const createProduce = async () => {
     // Map the selected product ID to consumeMaterial and set quantity to pavote object
 
-    formData.consumeDetails.map((data) => {
+    formData.produceDetails.map((data) => {
         data.consumeMaterial = data.id;
         data.pivot = { quantity: data.quantity };
     });
 
-    await ProductManagementRepository.CreateConsume(formData);
+    await ProductManagementRepository.CreateProduce(formData);
 
     // Clear search results after creating earning
     clearSearch();

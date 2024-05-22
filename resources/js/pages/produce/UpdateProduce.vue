@@ -72,7 +72,7 @@
                                 >
                                     <p
                                         @click="
-                                            ProductManagementRepository.fetchMaterial(
+                                            ProductManagementRepository.fetchProducts(
                                                 index.id,
                                                 true
                                             )
@@ -186,10 +186,10 @@ const removeProduct = (index) => {
 };
 const routeParams = useRoute();
 let formData = [];
-ProductManagementRepository.FetchConsume(routeParams.params.id).then((res) => {
+ProductManagementRepository.FetchProduece(routeParams.params.id).then((res) => {
     formData = reactive({
         id: ProductManagementRepository.consume.id,
-        consumeDetails: ProductManagementRepository.consume.consumeDetails,
+        produceDetails: ProductManagementRepository.consume.produceDetails,
 
         warehouseId: ProductManagementRepository.consume.warehouseId,
 
@@ -201,7 +201,7 @@ ProductManagementRepository.FetchConsume(routeParams.params.id).then((res) => {
 });
 const update = async () => {
     // console.log(formData);
-    formData.consumeDetails = formData.consumeDetails.map((data) => ({
+    formData.produceDetails = formData.produceDetails.map((data) => ({
         ...data,
         consumeMaterial: data.id,
         pavote: {
@@ -211,38 +211,14 @@ const update = async () => {
     }));
 
     try {
-        await ProductManagementRepository.UpdateConsume(formData.id, formData);
+        await ProductManagementRepository.UpdateProduce(formData.id, formData);
     } catch (error) {
         console.error("Failed to update bill expense:", error);
     }
 };
 
-// const update = async () => {
-//     console.log(formData);
-//     formData.consumeDetails = formData.consumeDetails.map((data) => {
-//         if (data.consumeMaterial && data.consumeMaterial.id) {
-//             return {
-//                 quantity: data.quantity !== undefined ? data.quantity : null, // Ensuring quantity is set
-//             };
-//         } else {
-//             // Handle the case where consumeMaterial or its id is not defined
-//             console.error(
-//                 "consumeMaterial or consumeMaterial.id is undefined",
-//                 data
-//             );
-//             return data;
-//         }
-//     });
-
-//     try {
-//         await ProductManagementRepository.UpdateConsume(formData.id, formData);
-//     } catch (error) {
-//         console.error("Failed to update bill expense:", error);
-//     }
-// };
-
 const saveData = async (id) => {
-    await ProductManagementRepository.fetchMaterial(id);
+    await ProductManagementRepository.fetchProducts(id);
 };
 
 const deleteItem = async (item) => {

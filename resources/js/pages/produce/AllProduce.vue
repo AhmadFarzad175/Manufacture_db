@@ -134,7 +134,7 @@ let ProductManagementRepository = useProductManagementRepository();
 
 // delete and update
 const deleteItem = async (item) => {
-    await ProductManagementRepository.DeleteConsume(item.id);
+    await ProductManagementRepository.DeleteProduce(item.id);
 };
 const createPopUp = () => {
     ProductManagementRepository.createDailog = true;
