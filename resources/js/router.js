@@ -23,6 +23,8 @@ import UpdateBillableExpense from "./pages/billableExpense/UpdateBillableExpense
 import AllConsume from "./pages/consume/AllConsume.vue";
 import CreateConsume from "./pages/consume/CreateConsume.vue";
 import UpdateConsume from "./pages/consume/UpdateConsume.vue";
+// ========
+import AllProduce from "./pages/produce/AllProduce.vue";
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -59,6 +61,8 @@ const router = createRouter({
             name: "UpdateConsume",
             component: UpdateConsume,
         },
+        // ========Produce Routes========================\\
+        { path: "/allProduce", component: AllProduce },
     ],
 });
 

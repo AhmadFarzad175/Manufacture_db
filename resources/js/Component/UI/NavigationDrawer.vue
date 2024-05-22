@@ -29,7 +29,7 @@
                     </v-list-group>
                     <v-list-group value="Produce" class="w-full">
                         <template v-slot:activator="{ props }">
-                            <router-link to="/allBillableExpense">
+                            <router-link to="/allProduce">
                                 <v-list-item
                                     v-bind="props"
                                     :append-icon="null"

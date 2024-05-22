@@ -14,11 +14,12 @@ export let useProductManagementRepository = defineStore(
                 consumeSearch: ref(""),
                 consumes: reactive([]),
                 consume: reactive([]),
-
                 consumeAllData: reactive([]),
                 consumeMaterial: reactive([]),
 
                 searchFetch: reactive([]),
+                // ======Produce=======\\\
+                produces: reactive([]),
                 isLoading: false,
                 error: null,
                 loading: false,
@@ -182,6 +183,18 @@ export let useProductManagementRepository = defineStore(
                 } catch (err) {
                     this.error = err;
                 }
+            },
+            // =========Produce===========================//
+            async FetchProducesData({ page, itemsPerPage }) {
+                this.loading = true;
+                setContentType("application/json");
+
+                const response = await axios.get(
+                    `/produces?page=${page}&perPage=${itemsPerPage}&search=${this.consumeSearch}`
+                );
+                this.produces = response.data.data;
+                this.totalItems = response.data.meta.total;
+                this.loading = false;
             },
         },
     }
