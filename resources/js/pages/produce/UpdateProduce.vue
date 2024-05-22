@@ -1,7 +1,7 @@
 <template>
     <div class="all-expense rounded-xl m-4">
         <div class="card rounded-xl bg-white">
-            <toolbar title="Product Management-" subtitle="Update Consume " />
+            <toolbar title="Product Management-" subtitle="Update Produce " />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"

@@ -25,7 +25,7 @@
                 <div class="btn d-flex gap-4">
                     <v-btn variant="outlined" color="#112F53 ">Filter</v-btn>
 
-                    <router-link to="/createConsume">
+                    <router-link to="/createProduce">
                         <v-btn color="primary" variant="flat"> Create</v-btn>
                     </router-link>
                 </div>
@@ -78,7 +78,7 @@
                                                 <v-list-item>
                                                     <router-link
                                                         :to="
-                                                            '/updateConsume/' +
+                                                            '/updateProdce/' +
                                                             item.id
                                                         "
                                                     >

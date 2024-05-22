@@ -196,6 +196,40 @@ export let useProductManagementRepository = defineStore(
                 this.totalItems = response.data.meta.total;
                 this.loading = false;
             },
+            async FetchProduece(id) {
+                // this.error = null;
+                try {
+                    const response = await axios.get(`/produces/${id}`);
+
+                    this.consume = response.data.data;
+                } catch (err) {
+                    // this.error = err.message;
+                }
+            },
+            async CreateConsume(formData) {
+                console.log(formData);
+                // Adding a custom header to the Axios request
+                setContentType("application/json");
+
+                const config = {
+                    method: "POST",
+                    url: "/produces",
+                    data: formData,
+                };
+
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                console.log(response.data, "this is data");
+                this.router.push("/allProduce");
+                // toast.success("Customer Succesfully Created", {
+                //     autoClose: 1000,
+                // });
+                // this.createDailog = false;
+                this.FetchProducesData({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            },
         },
     }
 );
