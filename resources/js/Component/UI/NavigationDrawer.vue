@@ -3,6 +3,60 @@
     <div class="side w-full">
         <!-- <v-card class="mx-auto card" width="300"> -->
         <v-list v-model:opened="open">
+            <v-list-group class="side" value="Purchase">
+                <template v-slot:activator="{ props }">
+                    <v-list-item
+                        v-bind="props"
+                        prepend-icon="mdi-tools"
+                        :append-icon="null"
+                        title="Purchase"
+                        value="Purchase"
+                    ></v-list-item>
+                </template>
+                <div>
+                    <v-list-group value="Create Purchase" class="w-full">
+                        <template v-slot:activator="{ props }">
+                            <router-link to="/allConsume">
+                                <v-list-item
+                                    v-bind="props"
+                                    :append-icon="null"
+                                    title="Create Purchase"
+                                    class="-ml-12 w-full"
+                                >
+                                </v-list-item>
+                            </router-link>
+                        </template>
+                    </v-list-group>
+                    <v-list-group value="All Purchase" class="w-full">
+                        <template v-slot:activator="{ props }">
+                            <router-link to="/allProduce">
+                                <v-list-item
+                                    v-bind="props"
+                                    :append-icon="null"
+                                    title="All Purchase"
+                                    class="-ml-12 w-full"
+                                >
+                                </v-list-item>
+                            </router-link>
+                        </template>
+                    </v-list-group>
+                    <v-list-group value="Purchase Return" class="w-full">
+                        <template v-slot:activator="{ props }">
+                            <router-link to="/allProduce">
+                                <v-list-item
+                                    v-bind="props"
+                                    :append-icon="null"
+                                    title="Purchase Return"
+                                    class="-ml-12 w-full"
+                                >
+                                </v-list-item>
+                            </router-link>
+                        </template>
+                    </v-list-group>
+                </div>
+            </v-list-group>
+        </v-list>
+        <v-list v-model:opened="open">
             <v-list-group class="side" value="Product Management">
                 <template v-slot:activator="{ props }">
                     <v-list-item

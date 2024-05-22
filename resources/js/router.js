@@ -27,6 +27,8 @@ import UpdateConsume from "./pages/consume/UpdateConsume.vue";
 import AllProduce from "./pages/produce/AllProduce.vue";
 import CreatProduce from "./pages/produce/CreateProduce.vue";
 import UpdateProduce from "./pages/produce/UpdateProduce.vue";
+// ==============All Purchase ============================\\
+import 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
