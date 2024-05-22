@@ -34,13 +34,12 @@ class ConsumeRequest extends FormRequest
      */
     public function rules(): array
     {
-        // dd(Request());
         $rules = [
             'date' => 'required|date',
             'warehouse_id' => 'required',
             'details' => 'nullable|string',
             'consumeDetails.*.id' => 'required',
-            'consumeDetails.*.quantity' => 'required',
+            'consumeDetails.*.details.quantity' => 'required',
         ];
 
         $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;
