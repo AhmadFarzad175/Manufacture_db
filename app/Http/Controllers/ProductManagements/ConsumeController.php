@@ -40,10 +40,11 @@ class ConsumeController extends Controller
 
             foreach ($request->input('consumeDetails') as $consumeDetail) {
                 //MERGE THE NAME OF MATERIAL ID
+                // return $consumeDetail['details']['quantity'];
                 $consumeDetail['material_id'] = $consumeDetail['id'];
 
                 $consume->materials()->attach($consumeDetail['material_id'], [
-                    'quantity' => $consumeDetail['quantity'],
+                    'quantity' => $consumeDetail['details']['quantity'],
                 ]);
                 
                 // Find the corresponding warehouse material for this consume detail
@@ -52,12 +53,12 @@ class ConsumeController extends Controller
                     ->firstOrFail();
                     
                 // Check if there's enough quantity in the warehouse
-                if ($warehouseMaterial->quantity < $consumeDetail['quantity']) {
+                if ($warehouseMaterial->quantity < $consumeDetail['details']['quantity']) {
                     throw new \Exception('Insufficient quantity in the warehouse for material ID: ' . $consumeDetail['material_id']);
                 }
 
                 // Decrease the quantity in the warehouseMaterial
-                $warehouseMaterial->decrement('quantity', $consumeDetail['quantity']);
+                $warehouseMaterial->decrement('quantity', $consumeDetail['details']['quantity']);
             }
 
             DB::commit();
@@ -103,7 +104,7 @@ class ConsumeController extends Controller
                 ->first();
 
             // 1_ old quantity update for warehouse product 
-            $newQty = $consumeDetail['quantity'];
+            $newQty = $consumeDetail['details']['quantity'];
             $oldQty = ConsumeDetails::where('consume_id', $consume->id)->where('material_id', $consumeDetail['material_id'])
                 ->pluck('quantity')->first();
 
@@ -120,7 +121,7 @@ class ConsumeController extends Controller
 
 
             $syncData[$consumeDetail['material_id']] = [
-                'quantity' => $consumeDetail['quantity'],
+                'quantity' => $consumeDetail['details']['quantity'],
             ];
         }
         $consume->materials()->sync($syncData);

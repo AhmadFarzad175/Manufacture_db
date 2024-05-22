@@ -14,6 +14,7 @@ class MaterialResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        dd( $this->consumDetails->quantity);
         $imageUrl = asset('storage/' . $this->image);
         return [
             'id' => $this->id,
@@ -24,6 +25,7 @@ class MaterialResource extends JsonResource
             'stock' => $this->stock,
             'stockAlert' => $this->stock_alert,
             'details' => $this->details,
+            // 'quantity' =>,
             'materialCategory' => [
                 'id' => $this->materialCategory->id,
                 'name' => $this->materialCategory->name
