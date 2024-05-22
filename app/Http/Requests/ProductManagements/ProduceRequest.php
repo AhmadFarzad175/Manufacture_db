@@ -36,10 +36,10 @@ class ProduceRequest extends FormRequest
     {
         $rules = [
             'date' => 'required|date',
-            'warehouse_id' => 'required|exists:warehouses,id',
+            'warehouse_id' => 'required',
             'details' => 'nullable|string',
-            'consumeDetails.*.productId' => 'required|exists:products,id',
-            'consumeDetails.*.quantity' => 'required',
+            'consumeDetails.*.id' => 'required',
+            'consumeDetails.*.pivot.quantity' => 'required',
         ];
 
         $this->isMethod('PUT') ? $this->applyUpdateRules($rules) : null;

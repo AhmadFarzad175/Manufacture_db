@@ -40,10 +40,10 @@ class ProduceController extends Controller
 
             foreach ($request->input('produceDetails') as $produceDetail) {
                 //MERGE THE NAME OF MATERIAL ID
-                $produceDetail['product_id'] = $produceDetail['productId'];
+                $produceDetail['product_id'] = $produceDetail['id'];
 
                 $produce->products()->attach($produceDetail['product_id'], [
-                    'quantity' => $produceDetail['quantity'],
+                    'quantity' => $produceDetail['pivot']['quantity'],
                 ]);
 
                 // Find the corresponding warehouse product for this produce detail
@@ -52,12 +52,12 @@ class ProduceController extends Controller
                     ->firstOrFail();
 
                 // Check if there's enough quantity in the warehouse
-                if ($warehouseProduct->quantity < $produceDetail['quantity']) {
+                if ($warehouseProduct->quantity < $produceDetail['pivot']['quantity']) {
                     throw new \Exception('Insufficient quantity in the warehouse for product ID: ' . $produceDetail['product_id']);
                 }
 
                 // Decrease the quantity in the warehouseProduct
-                $warehouseProduct->increment('quantity', $produceDetail['quantity']);
+                $warehouseProduct->increment('quantity', $produceDetail['pivot']['quantity']);
             }
 
             DB::commit();
@@ -93,7 +93,7 @@ class ProduceController extends Controller
         // Attach updated products
         $syncData = [];
         foreach ($request->input('produceDetails') as $produceDetail) {
-            $produceDetail['product_id'] = $produceDetail['productId'];
+            $produceDetail['product_id'] = $produceDetail['id'];
 
 
             // Find the corresponding warehouse product for this produce detail
@@ -102,7 +102,7 @@ class ProduceController extends Controller
                 ->first();
 
             // 1_ old quantity update for warehouse product 
-            $newQty = $produceDetail['quantity'];
+            $newQty = $produceDetail['pivot']['quantity'];
             $oldQty = ProduceDetails::where('produce_id', $produce->id)->where('product_id', $produceDetail['product_id'])
                 ->pluck('quantity')->first();
 
@@ -119,7 +119,7 @@ class ProduceController extends Controller
 
 
             $syncData[$produceDetail['product_id']] = [
-                'quantity' => $produceDetail['quantity'],
+                'quantity' => $produceDetail['pivot']['quantity'],
             ];
         }
         $produce->products()->sync($syncData);
