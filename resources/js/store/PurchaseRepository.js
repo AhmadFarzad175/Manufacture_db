@@ -1,285 +1,312 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
+
 // Import Axios
 import { axios, setContentType } from "../axios";
-import { toast } from "vue3-toastify";
+// import { toast } from "vue3-toastify";
 import { useRouter } from "vue-router";
-
 export let usePurchaseRepository = defineStore("PurchaseRepository", {
     state() {
         return {
-            visas: reactive([]),
-            visaPartners: reactive([]),
-            integratedDataForVisa: reactive([]),
+            // ====consume======\\
+            consumeSearch: ref(""),
+            purchases: reactive([]),
+            consume: reactive([]),
+            consumeAllData: reactive([]),
+            consumeMaterial: reactive([]),
 
-            visa: reactive([]),
-            visaPartner: reactive([]),
-
-            // varible for visa report
-            countVisa: ref(null),
-            totalPrice: ref(null),
-            grandTotalCost: ref(null),
-            totalPaid: ref(null),
-            totalDue: ref(null),
-            netProfit: ref(null),
-            countRefund: ref(null),
-
-            router: useRouter(),
-            dailog: false,
+            searchFetch: reactive([]),
+            // ======Produce=======\\\
+            produces: reactive([]),
             isLoading: false,
             error: null,
-            loading: true,
-            itemsPerPage: 10,
-            page: 1,
-            selectedItems: [],
-            selectAll: false,
-            custmerEdiDailog: false,
+            loading: false,
             createDailog: false,
             updateDailog: false,
-            showPaymentDailog: false,
-            showRefundDailog: false,
-            totaleRefundableDailog: false,
-            custmerEdiDailog: false,
+            page: 1,
+            itemsPerPage: 5,
+            selectedItems: [],
+            selectAll: false,
             showSelect: true,
+            router: useRouter(),
             totalItems: 0,
             itemKey: "id",
-            visaId: reactive([]),
-            currency: reactive([]),
-            symbol: ref(""),
-            // search varible
 
-            search: "",
-
-            // customer search
-            searchCustomer: "",
-            customers: reactive([]),
-            customerListArray: reactive([]),
-            customerUpdateData: reactive([]),
+            purchaseSearch: "",
         };
     },
-
     actions: {
-        // Today Date
-        getCurrentDate() {
+        async FetchPurchasesData({ page, itemsPerPage }) {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(
+                `/purchases?page=${page}&perPage=${itemsPerPage}&search=${this.purchaseSearch}`
+            );
+            this.purchases = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+        getTodaysDate() {
             const today = new Date();
             const year = today.getFullYear();
-            const month = (today.getMonth() + 1).toString().padStart(2, "0");
-            const day = today.getDate().toString().padStart(2, "0");
+            const month = String(today.getMonth() + 1).padStart(2, "0");
+            const day = String(today.getDate()).padStart(2, "0");
             return `${year}-${month}-${day}`;
         },
-        getCurrencyAndSymbol(account, id) {
-            this.currency = [];
-            const array = account.filter((acc) => acc.id === id);
-            console.log(array[0]);
-            if (array[0].name === "CENTRAL") {
-                this.currency.push(...array[0].currencies);
-                console.log(array[0].currencies);
-            } else {
-                this.symbol = array[0].currency?.symbol;
-                this.currency.push(array[0].currency);
-                console.log(array[0].currency);
-            }
-            // console.log(this.currency);
-            // console.log(array[0].currency?.symbol);
-            // console.log(account, id);
-        },
-        getCurrencySymbol(account, id) {
-            const array = account.filter((acc) => acc.id === id);
-            const symbolFromAccount = array[0].symbol;
-            this.symbol = symbolFromAccount;
-            console.log(array[0].symbol);
-            // console.log(account, id);
-        },
-        getPaymentCurrencySymbol(account, id) {
-            const array = account.filter((acc) => acc.id === id);
-            const symbolFromAccount = array[0].currency.symbol;
-            this.symbol = symbolFromAccount;
-            console.log(array[0].currency.symbol);
-            // console.log(account, id);
-        },
-        updateCurrencySymbol(account, id) {
-            const array = account.filter((acc) => acc.currency.id === id);
-            const symbolFromAccount = array[0].currency.symbol;
-            this.symbol = symbolFromAccount;
-            console.log(array[0].currency.symbol);
-            // console.log(account, id);
-        },
-        scrollToTop() {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        },
 
-        //    All purchase ================
+        async GetWharehose() {
+            const config = {
+                url: "wHouses",
+            };
+            const response = await axios(config);
+            this.consumeAllData = response.data.data;
+            // console.log(this.consumeAllData, "man");
+        },
+        async SearchFetchData(id) {
+            console.log(this.consumeSearch);
 
-        async FetchPurchasesData({ page, itemsPerPage }) {
             this.loading = true;
 
             const response = await axios.get(
-                `visaCancel?page=${page}&perPage=${itemsPerPage}&search=${this.purchaseSearch}`
+                `materials?wareHouse=${id}&search=${this.consumeSearch}`
             );
-            this.scrollToTop();
-            this.purchases = response.data.data;
-            console.log(this.purchases);
-            this.totalItems = response.data.meta.total;
-            console.log(this.totalItems);
+            //
+
+            this.searchFetch = response.data.data;
             this.loading = false;
         },
-        async fetchCanceledBooking(id) {
-            setContentType("application/json");
 
-            const response = await axios.get(`visaCancel/${id}`);
+        async fetchMaterial(id, isUpdate = false) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`materials/${id}`);
 
-            this.canceledBooking = response.data.data; // Assign the fetched data directly to this.people
-            console.log(this.canceledBooking);
-            // Reset error in case it was previously set
+                console.log("name", response.data.data.name);
+                if (isUpdate) {
+                    delete response.data.data.id;
+                }
+                console.log(response.data.data, "fetchProduct");
+                this.consumeMaterial.push(response.data.data);
+                console.log(this.consumeMaterial, "data");
+                // this.consume.expenseProduct.push(response.data.data);
+
+                console.log("Fetched product data:", response.data.data); // Console log the fetched data
+
+                // this.searchFetch = [];
+            } catch (err) {
+                this.error = err.message;
+            }
         },
-        async UpdateConceledVisa(id, data) {
-            console.log(data);
 
+        async FetchConsume(id) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`/consumes/${id}`);
+
+                this.consume = response.data.data;
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+        async CreateConsume(formData) {
+            console.log(formData);
             // Adding a custom header to the Axios request
             setContentType("application/json");
-            const config = {
-                method: "PUT",
-                url: "visaStatus/" + id,
-                data: data,
-            };
 
-            // Using Axios to make a post request with async/await and custom headers
-            const response = await axios(config);
-            toast.success("Visa Concel Succesfully Updated", {
-                autoClose: 1000,
-            });
-            this.router.push("/canceledVisa");
-
-            this.fetchVisaData({
-                page: this.page,
-                itemsPerPage: this.itemsPerPage,
-            });
-        },
-        async DeleteCanceledBooking(id) {
-            setContentType("application/json");
-            const config = {
-                method: "DELETE",
-                url: "visaCancelDelete/" + id,
-            };
-
-            const response = await axios(config);
-
-            this.purchases = response.data.data;
-            toast.success("Booking Succesfully Deleted", {
-                autoClose: 1000,
-            });
-            this.fetchCanceledBookings({
-                page: this.page,
-                itemsPerPage: this.itemsPerPage,
-            });
-        },
-        async RecoverBooking(id, data) {
-            console.log(data);
-            console.log(id);
-
-            // Adding a custom header to the Axios request
-            setContentType("application/json");
-            const config = {
-                method: "PUT",
-                url: "visaCancelStatus/" + id,
-                data: data,
-            };
-
-            // Using Axios to make a post request with async/await and custom headers
-            const response = await axios(config);
-            this.router.push("/visa");
-
-            toast.success("Visa Succesfully Recover", {
-                autoClose: 1000,
-            });
-            this.fetchVisaData({
-                page: this.page,
-                itemsPerPage: this.itemsPerPage,
-            });
-        },
-
-        // Refund api
-
-        async CreateRefund(formData) {
-            // Adding a custom header to the Axios request
-            setContentType("application/json");
             const config = {
                 method: "POST",
-                url: "visaRefunds",
+                url: "/consumes",
                 data: formData,
             };
 
             // Using Axios to make a GET request with async/await and custom headers
             const response = await axios(config);
-            toast.success("Refund Succesfully Created", {
-                autoClose: 1000,
-            });
-
-            this.symbol = null;
-            this.dailog = false;
-            this.visaId = [];
-            this.fetchCanceledBookings({
+            console.log(response.data, "this is data");
+            this.router.push("/allConsume");
+            // toast.success("Customer Succesfully Created", {
+            //     autoClose: 1000,
+            // });
+            // this.createDailog = false;
+            this.FetchConsumesData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });
         },
-        async ShowRefund(id) {
-            setContentType("application/json");
-            const response = await axios.get(`showVisaRefundPayments/${id}`);
+        async UpdateConsume(id, data) {
+            console.log(`Updating consume expense with id: ${id}`, data);
+            try {
+                const config = {
+                    method: "PUT",
+                    url: `/consumes/${id}`,
+                    data: data,
+                };
 
-            this.refunds = response.data.data; // Assign the fetched data directly to this.people
-            console.log(this.refunds);
+                // Using Axios to make a post request with async/await and custom headers
+                const response = await axios(config);
+
+                console.log("Update response:", response);
+
+                this.router.push("/allConsume");
+
+                this.FetchConsumesData({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                console.error("Error updating consume expense:", err);
+                this.error = err;
+            }
         },
-        async fetchRefund(id) {
+
+        async DeleteConsume(id) {
+            this.isLoading = true;
+            this.Expenses = [];
+            this.error = null;
+
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "consumes/" + id,
+                };
+
+                const response = await axios(config);
+
+                this.consume = response.data.data;
+                this.FetchConsumesData({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        // =========Produce===========================//
+        async FetchProducesData({ page, itemsPerPage }) {
+            this.loading = true;
             setContentType("application/json");
 
-            const response = await axios.get(`visaRefunds/${id}`);
-
-            this.refund = response.data.data; // Assign the fetched data directly to this.people
+            const response = await axios.get(
+                `/produces?page=${page}&perPage=${itemsPerPage}&search=${this.consumeSearch}`
+            );
+            this.produces = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
         },
-        async UpdateRefund(id, data) {
-            console.log(data);
+        async SearchFetchProduceData(id) {
+            console.log(this.consumeSearch);
+
+            this.loading = true;
+
+            const response = await axios.get(
+                `products?wareHouse=${id}&search=${this.consumeSearch}`
+            );
+            //
+
+            this.searchFetch = response.data.data;
+            this.loading = false;
+        },
+        async FetchProduece(id) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`/produces/${id}`);
+
+                this.consume = response.data.data;
+            } catch (err) {
+                // this.error = err.message;
+            }
+        },
+        async CreateProduce(formData) {
+            console.log(formData);
             // Adding a custom header to the Axios request
             setContentType("application/json");
+
             const config = {
-                method: "PUT",
-                url: "visaRefunds/" + id,
-                data: data,
+                method: "POST",
+                url: "/produces",
+                data: formData,
             };
 
-            // Using Axios to make a post request with async/await and custom headers
+            // Using Axios to make a GET request with async/await and custom headers
             const response = await axios(config);
-            toast.success("Refund Succesfully Updated", {
-                autoClose: 1000,
-            });
-            this.symbol = null;
-            this.dailog = false;
-            this.visaId = [];
-            this.ShowRefund(data.visa);
-            this.fetchCanceledBookings({
+            console.log(response.data, "this is data");
+            this.router.push("/allProduce");
+            // toast.success("Customer Succesfully Created", {
+            //     autoClose: 1000,
+            // });
+            // this.createDailog = false;
+            this.FetchProducesData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });
         },
-        async DeleteRefund(id, visa) {
-            this.refunds = [];
+        async DeleteProduce(id) {
+            this.isLoading = true;
+            this.Expenses = [];
+            this.error = null;
 
-            setContentType("application/json");
-            const config = {
-                method: "DELETE",
-                url: "visaRefunds/" + id,
-            };
+            try {
+                const config = {
+                    method: "DELETE",
+                    url: "produces/" + id,
+                };
 
-            const response = await axios(config);
-            this.payments = response.data.data;
-            toast.success("Refund Succesfully Deleted", {
-                autoClose: 1000,
-            });
-            this.fetchCanceledBookings({
-                page: this.page,
-                itemsPerPage: this.itemsPerPage,
-            });
-            this.ShowRefund(visa);
+                const response = await axios(config);
+
+                this.consume = response.data.data;
+                this.FetchProducesData({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                this.error = err;
+            }
+        },
+        async fetchProducts(id, isUpdate = false) {
+            // this.error = null;
+            try {
+                const response = await axios.get(`products/${id}`);
+
+                console.log("name", response.data.data.name);
+                if (isUpdate) {
+                    delete response.data.data.id;
+                }
+                console.log(response.data.data, "fetchProduct");
+                this.consumeMaterial.push(response.data.data);
+                console.log(this.consumeMaterial, "data");
+                // this.consume.expenseProduct.push(response.data.data);
+
+                console.log("Fetched product data:", response.data.data); // Console log the fetched data
+
+                // this.searchFetch = [];
+            } catch (err) {
+                this.error = err.message;
+            }
+        },
+        async UpdateProduce(id, data) {
+            console.log(`Updating consume expense with id: ${id}`, data);
+            try {
+                const config = {
+                    method: "PUT",
+                    url: `/produces/${id}`,
+                    data: data,
+                };
+
+                // Using Axios to make a post request with async/await and custom headers
+                const response = await axios(config);
+
+                console.log("Update response:", response);
+
+                this.router.push("/allProduce");
+
+                this.FetchProducesData({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                console.error("Error updating consume expense:", err);
+                this.error = err;
+            }
         },
     },
 });
