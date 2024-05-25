@@ -40,9 +40,9 @@ class PurchaseRequest extends FormRequest
         $rules =  [
             'date' => 'required|date',
             'invoice_number' => 'required|integer',
-            'warehouse_id' => 'required|exists:warehouses,id',
-            'user_id' => 'required|exists:users,id',
-            'supplier_id' => 'required|exists:suppliers,id',
+            'warehouse_id' => 'required',
+            'user_id' => 'required',
+            'supplier_id' => 'required',
             'paid' => 'nullable|numeric|min:0',
             'total' => 'required|numeric|min:0',
             'status' => 'required|in:received,pending,ordered',
@@ -51,8 +51,8 @@ class PurchaseRequest extends FormRequest
             'tax' => 'nullable|numeric|min:0',
             'currency_id' => 'required|exists:currencies,id',
             'note' => 'nullable',
-            'materialDetails.*.materialId' => 'required|exists:materials,id',
-            'materialDetails.*.purchase_id' => 'required|exists:purchases,id',
+            'materialDetails.*.materialId' => 'required',
+            'materialDetails.*.purchase_id' => 'required',
             'materialDetails.*.quantity' => 'required|integer|min:1',
             'materialDetails.*.unitCost' => 'required|numeric|min:0',
         ];

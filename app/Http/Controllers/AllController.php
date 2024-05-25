@@ -67,16 +67,26 @@ class AllController extends Controller
         return response()->json(['data' => $allData]);
     }
 
-    public function wHouseMaterial(Request $request, $id)
+    // public function wHouseMaterial(Request $request, $id)
+    // {
+    //     $warehouseMaterials = WarehouseMaterial::with(['material:id,name,code'])
+    //         ->where('warehouse_id', $id)
+
+    //         ->select('id', 'material_id') // specify the columns from warehouse_materials
+    //         ->get();
+    //     $allData = [
+    //         'warehouseMaterial' => $warehouseMaterials
+    //     ];
+    //     return response()->json(['data' => $allData]);
+    // }
+
+    public function supplierWarehouse()
     {
-        $warehouseMaterials = WarehouseMaterial::with(['material:id,name,code'])
-        ->where('warehouse_id', $id)
-        
-            ->select('id', 'material_id') // specify the columns from warehouse_materials
-            ->get();
         $allData = [
-            'warehouseMaterial' => $warehouseMaterials
+            'supplier' => Supplier::select('id', 'name')->get(),
+            'warehouse' => Warehouse::select('id', 'name')->get(),
         ];
+
         return response()->json(['data' => $allData]);
     }
 }
