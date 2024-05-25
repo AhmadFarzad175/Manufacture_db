@@ -5,13 +5,14 @@ import { reactive, ref } from "vue";
 import { axios, setContentType } from "../axios";
 // import { toast } from "vue3-toastify";
 import { useRouter } from "vue-router";
+import CreatePurchase from "../pages/allPurchase/CreatePurchase.vue";
 export let usePurchaseRepository = defineStore("PurchaseRepository", {
     state() {
         return {
-            // ====consume======\\
-            consumeSearch: ref(""),
+            // ====purchase======\\
+            purchaseSearch: ref(""),
             purchases: reactive([]),
-            consume: reactive([]),
+            purchase: reactive([]),
             consumeAllData: reactive([]),
             consumeMaterial: reactive([]),
 
@@ -36,17 +37,6 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
         };
     },
     actions: {
-        async FetchPurchasesData({ page, itemsPerPage }) {
-            this.loading = true;
-            setContentType("application/json");
-
-            const response = await axios.get(
-                `/purchases?page=${page}&perPage=${itemsPerPage}&search=${this.purchaseSearch}`
-            );
-            this.purchases = response.data.data;
-            this.totalItems = response.data.meta.total;
-            this.loading = false;
-        },
         getTodaysDate() {
             const today = new Date();
             const year = today.getFullYear();
@@ -89,7 +79,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
                 console.log(response.data.data, "fetchProduct");
                 this.consumeMaterial.push(response.data.data);
                 console.log(this.consumeMaterial, "data");
-                // this.consume.expenseProduct.push(response.data.data);
+                // this.purchase.expenseProduct.push(response.data.data);
 
                 console.log("Fetched product data:", response.data.data); // Console log the fetched data
 
@@ -98,18 +88,29 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
                 this.error = err.message;
             }
         },
+        async FetchPurchasesData({ page, itemsPerPage }) {
+            this.loading = true;
+            setContentType("application/json");
 
-        async FetchConsume(id) {
+            const response = await axios.get(
+                `/purchases?page=${page}&perPage=${itemsPerPage}&search=${this.purchaseSearch}`
+            );
+            this.purchases = response.data.data;
+            this.totalItems = response.data.meta.total;
+            this.loading = false;
+        },
+
+        async FetchPurchase(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`/consumes/${id}`);
+                const response = await axios.get(`/purchases/${id}`);
 
-                this.consume = response.data.data;
+                this.purchase = response.data.data;
             } catch (err) {
                 // this.error = err.message;
             }
         },
-        async CreateConsume(formData) {
+        async CreatePurchase(formData) {
             console.log(formData);
             // Adding a custom header to the Axios request
             setContentType("application/json");
@@ -134,7 +135,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             });
         },
         async UpdateConsume(id, data) {
-            console.log(`Updating consume expense with id: ${id}`, data);
+            console.log(`Updating purchase expense with id: ${id}`, data);
             try {
                 const config = {
                     method: "PUT",
@@ -154,7 +155,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                console.error("Error updating consume expense:", err);
+                console.error("Error updating purchase expense:", err);
                 this.error = err;
             }
         },
@@ -172,7 +173,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
 
                 const response = await axios(config);
 
-                this.consume = response.data.data;
+                this.purchase = response.data.data;
                 this.FetchConsumesData({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
@@ -211,7 +212,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             try {
                 const response = await axios.get(`/produces/${id}`);
 
-                this.consume = response.data.data;
+                this.purchase = response.data.data;
             } catch (err) {
                 // this.error = err.message;
             }
@@ -253,7 +254,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
 
                 const response = await axios(config);
 
-                this.consume = response.data.data;
+                this.purchase = response.data.data;
                 this.FetchProducesData({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
@@ -274,7 +275,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
                 console.log(response.data.data, "fetchProduct");
                 this.consumeMaterial.push(response.data.data);
                 console.log(this.consumeMaterial, "data");
-                // this.consume.expenseProduct.push(response.data.data);
+                // this.purchase.expenseProduct.push(response.data.data);
 
                 console.log("Fetched product data:", response.data.data); // Console log the fetched data
 
@@ -284,7 +285,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             }
         },
         async UpdateProduce(id, data) {
-            console.log(`Updating consume expense with id: ${id}`, data);
+            console.log(`Updating purchase expense with id: ${id}`, data);
             try {
                 const config = {
                     method: "PUT",
@@ -304,7 +305,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                console.error("Error updating consume expense:", err);
+                console.error("Error updating purchase expense:", err);
                 this.error = err;
             }
         },

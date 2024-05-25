@@ -6,23 +6,26 @@
     <div class="w-full d-flex">
         <div class="w-full">
             <v-layout class="py-5">
-                <v-row class="justify-space-between mt-3">
-                    <v-col cols="12" sm="3">
+                <v-row class="justify-space-between mt-2">
+                    <div class="text-field w-1/5 ml-4">
                         <v-text-field
-                            v-model="PurchaseRepository.purchaseSearch"
-                            label="Search"
-                            prepend-inner-icon="mdi-magnify"
-                            variant="outlined"
-                            name="search"
+                            :loading="loading"
+                            color="#D3E2F8"
                             density="compact"
+                            variant="outlined"
+                            label="Search templates"
+                            append-inner-icon="mdi-magnify"
+                            single-line
+                            hide-details
+                            v-model="PurchaseRepository.purchaseSearch"
                         ></v-text-field>
-                    </v-col>
+                    </div>
                     <div class="btn d-flex gap-4 mr-4">
                         <v-btn variant="outlined" color="#112F53 "
                             >Filter</v-btn
                         >
 
-                        <router-link to="/createConsume">
+                        <router-link to="/createPurchase">
                             <v-btn color="primary" variant="flat">
                                 Create</v-btn
                             >
@@ -31,7 +34,7 @@
                 </v-row>
             </v-layout>
 
-            <div class="overflow-x-auto pb-10">
+            <div class="overflow-x-auto pb-10 mt-6">
                 <v-app>
                     <v-main>
                         <v-row>
@@ -184,7 +187,7 @@ const pyamentStatus = (status) => {
             return "  text-orange-500 text-center px-3 py-[1px]   ";
         case "paid":
             return " text-green-500  text-purple-500  px-3 py-[1px]   rounded-lg text-center rounded";
-        case "received":
+        case "pending":
             return " text-red-500  text-center px-3 py-[1px]   rounded-lg";
 
         default:
