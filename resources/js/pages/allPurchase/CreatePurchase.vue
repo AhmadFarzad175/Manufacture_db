@@ -13,18 +13,18 @@
                     v-model="formData.date"
                     :return-object="false"
                     variant="outlined"
-                    label="  Date*"
+                    label="Date*"
                     class="pb-4"
                     color="#d3e2f8"
                     density="compact"
                 ></v-text-field>
 
                 <v-autocomplete
-                    :items="ExpenseRepository.expenseAllData.supplier"
+                    :items="PurchaseRepository.wharehouseSuplier.supplier"
                     v-model="formData.supplierId"
                     :return-object="false"
                     variant="outlined"
-                    label=" Supplier* "
+                    label="Supplier*"
                     class="pb-4"
                     item-value="id"
                     item-title="name"
@@ -32,17 +32,11 @@
                 ></v-autocomplete>
 
                 <v-autocomplete
-                    :items="ExpenseRepository.expenseAllData.expensePeople"
+                    :items="PurchaseRepository.wharehouseSuplier.warehouse"
                     v-model="formData.personId"
-                    @update:modelValue="
-                        ExpenseRepository.GetCurrency(
-                            ExpenseRepository.expenseAllData.currency,
-                            formData.personId
-                        )
-                    "
                     :return-object="false"
                     variant="outlined"
-                    label=" Warehouse  * "
+                    label="Warehouse*"
                     class="pb-4"
                     item-value="id"
                     item-title="name"
@@ -52,7 +46,7 @@
                     v-model="formData.invoiceNumber"
                     :return-object="false"
                     variant="outlined"
-                    label=" Invoice Number *"
+                    label="Invoice Number *"
                     class="pb-4 mr-8"
                     density="compact"
                 ></v-text-field>
@@ -62,9 +56,9 @@
                 <v-row no-gutters class="justify-space-between">
                     <v-col cols="full" class="w-50" sm="12" md="12">
                         <v-text-field
-                            v-model="ExpenseRepository.billExpenseSearch"
-                            @keyup.enter="ExpenseRepository.SearchFetchData"
-                            @input="ExpenseRepository.SearchFetchData"
+                            v-model="PurchaseRepository.purchaseSearch"
+                            @keyup.enter="PurchaseRepository.SearchFetchData"
+                            @input="PurchaseRepository.SearchFetchData"
                             @click:clear="clearSearch"
                             variant="outlined"
                             label="Products"
@@ -76,11 +70,11 @@
 
                         <div
                             class="rounded shadow-lg px-5 mb-12 w-[83vw]"
-                            v-if="ExpenseRepository.searchFetch.length > 0"
+                            v-if="PurchaseRepository.searchFetch.length > 0"
                         >
                             <div>
                                 <div
-                                    v-for="index in ExpenseRepository.searchFetch"
+                                    v-for="index in PurchaseRepository.searchFetch"
                                     :key="index"
                                 >
                                     <p
@@ -108,13 +102,13 @@
                                     </th>
                                     <th
                                         scope="col"
-                                        class="px-6 py-3 text-start"
+                                        class="px-6 py-3 text-center"
                                     >
                                         COST
                                     </th>
                                     <th
                                         scope="col"
-                                        class="px-6 py-3 text-start"
+                                        class="px-6 py-3 text-center"
                                     >
                                         STOCK
                                     </th>
@@ -126,7 +120,7 @@
                                     </th>
                                     <th
                                         scope="col"
-                                        class="px-6 py-3 text-start"
+                                        class="px-6 py-3 text-center"
                                     >
                                         SUB TOTAL
                                     </th>
@@ -138,7 +132,7 @@
                                     class=""
                                     v-for="(
                                         pro, index
-                                    ) in ExpenseRepository.expenseProduct"
+                                    ) in PurchaseRepository.expenseProduct"
                                     :key="index"
                                 >
                                     <td class="px-3 py-3 text-start">
@@ -148,57 +142,38 @@
                                                 : "Product Removed"
                                         }}
                                     </td>
-
-                                    <td
-                                        class="py-3 px-2 pt-8 text-start flex-row"
-                                    >
+                                    <td class="w-[8rem] pt-8">
                                         <v-text-field
                                             v-model="pro.quantity"
                                             variant="outlined"
                                             density="compact"
                                             type="number"
-                                            class="w-50"
-                                        ></v-text-field>
+                                        >
+                                            <span class="pr-1">USD</span>
+                                        </v-text-field>
                                     </td>
-                                    <td
-                                        class="py-3 px-2 pt-8 text-start flex-row"
-                                    >
-                                        <v-text-field
-                                            v-model="pro.quantity"
-                                            variant="outlined"
-                                            density="compact"
-                                            type="number"
-                                            class="w-50"
-                                        ></v-text-field>
+                                    <td class="text-center text-green-500">
+                                        {{
+                                            pro.stock
+                                                ? pro.stock
+                                                : "Product Removed"
+                                        }}
                                     </td>
-
-                                    <td
-                                        class="py-3 px-2 pt-8 text-end"
-                                        style="
-                                            display: flex;
-                                            justify-content: flex-start;
-                                        "
-                                    >
+                                    <td class="pt-8 text-start">
                                         <v-text-field
-                                            v-if="formData.personId !== null"
                                             v-model="pro.price"
                                             variant="outlined"
                                             density="compact"
                                             class="custom-width"
                                             type="number"
                                         >
-                                            <span class="span mr-2">
-                                                {{
-                                                    ExpenseRepository.currsymbol
-                                                }}
-                                            </span>
                                         </v-text-field>
                                     </td>
-
                                     <td class="text-center">
-                                        <span>{{ multiple(pro) }} </span>
+                                        <span>{{
+                                            calculateSubtotal(pro)
+                                        }}</span>
                                     </td>
-
                                     <td class="py-2 pr-6 px-2 text-start">
                                         <v-icon
                                             color="red"
@@ -213,30 +188,82 @@
                 </v-row>
             </v-card>
 
-            <div class="w-100 discount">
-                <div>
-                    <v-text-field
-                        v-model="formData.paid"
-                        variant="outlined"
-                        class="absolute ml-4"
-                        type="number"
-                        density="compact"
-                        label="paid*"
-                    >
-                        <span class="span ml-8">{{
-                            ExpenseRepository.currsymbol
-                        }}</span>
-                    </v-text-field>
-                </div>
-                <div class="d-flex flex-col gap-2 mr-4">
-                    <span class="total"> Order Tax : {{ totalSum }}</span>
-                    <span class="total"> Discount : {{ totalSum }}</span>
-                    <span class="total"> Shipping : {{ totalSum }}</span>
-                    <span class="total"> Grand Total : {{ totalSum }}</span>
+            <div class="flex justify-end">
+                <div class="d-flex flex-col gap-4 text-end">
+                    <div class="total py-1 d-flex gap-10">
+                        <span>{{ "Tax:" }}</span>
+                        <span>
+                            <span>{{ taxAmount }}</span>
+                            <span class="px-3 py-2"
+                                >( {{ formData.tax }} % )</span
+                            >
+                        </span>
+                    </div>
+                    <span class="total mr-8 d-flex py-2 gap-8">
+                        Discount :
+                        <p>USD {{ discount }}</p>
+                    </span>
+                    <span class="total mr-8 d-flex py-2 gap-8">
+                        Shipping :
+                        <p>USD {{ shipping }}</p>
+                    </span>
+                    <span class="total mr-8 d-flex py-2 gap-8">
+                        Grand Total:
+                        <p>USD {{ grandTotal }}</p>
+                    </span>
                 </div>
             </div>
+            <div class="d-flex gap-4 w-[98%] mx-auto mt-8">
+                <v-text-field
+                    v-model="formData.tax"
+                    variant="outlined"
+                    label="Tax"
+                    class="pb-4 relative"
+                    density="compact"
+                >
+                    <span
+                        class="absolute right-0 py-2 px-2 rounded-r-lg bg-gray-200"
+                        >%</span
+                    >
+                </v-text-field>
+                <v-text-field
+                    v-model="discount"
+                    variant="outlined"
+                    label="Discount"
+                    class="pb-4 relative"
+                    density="compact"
+                >
+                    <span
+                        class="absolute right-0 py-2 px-2 rounded-r-lg bg-gray-200"
+                        >USD</span
+                    >
+                </v-text-field>
+                <v-text-field
+                    v-model="formData.shipping"
+                    variant="outlined"
+                    label="Shipping"
+                    class="pb-4 relative"
+                    density="compact"
+                >
+                    <span
+                        class="absolute right-0 py-2 px-2 rounded-r-lg bg-gray-200"
+                        >USD</span
+                    >
+                </v-text-field>
+                <v-text-field
+                    v-model="formData.status"
+                    variant="outlined"
+                    label="Status"
+                    class="pb-4 relative"
+                    density="compact"
+                >
+                    <span
+                        class="absolute right-0 py-2 px-2 rounded-r-lg bg-gray-200"
+                        >USD</span
+                    >
+                </v-text-field>
+            </div>
 
-            <div></div>
             <div class="d-flex mx-4 mt-4">
                 <v-textarea
                     v-model="formData.details"
@@ -247,7 +274,7 @@
                 </v-textarea>
             </div>
             <div class="d-flex flex-row-reverse mb-6 mx-6">
-                <v-btn color="primary" @click="createEarning"> Create</v-btn>
+                <v-btn color="primary" @click="createEarning">Create</v-btn>
             </div>
         </div>
     </div>
@@ -256,44 +283,11 @@
 <script setup>
 import { reactive, computed, ref, watch } from "vue";
 import Toolbar from "../../Component/UI/Toolbar.vue";
-const items = ref([]);
+import { usePurchaseRepository } from "@/store/PurchaseRepository";
 
-import { useExpenseRepository } from "@/store/ExpenseRepository";
-// import { useMoneyAccountRepository } from "../../store/MoneyAccountRepository ";
-const ExpenseRepository = useExpenseRepository();
-
-// console.log(ExpenseRepository.expenseAllData.peoples);
-
-console.log(ExpenseRepository.expenseProduct, "thisi ");
-
-// const removeProduct = (index) => {
-//     const product = ExpenseRepository.searchFetch[index];
-//     ExpenseRepository.searchFetch.splice(index, 1);
-//     index.deleted = true;
-
-//     console.log(index);
-// };
-const clearSearch = () => {
-    ExpenseRepository.billExpenseSearch = null;
-    ExpenseRepository.searchResults = [];
-    ExpenseRepository.searchFetch = "";
-};
-
-// console.log(ExpenseRepository.expenseAllData.peoples.currencySymbol, "jawad");
-
-const removeProduct = (index) => {
-    ExpenseRepository.expenseProduct.splice(index, 1);
-    console.log(ExpenseRepository.expenseProduct);
-};
-// console.log(
-// ExpenseRepository.ExpenseAllData.currency,
-// "iddddddddddddddddddddddddddd"
-// );
-const RemoveProduct = (index) => {
-    ExpenseRepository.expenseProduct[index].name = ""; // or null
-};
+const PurchaseRepository = usePurchaseRepository();
 const formData = reactive({
-    expenseDetails: ExpenseRepository.expenseProduct,
+    expenseDetails: PurchaseRepository.expenseProduct,
     total: "",
     personId: "",
     currencyId: null,
@@ -302,101 +296,85 @@ const formData = reactive({
     date: "",
     details: "",
     paid: "",
+    tax: "",
+    status: "",
+    shipping: "",
 });
-const getCurrencySymbol = () => {
-    if (formData.value && formData.value.peopleId !== null) {
-        const person =
-            ExpenseRepository.expenseAllData.peoples.currencySymbol.find(
-                (person) => person === formData.value.peopleId
-            );
-        return person.currencySymbol;
-    } else {
-        return "";
-    }
+
+const discount = ref(0);
+const shipping = ref(0);
+const taxAmount = ref(0);
+
+const clearSearch = () => {
+    PurchaseRepository.purchaseSearch = null;
+    PurchaseRepository.searchResults = [];
+    PurchaseRepository.searchFetch = "";
 };
 
-console.log(getCurrencySymbol(), "man");
-const multiple = (pro) => {
-    // console.log(pro);
-    const add = pro.quantity * pro.price;
-    console.log(add);
-    return add || 0;
+const removeProduct = (index) => {
+    PurchaseRepository.expenseProduct.splice(index, 1);
 };
-watch(
-    () => ExpenseRepository.expenseProduct,
-    () => {
-        ExpenseRepository.expenseProduct.forEach((expenseProduct) => {
-            // Update the 'total' property for each product
-            expenseProduct.total = multiple(expenseProduct);
-            // console.log(" the expense changed");
-        });
-        // Recalculate the total sum whenever expenseProduct changes
-        totalSum.value; // This triggers the computed property
-    },
-    { deep: true }
-);
 
-watch(
-    () => formData.paid,
-    () => {
-        // Deduct the paid amount from the total sum
-        const paid = parseFloat(formData.paid) || 0;
-        formData.grandTotal = totalSum.value - paid;
-        // console.log("paid changed");
-    }
-);
+const calculateSubtotal = (pro) => {
+    return pro.quantity * pro.price || 0;
+};
+
+const fetchDiscountAndShipping = async () => {
+    // Fetch discount and shipping from backend and set them
+    const { discount: fetchedDiscount, shipping: fetchedShipping } =
+        await PurchaseRepository.fetchDiscountAndShipping();
+    discount.value = fetchedDiscount;
+    shipping.value = fetchedShipping;
+};
 
 const totalSum = computed(() => {
-    const total = ExpenseRepository.expenseProduct.reduce(
-        (acc, item) => acc + multiple(item),
+    return PurchaseRepository.expenseProduct.reduce(
+        (acc, item) => acc + calculateSubtotal(item),
         0
     );
-    formData.grandTotal = total;
-    formData.total = total;
-    return total;
 });
 
-// const totalSum = computed(() => {
-//     const total = ExpenseRepository.expenseProduct.reduce(
-//         (acc, item) => acc + multiple(item),
-//         0
-//     );
-//     formData.grandTotal = total;
-//     return total;
-// });
+const grandTotal = computed(() => {
+    const subtotal = totalSum.value;
+    const taxRate = parseFloat(formData.tax) || 0;
+    taxAmount.value = (taxRate / 100) * subtotal;
+    const total = subtotal + taxAmount.value - discount.value - shipping.value;
+    formData.grandTotal = total;
+    return Math.max(total, 0);
+});
+
+watch(
+    () => formData.tax,
+    () => {
+        grandTotal.value;
+    }
+);
 
 const createEarning = async () => {
-    // Map the selected product ID to expenseProduct
-    formData.expenseDetails.map(
-        (data) => (
-            (data.expenseProduct = data.productId), data.price, data.quantity
-        )
-    );
-    await ExpenseRepository.CreateBillExpense(formData);
-    // Clear search results after creating earning
+    formData.expenseDetails = PurchaseRepository.expenseProduct.map((data) => ({
+        ...data,
+        expenseProduct: data.productId,
+        price: data.price,
+        quantity: data.quantity,
+    }));
+    await PurchaseRepository.CreateBillExpense(formData);
     clearSearch();
 };
 
 const saveData = async (index) => {
-    await ExpenseRepository.fetchProduct(index.id);
-    // Clear search results after selecting a product
+    await PurchaseRepository.fetchMaterial(index.id);
     clearSearch();
 };
 
-const deleteItem = async (item) => {
-    await ExpenseRepository.deleteEarning(item.id);
-};
-formData.date = ExpenseRepository.getTodaysDate();
-ExpenseRepository.ExpenseAllData();
+formData.date = PurchaseRepository.getTodaysDate();
+PurchaseRepository.GetWharehouseSuplier();
+fetchDiscountAndShipping();
 </script>
 
 <style scoped>
 .all-expense {
     width: 100%;
 }
-
-/* color: #5784c8; */
-
 .total {
     border-top: 2px dashed #d3e2f8;
     border-bottom: 2px dashed #d3e2f8;
@@ -429,6 +407,6 @@ ExpenseRepository.ExpenseAllData();
     align-items: center;
 }
 .custom-width {
-    width: 110px; /* Set your desired width here */
+    width: 110px;
 }
 </style>

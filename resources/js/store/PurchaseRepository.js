@@ -9,21 +9,28 @@ import CreatePurchase from "../pages/allPurchase/CreatePurchase.vue";
 export let usePurchaseRepository = defineStore("PurchaseRepository", {
     state() {
         return {
-            // ====purchase======\\
+            router: useRouter(),
+
+            // =======Billable Expense============\\
             purchaseSearch: ref(""),
             purchases: reactive([]),
-            purchase: reactive([]),
-            consumeAllData: reactive([]),
-            consumeMaterial: reactive([]),
 
+            billExpense: reactive([]),
+            wharehouseSuplier: reactive([]),
             searchFetch: reactive([]),
-            // ======Produce=======\\\
-            produces: reactive([]),
+            expenseProduct: reactive([]),
+            symbol: ref(""),
+
+            // ============Payment========\\\
+            payments: reactive([]),
+
             isLoading: false,
+            dailog: false,
             error: null,
             loading: false,
             createDailog: false,
             updateDailog: false,
+            showRefundDailog: false,
             page: 1,
             itemsPerPage: 5,
             selectedItems: [],
@@ -33,10 +40,55 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             totalItems: 0,
             itemKey: "id",
 
-            purchaseSearch: "",
+            Search: "",
+
+            clearSearch: "",
+            currsymbol: reactive([]),
+            currsymbolId: reactive([]),
         };
     },
     actions: {
+        GetCurrency(currency, id) {
+            console.log(currency, id, "this is curr");
+            const currArr = currency.filter((curr) => curr.id == id);
+            this.currsymbol = currArr[0].symbol;
+            this.currsymbolId = currArr[0].id;
+            console.log(this.currsymbolId);
+        },
+
+        async GetAccounts() {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(`/currency`);
+            this.currency = response.data.data;
+            console.log(response.data.data);
+            this.loading = false;
+        },
+        getCurrentDate() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = (today.getMonth() + 1).toString().padStart(2, "0");
+            const day = today.getDate().toString().padStart(2, "0");
+            return `${year}-${month}-${day}`;
+        },
+        GetPersonCategory(categorey, name) {
+            const accArr = categorey.filter((acc) => acc.id == id);
+            this.name = accArr[0].name;
+            console.log(currArr[0].name);
+        },
+
+        async GetPersonCategory() {
+            this.loading = true;
+            setContentType("application/json");
+
+            const response = await axios.get(`/personCategory`);
+            this.personCategory = response.data.data;
+            console.log(response.data.data);
+            this.loading = false;
+        },
+
+        // =================Bilable Expense====================//
         getTodaysDate() {
             const today = new Date();
             const year = today.getFullYear();
@@ -45,101 +97,108 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             return `${year}-${month}-${day}`;
         },
 
-        async GetWharehose() {
+        // entigrating data for create Earnings
+        async GetWharehouseSuplier() {
             const config = {
-                url: "wHouses",
+                url: "supplierWarehouse",
             };
             const response = await axios(config);
-            this.consumeAllData = response.data.data;
-            // console.log(this.consumeAllData, "man");
+            this.wharehouseSuplier = response.data.data;
+            // console.log(this.expenseAllData, "man");
         },
-        async SearchFetchData(id) {
-            console.log(this.consumeSearch);
-
+        async SearchFetchData() {
+            console.log(this.purchaseSearch);
             this.loading = true;
 
             const response = await axios.get(
-                `materials?wareHouse=${id}&search=${this.consumeSearch}`
+                `/materials?&search=${this.purchaseSearch}`
             );
-            //
 
             this.searchFetch = response.data.data;
+            // console.log(this.SearchFetchData.data);
+            // console.log(this.searchFetch, "mann");
             this.loading = false;
+            // this.searchFetch = "";
         },
-
         async fetchMaterial(id, isUpdate = false) {
             // this.error = null;
             try {
                 const response = await axios.get(`materials/${id}`);
 
-                console.log("name", response.data.data.name);
+                console.log("id", response.data.data.id);
                 if (isUpdate) {
                     delete response.data.data.id;
                 }
                 console.log(response.data.data, "fetchProduct");
-                this.consumeMaterial.push(response.data.data);
-                console.log(this.consumeMaterial, "data");
-                // this.purchase.expenseProduct.push(response.data.data);
+                this.expenseProduct.push(response.data.data);
+                console.log(this.expenseProduct, "data");
+                this.billExpense.expenseDetails.push(response.data.data);
 
                 console.log("Fetched product data:", response.data.data); // Console log the fetched data
 
                 // this.searchFetch = [];
             } catch (err) {
-                this.error = err.message;
+                // this.error = err.message;
             }
         },
+
         async FetchPurchasesData({ page, itemsPerPage }) {
             this.loading = true;
-            setContentType("application/json");
 
             const response = await axios.get(
-                `/purchases?page=${page}&perPage=${itemsPerPage}&search=${this.purchaseSearch}`
+                `purchases?page=${page}&perPage=${itemsPerPage}&search=${this.purchaseSearch}`
             );
             this.purchases = response.data.data;
             this.totalItems = response.data.meta.total;
             this.loading = false;
         },
-
-        async FetchPurchase(id) {
+        async FetchBillExpense(id) {
             // this.error = null;
             try {
-                const response = await axios.get(`/purchases/${id}`);
+                const response = await axios.get(`billableExpenses/${id}`);
 
-                this.purchase = response.data.data;
+                this.billExpense = response.data.data;
+                this.expenseProduct = response.data.data.expenseDetails;
+
+                this.expenseProduct = this.expenseProduct.map((data) => {
+                    return { ...data, name: data.expenseProduct.name };
+                });
+
+                console.log(this.expenseProduct, "fetchBillExpense");
             } catch (err) {
                 // this.error = err.message;
             }
         },
-        async CreatePurchase(formData) {
+        async CreateBillExpense(formData) {
             console.log(formData);
-            // Adding a custom header to the Axios request
-            setContentType("application/json");
+            try {
+                // Adding a custom header to the Axios request
+                const config = {
+                    method: "POST",
+                    url: "billableExpenses",
 
-            const config = {
-                method: "POST",
-                url: "/consumes",
-                data: formData,
-            };
+                    data: formData,
+                };
 
-            // Using Axios to make a GET request with async/await and custom headers
-            const response = await axios(config);
-            console.log(response.data, "this is data");
-            this.router.push("/allConsume");
-            // toast.success("Customer Succesfully Created", {
-            //     autoClose: 1000,
-            // });
-            // this.createDailog = false;
-            this.FetchConsumesData({
-                page: this.page,
-                itemsPerPage: this.itemsPerPage,
-            });
+                // Using Axios to make a GET request with async/await and custom headers
+                const response = await axios(config);
+                this.createDialog = false;
+                this.router.push("/allBillableExpense");
+
+                this.FetchBillExpenses({
+                    page: this.page,
+                    itemsPerPage: this.itemsPerPage,
+                });
+            } catch (err) {
+                // If there's an error, set the error in the stor
+            }
         },
-        async UpdateConsume(id, data) {
-            console.log(`Updating purchase expense with id: ${id}`, data);
+        async UpdateBillExpense(id, data) {
+            console.log(`Updating bill expense with id: ${id}`, data);
             try {
                 const config = {
                     method: "PUT",
-                    url: `/consumes/${id}`,
+                    url: `/billableExpenses/${id}`,
                     data: data,
                 };
 
@@ -148,19 +207,19 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
 
                 console.log("Update response:", response);
 
-                this.router.push("/allConsume");
+                this.router.push("/allBillableExpense");
 
-                this.FetchConsumesData({
+                this.FetchBillExpenses({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                console.error("Error updating purchase expense:", err);
+                console.error("Error updating bill expense:", err);
                 this.error = err;
             }
         },
 
-        async DeleteConsume(id) {
+        async DeleteBillExpense(id) {
             this.isLoading = true;
             this.Expenses = [];
             this.error = null;
@@ -168,144 +227,17 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             try {
                 const config = {
                     method: "DELETE",
-                    url: "consumes/" + id,
+                    url: "billableExpenses/" + id,
                 };
 
                 const response = await axios(config);
 
-                this.purchase = response.data.data;
-                this.FetchConsumesData({
+                this.supplier = response.data.data;
+                this.FetchBillExpenses({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                this.error = err;
-            }
-        },
-        // =========Produce===========================//
-        async FetchProducesData({ page, itemsPerPage }) {
-            this.loading = true;
-            setContentType("application/json");
-
-            const response = await axios.get(
-                `/produces?page=${page}&perPage=${itemsPerPage}&search=${this.consumeSearch}`
-            );
-            this.produces = response.data.data;
-            this.totalItems = response.data.meta.total;
-            this.loading = false;
-        },
-        async SearchFetchProduceData(id) {
-            console.log(this.consumeSearch);
-
-            this.loading = true;
-
-            const response = await axios.get(
-                `products?wareHouse=${id}&search=${this.consumeSearch}`
-            );
-            //
-
-            this.searchFetch = response.data.data;
-            this.loading = false;
-        },
-        async FetchProduece(id) {
-            // this.error = null;
-            try {
-                const response = await axios.get(`/produces/${id}`);
-
-                this.purchase = response.data.data;
-            } catch (err) {
-                // this.error = err.message;
-            }
-        },
-        async CreateProduce(formData) {
-            console.log(formData);
-            // Adding a custom header to the Axios request
-            setContentType("application/json");
-
-            const config = {
-                method: "POST",
-                url: "/produces",
-                data: formData,
-            };
-
-            // Using Axios to make a GET request with async/await and custom headers
-            const response = await axios(config);
-            console.log(response.data, "this is data");
-            this.router.push("/allProduce");
-            // toast.success("Customer Succesfully Created", {
-            //     autoClose: 1000,
-            // });
-            // this.createDailog = false;
-            this.FetchProducesData({
-                page: this.page,
-                itemsPerPage: this.itemsPerPage,
-            });
-        },
-        async DeleteProduce(id) {
-            this.isLoading = true;
-            this.Expenses = [];
-            this.error = null;
-
-            try {
-                const config = {
-                    method: "DELETE",
-                    url: "produces/" + id,
-                };
-
-                const response = await axios(config);
-
-                this.purchase = response.data.data;
-                this.FetchProducesData({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
-            } catch (err) {
-                this.error = err;
-            }
-        },
-        async fetchProducts(id, isUpdate = false) {
-            // this.error = null;
-            try {
-                const response = await axios.get(`products/${id}`);
-
-                console.log("name", response.data.data.name);
-                if (isUpdate) {
-                    delete response.data.data.id;
-                }
-                console.log(response.data.data, "fetchProduct");
-                this.consumeMaterial.push(response.data.data);
-                console.log(this.consumeMaterial, "data");
-                // this.purchase.expenseProduct.push(response.data.data);
-
-                console.log("Fetched product data:", response.data.data); // Console log the fetched data
-
-                // this.searchFetch = [];
-            } catch (err) {
-                this.error = err.message;
-            }
-        },
-        async UpdateProduce(id, data) {
-            console.log(`Updating purchase expense with id: ${id}`, data);
-            try {
-                const config = {
-                    method: "PUT",
-                    url: `/produces/${id}`,
-                    data: data,
-                };
-
-                // Using Axios to make a post request with async/await and custom headers
-                const response = await axios(config);
-
-                console.log("Update response:", response);
-
-                this.router.push("/allProduce");
-
-                this.FetchProducesData({
-                    page: this.page,
-                    itemsPerPage: this.itemsPerPage,
-                });
-            } catch (err) {
-                console.error("Error updating purchase expense:", err);
                 this.error = err;
             }
         },
