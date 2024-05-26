@@ -51,7 +51,7 @@ class PurchaseRequest extends FormRequest
             'tax' => 'nullable|numeric|min:0',
             'currency_id' => 'required|exists:currencies,id',
             'note' => 'nullable',
-            'materialDetails.*.materialId' => 'required',
+            'materialDetails.*.id' => 'required',
             'materialDetails.*.purchase_id' => 'required',
             'materialDetails.*.quantity' => 'required|integer|min:1',
             'materialDetails.*.unitCost' => 'required|numeric|min:0',

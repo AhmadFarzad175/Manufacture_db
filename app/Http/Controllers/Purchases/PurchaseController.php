@@ -40,7 +40,7 @@ class PurchaseController extends Controller
         $purchase = Purchase::create($validated);
 
         foreach ($request->input('purchaseDetails') as $purchaseDetail) {
-            $purchaseDetail['material_id'] = $purchaseDetail['materialId'];
+            $purchaseDetail['material_id'] = $purchaseDetail['id'];
             $purchaseDetail['unit_cost'] = $purchaseDetail['unitCost'];
 
             $purchase->materials()->attach($purchaseDetail['material_id'], [
@@ -97,7 +97,7 @@ class PurchaseController extends Controller
 
             $syncData = [];
             foreach ($purchaseDetails as $purchaseDetail) {
-                $purchaseDetail['material_id'] = $purchaseDetail['materialId'];
+                $purchaseDetail['material_id'] = $purchaseDetail['id'];
                 $purchaseDetail['unit_cost'] = $purchaseDetail['unitCost'];
                 
                 $syncData[$purchaseDetail['material_id']] = [
