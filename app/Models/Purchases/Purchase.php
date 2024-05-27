@@ -17,20 +17,27 @@ class Purchase extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'date',
-        'user_id',
-        'warehouse_id',
-        'invoice_number',
-        'supplier_id',
-        'paid',
-        'total',
-        'status',
-        'shipping',
-        'discount',
-        'tax',
-        'currency_id',
-        'details',
+        'date', 'user_id', 'warehouse_id', 'invoice_number', 'supplier_id', 'paid', 'total', 'status', 'shipping', 'discount', 'tax', 'currency_id', 'details',
     ];
+
+
+    // Assuming the status attribute is an integer stored in the database
+    protected $casts = [
+        'status' => 'integer',
+    ];
+
+    // Define the accessor for the status attribute
+    public function getStatusAttribute($value)
+    {
+        $statusMap = [
+            0 => 'ordered',
+            1 => 'pending',
+            2 => 'received',
+        ];
+
+        return $statusMap[$value] ?? 'unknown';
+    }
+    
 
 
     public function scopeSearch($query, $search)
@@ -72,7 +79,6 @@ class Purchase extends Model
         static::creating(function ($purchase) {
             $purchase->reference = 'PR_' . (self::max('id') + 1);
         });
-
     }
 
 
