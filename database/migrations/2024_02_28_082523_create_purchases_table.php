@@ -30,7 +30,8 @@ return new class extends Migration
             $table->decimal('shipping', 10, 2);
             $table->decimal('discount', 10, 2);
             $table->decimal('tax', 10, 2);
-            $table->foreignIdFor(Currency::class)->constrained();
+            // $table->foreignIdFor(Currency::class)->constrained();
+            $table->foreignIdFor(Currency::class)->nullable();
             $table->text('details')->nullable();
             $table->timestamps();
             $table->softDeletes();
