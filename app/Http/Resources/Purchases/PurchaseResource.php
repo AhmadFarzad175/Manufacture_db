@@ -45,7 +45,7 @@ class PurchaseResource extends JsonResource
             ],
             'currency' => [
                 'id' =>$this->currency_id,
-                'name' => $this->currency->name,
+                'name' => $this->currency?->name ?? null,
             ],
             'grandTotal' => $this->total,
             'paid' => $this->paid,

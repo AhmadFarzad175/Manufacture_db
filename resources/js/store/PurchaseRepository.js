@@ -183,7 +183,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
                 // Using Axios to make a GET request with async/await and custom headers
                 const response = await axios(config);
                 this.createDialog = false;
-                this.router.push("/allBillableExpense");
+                this.router.push("/allpurchase");
 
                 this.FetchBillExpenses({
                     page: this.page,

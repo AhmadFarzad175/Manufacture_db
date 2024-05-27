@@ -30,6 +30,12 @@
                 <v-autocomplete
                     :items="PurchaseRepository.wharehouseSuplier.warehouse"
                     v-model="formData.warehouseId"
+                    @update:modelValue="
+                        PurchaseRepository.GetCurrency(
+                            PurchaseRepository.wharehouseSuplier.currency,
+                            formData.warehouseId
+                        )
+                    "
                     variant="outlined"
                     label="Warehouse*"
                     class="pb-4"
@@ -150,13 +156,15 @@
                                     </td>
                                     <td class="pt-8 text-start">
                                         <v-text-field
-                                            v-model="pro.price"
+                                            v-model="pro.unitCost"
                                             variant="outlined"
                                             density="compact"
                                             class="custom-width"
                                             type="number"
                                         >
-                                            <span class="pr-1">USD</span>
+                                            <span class="pr-1">{{
+                                                PurchaseRepository.currsymbol
+                                            }}</span>
                                         </v-text-field>
                                     </td>
                                     <td class="text-center">
@@ -182,7 +190,10 @@
                     <div class="total py-1 d-flex gap-10">
                         <span>{{ "Tax:" }}</span>
                         <span>
-                            <span>{{ taxAmount }} USD</span>
+                            <span
+                                >{{ taxAmount }}
+                                {{ PurchaseRepository.currsymbol }}</span
+                            >
                             <span class="px-3 py-2"
                                 >( {{ formData.tax }} % )</span
                             >
@@ -190,15 +201,23 @@
                     </div>
                     <span class="total mr-8 d-flex py-2 gap-8">
                         Discount :
-                        <p>USD {{ formData.discount }}</p>
+                        <p>
+                            {{ PurchaseRepository.currsymbol }}
+                            {{ formData.discount }}
+                        </p>
                     </span>
                     <span class="total mr-8 d-flex py-2 gap-8">
                         Shipping :
-                        <p>USD {{ formData.paid }}</p>
+                        <p>
+                            {{ PurchaseRepository.currsymbol }}
+                            {{ formData.shipping }}
+                        </p>
                     </span>
                     <span class="total mr-8 d-flex py-2 gap-8">
                         Grand Total:
-                        <p>USD {{ grandTotal }}</p>
+                        <p>
+                            {{ PurchaseRepository.currsymbol }} {{ grandTotal }}
+                        </p>
                     </span>
                 </div>
             </div>
@@ -224,11 +243,11 @@
                 >
                     <span
                         class="absolute right-0 py-2 px-2 rounded-r-lg bg-gray-200"
-                        >USD</span
+                        >{{ PurchaseRepository.currsymbol }}</span
                     >
                 </v-text-field>
                 <v-text-field
-                    v-model="formData.paid"
+                    v-model="formData.shipping"
                     variant="outlined"
                     label="Shipping"
                     class="pb-4 relative"
@@ -236,13 +255,13 @@
                 >
                     <span
                         class="absolute right-0 py-2 px-2 rounded-r-lg bg-gray-200"
-                        >USD</span
+                        >{{ PurchaseRepository.currsymbol }}</span
                     >
                 </v-text-field>
                 <v-autocomplete
                     v-model="formData.status"
                     :items="statusOptions"
-                    item-value="name"
+                    item-value="id"
                     item-title="name"
                     variant="outlined"
                     label="Status"
@@ -277,20 +296,20 @@ const formData = reactive({
     supplierId: "",
     total: "",
     discount: "",
-    paid: "",
+
     invoiceNumber: "",
-    currencyId: 1, // default currency ID
+    currencyId: null, // default currency ID
     date: "",
     note: "",
-
+    shipping: "",
     tax: "",
     status: "",
 });
 
 const statusOptions = [
-    { id: 1, name: "pending" },
-    { id: 2, name: "received" },
-    { id: 3, name: "ordered" },
+    { id: 0, name: "pending" },
+    { id: 1, name: "received" },
+    { id: 2, name: "ordered" },
 ];
 
 const clearSearch = () => {
@@ -304,7 +323,7 @@ const removeProduct = (index) => {
 };
 
 const calculateSubtotal = (pro) => {
-    return pro.quantity * pro.price || 0;
+    return pro.quantity * pro.unitCost || 0;
 };
 
 const totalSum = computed(() => {
@@ -322,14 +341,14 @@ const taxAmount = computed(() => {
 const grandTotal = computed(() => {
     const subtotal = totalSum.value;
     const discount = parseFloat(formData.discount) || 0;
-    const paid = parseFloat(formData.paid) || 0;
-    const total = subtotal + taxAmount.value - discount + paid;
+    const shipping = parseFloat(formData.shipping) || 0;
+    const total = subtotal + taxAmount.value - discount + shipping;
     formData.total = total;
     return Math.max(total, 0);
 });
 
 watch(
-    [() => formData.tax, () => formData.discount, () => formData.paid],
+    [() => formData.tax, () => formData.discount, () => formData.shipping],
     () => {
         grandTotal.value;
     }
@@ -340,7 +359,7 @@ const createEarning = async () => {
         (data) => ({
             ...data,
             expenseProduct: data.productId,
-            price: data.price,
+            unitCost: data.unitCost,
             quantity: data.quantity,
         })
     );
