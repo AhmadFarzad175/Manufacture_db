@@ -45,7 +45,7 @@ class PurchaseRequest extends FormRequest
             'supplier_id' => 'required',
             'paid' => 'nullable|numeric|min:0',
             'total' => 'required|numeric|min:0',
-            'status' => 'required|in:received,pending,ordered',
+            'status' => 'required',
             'shipping' => 'nullable|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
             'tax' => 'nullable|numeric|min:0',

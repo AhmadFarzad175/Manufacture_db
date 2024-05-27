@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Purchases\Purchase;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Settings\WarehouseMaterial;
 use App\Http\Requests\Purchases\PurchaseRequest;
 use App\Http\Resources\Purchases\PurchaseResource;
@@ -37,6 +38,7 @@ class PurchaseController extends Controller
 
         try {
         $validated = $request->validated();
+        $validated['user_id'] = Auth::id() ?? 1;
         $purchase = Purchase::create($validated);
 
         foreach ($request->input('purchaseDetails') as $purchaseDetail) {
@@ -89,7 +91,9 @@ class PurchaseController extends Controller
      */
     public function update(PurchaseRequest $request, Purchase $purchase)
     {
-        $purchase->update($request->validated());
+        $validated = $request->validated();
+        $validated['user_id'] = Auth::id() ?? 1;
+        $purchase->update($validated);
 
         // Update purchase details if necessary
         if ($request->has('purchaseDetails')) {

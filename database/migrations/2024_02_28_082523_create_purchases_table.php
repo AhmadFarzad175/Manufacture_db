@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('reference')->unique();
             $table->decimal('total', 20, 2);
             $table->decimal('paid', 20, 2)->nullable()->default(0.00);
-            $table->string('status');
+            $table->integer('status');
             $table->decimal('shipping', 10, 2);
             $table->decimal('discount', 10, 2);
             $table->decimal('tax', 10, 2);
