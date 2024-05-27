@@ -9,20 +9,17 @@
             ></v-divider>
             <div class="d-flex w-full gap-4 pt-12 mx-4">
                 <v-text-field
-                    type="Date"
+                    type="date"
                     v-model="formData.date"
-                    :return-object="false"
                     variant="outlined"
                     label="Date*"
                     class="pb-4"
                     color="#d3e2f8"
                     density="compact"
                 ></v-text-field>
-
                 <v-autocomplete
                     :items="PurchaseRepository.wharehouseSuplier.supplier"
                     v-model="formData.supplierId"
-                    :return-object="false"
                     variant="outlined"
                     label="Supplier*"
                     class="pb-4"
@@ -30,11 +27,9 @@
                     item-title="name"
                     density="compact"
                 ></v-autocomplete>
-
                 <v-autocomplete
                     :items="PurchaseRepository.wharehouseSuplier.warehouse"
-                    v-model="formData.personId"
-                    :return-object="false"
+                    v-model="formData.warehouseId"
                     variant="outlined"
                     label="Warehouse*"
                     class="pb-4"
@@ -44,7 +39,6 @@
                 ></v-autocomplete>
                 <v-text-field
                     v-model="formData.invoiceNumber"
-                    :return-object="false"
                     variant="outlined"
                     label="Invoice Number *"
                     class="pb-4 mr-8"
@@ -67,27 +61,25 @@
                             clearable
                             class="border-none"
                         ></v-text-field>
-
                         <div
                             class="rounded shadow-lg px-5 mb-12 w-[83vw]"
                             v-if="PurchaseRepository.searchFetch.length > 0"
                         >
                             <div>
                                 <div
-                                    v-for="index in PurchaseRepository.searchFetch"
-                                    :key="index"
+                                    v-for="item in PurchaseRepository.searchFetch"
+                                    :key="item.id"
                                 >
                                     <p
-                                        @click="saveData(index)"
+                                        @click="saveData(item)"
                                         class="cursor-pointer pb-2.5 hover:bg-red"
                                     >
-                                        {{ index.name }}
+                                        {{ item.name }}
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </v-col>
-
                     <div class="overflow-x-auto pb-6 table">
                         <table
                             class="w-full text-sm text-left bg-blue-darken-500"
@@ -104,7 +96,7 @@
                                         scope="col"
                                         class="px-6 py-3 text-center"
                                     >
-                                        COST
+                                        AMOUNT
                                     </th>
                                     <th
                                         scope="col"
@@ -116,7 +108,7 @@
                                         scope="col"
                                         class="px-6 py-3 text-start"
                                     >
-                                        AMOUNT
+                                        COST
                                     </th>
                                     <th
                                         scope="col"
@@ -129,7 +121,6 @@
                             </thead>
                             <tbody>
                                 <tr
-                                    class=""
                                     v-for="(
                                         pro, index
                                     ) in PurchaseRepository.expenseProduct"
@@ -148,9 +139,7 @@
                                             variant="outlined"
                                             density="compact"
                                             type="number"
-                                        >
-                                            <span class="pr-1">USD</span>
-                                        </v-text-field>
+                                        ></v-text-field>
                                     </td>
                                     <td class="text-center text-green-500">
                                         {{
@@ -167,6 +156,7 @@
                                             class="custom-width"
                                             type="number"
                                         >
+                                            <span class="pr-1">USD</span>
                                         </v-text-field>
                                     </td>
                                     <td class="text-center">
@@ -187,13 +177,12 @@
                     </div>
                 </v-row>
             </v-card>
-
             <div class="flex justify-end">
                 <div class="d-flex flex-col gap-4 text-end">
                     <div class="total py-1 d-flex gap-10">
                         <span>{{ "Tax:" }}</span>
                         <span>
-                            <span>{{ taxAmount }}</span>
+                            <span>{{ taxAmount }} USD</span>
                             <span class="px-3 py-2"
                                 >( {{ formData.tax }} % )</span
                             >
@@ -201,11 +190,11 @@
                     </div>
                     <span class="total mr-8 d-flex py-2 gap-8">
                         Discount :
-                        <p>USD {{ discount }}</p>
+                        <p>USD {{ formData.discount }}</p>
                     </span>
                     <span class="total mr-8 d-flex py-2 gap-8">
                         Shipping :
-                        <p>USD {{ shipping }}</p>
+                        <p>USD {{ formData.paid }}</p>
                     </span>
                     <span class="total mr-8 d-flex py-2 gap-8">
                         Grand Total:
@@ -227,7 +216,7 @@
                     >
                 </v-text-field>
                 <v-text-field
-                    v-model="discount"
+                    v-model="formData.discount"
                     variant="outlined"
                     label="Discount"
                     class="pb-4 relative"
@@ -239,7 +228,7 @@
                     >
                 </v-text-field>
                 <v-text-field
-                    v-model="formData.shipping"
+                    v-model="formData.paid"
                     variant="outlined"
                     label="Shipping"
                     class="pb-4 relative"
@@ -250,28 +239,24 @@
                         >USD</span
                     >
                 </v-text-field>
-                <v-text-field
+                <v-autocomplete
                     v-model="formData.status"
+                    :items="statusOptions"
+                    item-value="name"
+                    item-title="name"
                     variant="outlined"
                     label="Status"
                     class="pb-4 relative"
                     density="compact"
-                >
-                    <span
-                        class="absolute right-0 py-2 px-2 rounded-r-lg bg-gray-200"
-                        >USD</span
-                    >
-                </v-text-field>
+                ></v-autocomplete>
             </div>
-
             <div class="d-flex mx-4 mt-4">
                 <v-textarea
-                    v-model="formData.details"
+                    v-model="formData.note"
                     class="textArea"
-                    label="details"
+                    label="Details"
                     variant="outlined"
-                >
-                </v-textarea>
+                ></v-textarea>
             </div>
             <div class="d-flex flex-row-reverse mb-6 mx-6">
                 <v-btn color="primary" @click="createEarning">Create</v-btn>
@@ -287,23 +272,26 @@ import { usePurchaseRepository } from "@/store/PurchaseRepository";
 
 const PurchaseRepository = usePurchaseRepository();
 const formData = reactive({
-    expenseDetails: PurchaseRepository.expenseProduct,
+    purchaseDetails: PurchaseRepository.expenseProduct,
+    warehouseId: "",
+    supplierId: "",
     total: "",
-    personId: "",
-    currencyId: null,
-    grandTotal: "",
-    invoiceNumber: "",
-    date: "",
-    details: "",
+    discount: "",
     paid: "",
+    invoiceNumber: "",
+    currencyId: 1, // default currency ID
+    date: "",
+    note: "",
+
     tax: "",
     status: "",
-    shipping: "",
 });
 
-const discount = ref(0);
-const shipping = ref(0);
-const taxAmount = ref(0);
+const statusOptions = [
+    { id: 1, name: "pending" },
+    { id: 2, name: "received" },
+    { id: 3, name: "ordered" },
+];
 
 const clearSearch = () => {
     PurchaseRepository.purchaseSearch = null;
@@ -319,14 +307,6 @@ const calculateSubtotal = (pro) => {
     return pro.quantity * pro.price || 0;
 };
 
-const fetchDiscountAndShipping = async () => {
-    // Fetch discount and shipping from backend and set them
-    const { discount: fetchedDiscount, shipping: fetchedShipping } =
-        await PurchaseRepository.fetchDiscountAndShipping();
-    discount.value = fetchedDiscount;
-    shipping.value = fetchedShipping;
-};
-
 const totalSum = computed(() => {
     return PurchaseRepository.expenseProduct.reduce(
         (acc, item) => acc + calculateSubtotal(item),
@@ -334,41 +314,47 @@ const totalSum = computed(() => {
     );
 });
 
+const taxAmount = computed(() => {
+    const taxRate = parseFloat(formData.tax) || 0;
+    return (taxRate / 100) * totalSum.value;
+});
+
 const grandTotal = computed(() => {
     const subtotal = totalSum.value;
-    const taxRate = parseFloat(formData.tax) || 0;
-    taxAmount.value = (taxRate / 100) * subtotal;
-    const total = subtotal + taxAmount.value - discount.value - shipping.value;
-    formData.grandTotal = total;
+    const discount = parseFloat(formData.discount) || 0;
+    const paid = parseFloat(formData.paid) || 0;
+    const total = subtotal + taxAmount.value - discount + paid;
+    formData.total = total;
     return Math.max(total, 0);
 });
 
 watch(
-    () => formData.tax,
+    [() => formData.tax, () => formData.discount, () => formData.paid],
     () => {
         grandTotal.value;
     }
 );
 
 const createEarning = async () => {
-    formData.expenseDetails = PurchaseRepository.expenseProduct.map((data) => ({
-        ...data,
-        expenseProduct: data.productId,
-        price: data.price,
-        quantity: data.quantity,
-    }));
-    await PurchaseRepository.CreateBillExpense(formData);
+    formData.purchaseDetails = PurchaseRepository.expenseProduct.map(
+        (data) => ({
+            ...data,
+            expenseProduct: data.productId,
+            price: data.price,
+            quantity: data.quantity,
+        })
+    );
+    await PurchaseRepository.CreatePurchase(formData);
     clearSearch();
 };
 
-const saveData = async (index) => {
-    await PurchaseRepository.fetchMaterial(index.id);
+const saveData = async (item) => {
+    await PurchaseRepository.fetchMaterial(item.id);
     clearSearch();
 };
 
 formData.date = PurchaseRepository.getTodaysDate();
 PurchaseRepository.GetWharehouseSuplier();
-fetchDiscountAndShipping();
 </script>
 
 <style scoped>

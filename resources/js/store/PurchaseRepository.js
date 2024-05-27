@@ -169,13 +169,13 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
                 // this.error = err.message;
             }
         },
-        async CreateBillExpense(formData) {
+        async CreatePurchase(formData) {
             console.log(formData);
             try {
                 // Adding a custom header to the Axios request
                 const config = {
                     method: "POST",
-                    url: "billableExpenses",
+                    url: "purchases",
 
                     data: formData,
                 };
