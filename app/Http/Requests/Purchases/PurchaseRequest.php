@@ -41,7 +41,6 @@ class PurchaseRequest extends FormRequest
             'date' => 'required|date',
             'invoice_number' => 'required|integer',
             'warehouse_id' => 'required',
-            'user_id' => 'required',
             'supplier_id' => 'required',
             'paid' => 'nullable|numeric|min:0',
             'total' => 'required|numeric|min:0',
