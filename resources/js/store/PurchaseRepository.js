@@ -14,6 +14,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             // =======Billable Expense============\\
             purchaseSearch: ref(""),
             purchases: reactive([]),
+            purchase: reactive([]),
 
             billExpense: reactive([]),
             wharehouseSuplier: reactive([]),
@@ -152,21 +153,13 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             this.totalItems = response.data.meta.total;
             this.loading = false;
         },
-        async FetchBillExpense(id) {
-            // this.error = null;
+        async getPurchaseById(id) {
             try {
-                const response = await axios.get(`billableExpenses/${id}`);
-
-                this.billExpense = response.data.data;
-                this.expenseProduct = response.data.data.expenseDetails;
-
-                this.expenseProduct = this.expenseProduct.map((data) => {
-                    return { ...data, name: data.expenseProduct.name };
-                });
-
-                console.log(this.expenseProduct, "fetchBillExpense");
+                const response = await axios.get(`/purchases/${id}`);
+                return response.data;
             } catch (err) {
-                // this.error = err.message;
+                console.error("Error fetching purchase data:", err);
+                return null;
             }
         },
         async CreatePurchase(formData) {
@@ -193,29 +186,28 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
                 // If there's an error, set the error in the stor
             }
         },
-        async UpdateBillExpense(id, data) {
+        async UpdatePurchase(id, data) {
             console.log(`Updating bill expense with id: ${id}`, data);
             try {
                 const config = {
                     method: "PUT",
-                    url: `/billableExpenses/${id}`,
+                    url: `/purchases/${id}`,
                     data: data,
                 };
 
-                // Using Axios to make a post request with async/await and custom headers
                 const response = await axios(config);
 
                 console.log("Update response:", response);
 
-                this.router.push("/allBillableExpense");
+                router.push("/allpurchase");
 
-                this.FetchPurchasesData({
+                // Assuming FetchPurchasesData is defined elsewhere in the store
+                FetchPurchasesData({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
                 console.error("Error updating bill expense:", err);
-                this.error = err;
             }
         },
 

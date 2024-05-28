@@ -118,17 +118,22 @@
 
                                             <v-list>
                                                 <v-list-item>
-                                                    <v-list-item-title
-                                                        @click="
-                                                            editItem(item.id)
+                                                    <router-link
+                                                        :to="
+                                                            '/updatePurchasse/' +
+                                                            item.id
                                                         "
-                                                        class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                     >
-                                                        <v-icon color="gray"
-                                                            >mdi-square-edit-outline</v-icon
+                                                        <v-list-item-title
+                                                            class="cursor-pointer d-flex gap-3 justify-left pb-3"
                                                         >
-                                                        Edit
-                                                    </v-list-item-title>
+                                                            <v-icon color="gray"
+                                                                >mdi
+                                                                mdi-square-edit-outline</v-icon
+                                                            >
+                                                            Edit
+                                                        </v-list-item-title>
+                                                    </router-link>
 
                                                     <v-list-item-title
                                                         class="cursor-pointer d-flex gap-3"
@@ -228,21 +233,6 @@ const headers = [
     },
 ];
 
-// const changeStatus = (item) => {
-//     console.log(item.status);
-//     const formData = {
-//         status: !item.status,
-//     };
-//     PurchaseRepository.UpdateUserStatus(item.id, formData);
-// };
-const changeStatus = async (user) => {
-    try {
-        await axios.PUT(`/users/switch/${user.id}`, { status: user.status });
-    } catch (error) {
-        console.log("the status was not changed", error);
-    }
-};
-
 const createPopUp = () => {
     PurchaseRepository.createDailog = true;
 };
@@ -250,9 +240,9 @@ const deleteItem = (id) => {
     PurchaseRepository.DeletePurchase(id);
 };
 const editItem = (id) => {
-    PurchaseRepository.expense = {};
-    if (Object.keys(PurchaseRepository.expense).length === 0) {
-        PurchaseRepository.FetchExpenseData(id)
+    PurchaseRepository.purchase = {};
+    if (Object.keys(PurchaseRepository.purchase).length === 0) {
+        PurchaseRepository.FetchPurchase(id)
             .then(() => {
                 // Data has been fetched successfully, now set dialog to true
                 PurchaseRepository.updateDailog = true;
