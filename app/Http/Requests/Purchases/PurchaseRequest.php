@@ -46,7 +46,7 @@ class PurchaseRequest extends FormRequest
             'total' => 'required|numeric|min:0',
             'status' => 'required',
             'shipping' => 'nullable|numeric|min:0',
-            'discount' => 'nullable|numeric|min:0',
+            'discount' => 'nullable|numeric|min:0', 
             'tax' => 'nullable|numeric|min:0',
             'currency_id' => 'nullable',
             'note' => 'nullable',
