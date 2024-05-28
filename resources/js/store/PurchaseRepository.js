@@ -209,7 +209,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
 
                 this.router.push("/allBillableExpense");
 
-                this.FetchBillExpenses({
+                this.FetchPurchasesData({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,
                 });
@@ -219,20 +219,20 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             }
         },
 
-        async DeleteBillExpense(id) {
+        async DeletePurchase(id) {
             this.isLoading = true;
-            this.Expenses = [];
+            this.Purchases = [];
             this.error = null;
 
             try {
                 const config = {
                     method: "DELETE",
-                    url: "billableExpenses/" + id,
+                    url: "purchases/" + id,
                 };
 
                 const response = await axios(config);
 
-                this.supplier = response.data.data;
+                this.purchase = response.data.data;
                 this.FetchBillExpenses({
                     page: this.page,
                     itemsPerPage: this.itemsPerPage,

@@ -247,7 +247,7 @@ const createPopUp = () => {
     PurchaseRepository.createDailog = true;
 };
 const deleteItem = (id) => {
-    PurchaseRepository.DeleteExpense(id);
+    PurchaseRepository.DeletePurchase(id);
 };
 const editItem = (id) => {
     PurchaseRepository.expense = {};
