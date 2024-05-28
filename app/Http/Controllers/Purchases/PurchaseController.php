@@ -34,10 +34,10 @@ class PurchaseController extends Controller
      */
     public function store(PurchaseRequest $request)
     {
-        DB::beginTransaction();
-
-        try {
         $validated = $request->validated();
+        
+        // DB::beginTransaction();
+        // try {
         $validated['user_id'] = Auth::id() ?? 1;
         $purchase = Purchase::create($validated);
 
@@ -70,11 +70,11 @@ class PurchaseController extends Controller
 
         DB::commit();
         return PurchaseResource::make($purchase);
-        } catch (\Exception $e) {
-            DB::rollback();
-            // Handle the exception, log it, or return an error response
-            return response()->json(['message' => 'An error occurred while processing the request.'], 500);
-        }
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+        //     // Handle the exception, log it, or return an error response
+        //     return response()->json(['message' => 'An error occurred while processing the request.'], 500);
+        // }
     }
 
     /**
