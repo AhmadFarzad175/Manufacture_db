@@ -1,53 +1,63 @@
 <template>
+    <toolbar title="Purchase-" subtitle="Update Purchase " />
     <div class="all-expense rounded-xl m-4">
         <div class="card rounded-xl bg-white">
-            <toolbar title="Purchase-" subtitle="Create Purchase " />
             <v-divider
                 :thickness="1"
                 class="border-opacity-100"
                 color="success"
             ></v-divider>
-            <div class="d-flex w-full gap-4 pt-12 mx-4">
+            <div class="d-flex pt-12 w-full">
                 <v-text-field
-                    type="date"
+                    type="Date"
                     v-model="formData.date"
+                    :return-object="false"
                     variant="outlined"
-                    label="Date*"
-                    class="pb-4"
+                    label=" Date*"
+                    class="pb-4 pl-4 input"
+                    style="width: 45%"
                     color="#d3e2f8"
                     density="compact"
                 ></v-text-field>
+
                 <v-autocomplete
                     :items="PurchaseRepository.wharehouseSuplier.supplier"
-                    v-model="formData.supplierId"
+                    v-model="formData.supplier"
                     variant="outlined"
-                    label="Supplier*"
-                    class="pb-4"
-                    item-value="id"
+                    label=" Supplier*"
+                    class="pb-4 pl-4 input"
+                    style="width: 45%"
                     item-title="name"
+                    item-value="id"
+                    :return-object="false"
                     density="compact"
                 ></v-autocomplete>
+
                 <v-autocomplete
                     :items="PurchaseRepository.wharehouseSuplier.warehouse"
-                    v-model="formData.warehouseId"
+                    v-model="formData.warehouse"
                     @update:modelValue="
                         PurchaseRepository.GetCurrency(
                             PurchaseRepository.wharehouseSuplier.currency,
-                            formData.warehouseId
+                            formData.warehouse
                         )
                     "
+                    :return-object="false"
                     variant="outlined"
-                    label="Warehouse*"
-                    class="pb-4"
-                    item-value="id"
+                    label="  Wharehouse* "
+                    class="pb-4 pl-4 input"
+                    style="width: 45%"
                     item-title="name"
+                    item-value="id"
                     density="compact"
                 ></v-autocomplete>
+
                 <v-text-field
-                    v-model="formData.invoiceNumber"
+                    v-model="formData.invoice_number"
                     variant="outlined"
-                    label="Invoice Number *"
-                    class="pb-4 mr-8"
+                    label="Invice Number* "
+                    class="pb-4 pl-4 input"
+                    style="width: 45%"
                     density="compact"
                 ></v-text-field>
             </div>
@@ -73,23 +83,27 @@
                         >
                             <div>
                                 <div
-                                    v-for="item in PurchaseRepository.searchFetch"
-                                    :key="item.id"
+                                    v-for="index in PurchaseRepository.searchFetch"
+                                    :key="index"
                                 >
                                     <p
-                                        @click="saveData(item)"
+                                        @click="
+                                            PurchaseRepository.fetchMaterial(
+                                                index.id,
+                                                true
+                                            )
+                                        "
                                         class="cursor-pointer pb-2.5 hover:bg-red"
                                     >
-                                        {{ item.name }}
+                                        {{ index.name }}
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </v-col>
+
                     <div class="overflow-x-auto pb-6 table">
-                        <table
-                            class="w-full text-sm text-left bg-blue-darken-500"
-                        >
+                        <table class="w-full text-sm bg-blue-darken-500 w-100">
                             <thead class="text-xs thead">
                                 <tr>
                                     <th
@@ -155,7 +169,7 @@
                                             v-model="pro.unitCost"
                                             variant="outlined"
                                             density="compact"
-                                            class="custom-width"
+                                            class="w-2/5"
                                             type="number"
                                         >
                                             <span class="pr-1">{{
@@ -217,9 +231,11 @@
                     </span>
                 </div>
             </div>
+
             <div class="d-flex gap-4 w-[98%] mx-auto mt-8">
                 <v-text-field
                     v-model="formData.tax"
+                    type="number"
                     variant="outlined"
                     label="Tax"
                     class="pb-4 relative"
@@ -232,6 +248,7 @@
                 </v-text-field>
                 <v-text-field
                     v-model="formData.discount"
+                    type="number"
                     variant="outlined"
                     label="Discount"
                     class="pb-4 relative"
@@ -244,6 +261,7 @@
                 </v-text-field>
                 <v-text-field
                     v-model="formData.shipping"
+                    type="number"
                     variant="outlined"
                     label="Shipping"
                     class="pb-4 relative"
@@ -274,59 +292,114 @@
                 ></v-textarea>
             </div>
             <div class="d-flex flex-row-reverse mb-6 mx-6">
-                <v-btn color="primary" @click="createEarning">Create</v-btn>
+                <v-btn color="primary" @click="update">update</v-btn>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+// import Menu from "@/components/UI/Menu.vue";
 import { reactive, computed, ref, watch } from "vue";
+import { useRoute } from "vue-router";
 import Toolbar from "../../Component/UI/Toolbar.vue";
+const items = ref([]);
+
 import { usePurchaseRepository } from "@/store/PurchaseRepository";
-
 const PurchaseRepository = usePurchaseRepository();
-const formData = reactive({
-    purchaseDetails: PurchaseRepository.purchaseMaterial,
-    warehouseId: "",
-    supplierId: "",
-    total: "",
-    discount: "",
 
-    invoiceNumber: "",
-    currencyId: null, // default currency ID
-    date: "",
-    note: "",
-    shipping: "",
-    tax: "",
-    status: "",
-});
+// const removeProduct = (index) => {
+//     const product = PurchaseRepository.searchFetch[index];
+//     PurchaseRepository.searchFetch.splice(index, 1);
+//     index.deleted = true;
 
-const statusOptions = [
-    { id: 0, name: "pending" },
-    { id: 1, name: "received" },
-    { id: 2, name: "ordered" },
-];
-
+//     console.log(index);
+// };
 const clearSearch = () => {
     PurchaseRepository.purchaseSearch = null;
     PurchaseRepository.searchResults = [];
     PurchaseRepository.searchFetch = "";
 };
 
+// console.log(PurchaseRepository.wharehouseSuplier.peoples.currencySymbol, "jawad");
+
 const removeProduct = (index) => {
     PurchaseRepository.purchaseMaterial.splice(index, 1);
+    // console.log(PurchaseRepository.purchaseMaterial);
+};
+const routeParams = useRoute();
+let formData = [];
+PurchaseRepository.FetchPurchase(routeParams.params.id).then((res) => {
+    formData = reactive({
+        id: PurchaseRepository.purchase.id,
+
+        purchaseDetails: PurchaseRepository.purchase.purchaseDetails,
+
+        grandTotal: PurchaseRepository.purchase.grandTotal,
+        details: PurchaseRepository.purchase.details,
+        supplier: PurchaseRepository.purchase.supplier,
+        warehouse: PurchaseRepository.purchase.warehouse,
+        invoice_number: PurchaseRepository.purchase.invoice_number,
+
+        shipping: PurchaseRepository.purchase.shipping,
+        discount: PurchaseRepository.purchase.discount,
+        status: PurchaseRepository.purchase.status,
+        tax: PurchaseRepository.purchase.tax,
+        date: PurchaseRepository.purchase.date,
+    });
+    console.log(formData.supplier);
+    // console.log(formData.expenseDetails, "man");
+});
+const statusOptions = [
+    { id: 0, name: "pending" },
+    { id: 1, name: "received" },
+    { id: 2, name: "ordered" },
+];
+
+// console.log(getCurrencySymbol(), "man");
+// Function to calculate the total for a product
+const multiple = (pro) => {
+    const add = pro.quantity * pro.price;
+    // console.log(add);
+    return add || 0;
 };
 
+// Watch function to update the total for each expense product
+watch(
+    () => PurchaseRepository.purchaseMaterial,
+    () => {
+        if (Array.isArray(PurchaseRepository.purchaseMaterial)) {
+            PurchaseRepository.purchaseMaterial.forEach((purchaseMaterial) => {
+                // Update the 'subtotal' property for each service
+                purchaseMaterial.total = multiple(purchaseMaterial);
+                // console.log(purchaseMaterial);
+            });
+        } else {
+            console.warn(
+                "PurchaseRepository.purchaseMaterial is not an array:",
+                PurchaseRepository.purchaseMaterial
+            );
+        }
+    },
+    { deep: true }
+);
+
+// Computed property for total sum
 const calculateSubtotal = (pro) => {
     return pro.quantity * pro.unitCost || 0;
 };
 
 const totalSum = computed(() => {
-    return PurchaseRepository.purchaseMaterial.reduce(
-        (acc, item) => acc + calculateSubtotal(item),
-        0
+    console.log(
+        "PurchaseRepository.purchaseMaterial:",
+        PurchaseRepository.purchaseMaterial
     );
+    const materials = PurchaseRepository.purchaseMaterial || [];
+
+    return materials.reduce((acc, item) => {
+        console.log("Item:", item);
+        return acc + (item ? calculateSubtotal(item) : 0);
+    }, 0);
 });
 
 const taxAmount = computed(() => {
@@ -342,7 +415,6 @@ const grandTotal = computed(() => {
     formData.total = total;
     return Math.max(total, 0);
 });
-
 watch(
     [() => formData.tax, () => formData.discount, () => formData.shipping],
     () => {
@@ -350,24 +422,34 @@ watch(
     }
 );
 
-const createEarning = async () => {
-    formData.purchaseDetails = PurchaseRepository.purchaseMaterial.map(
-        (data) => ({
-            ...data,
-            purchaseMaterial: data.productId,
-            unitCost: data.unitCost,
-            quantity: data.quantity,
-        })
-    );
-    await PurchaseRepository.CreatePurchase(formData);
-    clearSearch();
+// Update function to handle form data
+const update = async () => {
+    // console.log(formData);
+    formData.expenseDetails.map((data) => {
+        if (data.purchaseMaterial && data.purchaseMaterial.id) {
+            data.product = { id: data.purchaseMaterial.id };
+        } else {
+            // Handle the case where purchaseMaterial or its id is not defined
+            console.error(
+                "purchaseMaterial or purchaseMaterial.id is undefined",
+                data
+            );
+        }
+    });
+
+    try {
+        await PurchaseRepository.UpdateBillExpense(formData.id, formData);
+    } catch (error) {
+        console.error("Failed to update bill expense:", error);
+    }
+};
+const saveData = async (id) => {
+    await ExpenseRepository.fetchMaterial(id);
 };
 
-const saveData = async (item) => {
-    await PurchaseRepository.fetchMaterial(item.id);
-    clearSearch();
+const deleteItem = async (item) => {
+    await PurchaseRepository.deleteEarning(item.id);
 };
-
 formData.date = PurchaseRepository.getTodaysDate();
 PurchaseRepository.GetWharehouseSuplier();
 </script>
@@ -376,6 +458,12 @@ PurchaseRepository.GetWharehouseSuplier();
 .all-expense {
     width: 100%;
 }
+.input > :nth-child(1) > :nth-child(1) {
+    height: 3rem;
+    border: none;
+}
+
+/* color: #5784c8; */
 .total {
     border-top: 2px dashed #d3e2f8;
     border-bottom: 2px dashed #d3e2f8;
@@ -395,7 +483,7 @@ PurchaseRepository.GetWharehouseSuplier();
     width: 70rem;
 }
 .thead {
-    border-left: 4px solid #1584c4;
+    border-left: 4px solid #0872d4;
     background-color: #ecf1f4;
 }
 .v-input__control {
@@ -406,8 +494,5 @@ PurchaseRepository.GetWharehouseSuplier();
     width: 100%;
     justify-content: space-between;
     align-items: center;
-}
-.custom-width {
-    width: 110px;
 }
 </style>

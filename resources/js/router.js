@@ -30,6 +30,7 @@ import UpdateProduce from "./pages/produce/UpdateProduce.vue";
 // ==============All Purchase ============================\\
 import AllPurchase from "./pages/allPurchase/AllPurchase.vue";
 import CreatePurchase from "./pages/allPurchase/CreatePurchase.vue";
+import UpdatePurchase from "./pages/allPurchase/UpdatePurchase.vue";
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -77,6 +78,12 @@ const router = createRouter({
         // =========All Purchase================\\
         { path: "/allpurchase", component: AllPurchase },
         { path: "/createPurchase", component: CreatePurchase },
+        {
+            path: "/updatePurchasse/:id",
+            nam: "UpdatePurchase",
+            component: UpdatePurchase,
+            props: true,
+        },
     ],
 });
 

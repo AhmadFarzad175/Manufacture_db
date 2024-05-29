@@ -158,10 +158,7 @@ const deleteItem = async (item) => {
 // const createPopUp = () => {
 //     ExpenseRepository.createDailog = true;
 // };
-const showRefunds = async (item) => {
-    ExpenseRepository.showRefundDailog = true;
-    await ExpenseRepository.ShowRefund(item.visaId);
-};
+
 const showPayment = async (item) => {
     ExpenseRepository.ShowPaymentDialog = true;
     await ExpenseRepository.ShowPayment(item.id);
