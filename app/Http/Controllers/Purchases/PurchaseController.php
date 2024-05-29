@@ -22,7 +22,7 @@ class PurchaseController extends Controller
         $search = $request->input('search');
 
         // Eager load relationships and apply search
-        $purchases = Purchase::with(['shipments', 'materials', 'user', 'currency', 'supplier'])->search($search);
+        $purchases = Purchase::with(['warehouse','shipments', 'materials', 'user', 'currency', 'supplier'])->search($search);
 
         $purchases = $perPage ? $purchases->latest()->paginate($perPage) : $purchases->latest()->get();
 
@@ -40,10 +40,10 @@ class PurchaseController extends Controller
         // try {
         $validated['user_id'] = Auth::id() ?? 1;
         $purchase = Purchase::create($validated);
-
         foreach ($request->input('purchaseDetails') as $purchaseDetail) {
             $purchaseDetail['material_id'] = $purchaseDetail['id'];
             $purchaseDetail['unit_cost'] = $purchaseDetail['unitCost'];
+            // dd($purchaseDetail);
 
             $purchase->materials()->attach($purchaseDetail['material_id'], [
                 'quantity' => $purchaseDetail['quantity'],

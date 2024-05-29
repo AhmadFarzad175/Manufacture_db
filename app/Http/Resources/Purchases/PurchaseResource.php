@@ -28,7 +28,7 @@ class PurchaseResource extends JsonResource
             'id' => $this->id,
             'date' => $this->date,
             'reference' => $this->reference,
-            'invoice_number' => $this->invoice_number,
+            'invoiceNumber' => $this->invoice_number,
             'supplier' => [
                 'id' => $this->supplier->id,
                 'name' => $this->supplier->name,
@@ -40,11 +40,11 @@ class PurchaseResource extends JsonResource
                 'name' => $this->user->name,
             ],
             'warehouse' => [
-                'id' =>$this->warehouse_id,
+                'id' => $this->warehouse_id,
                 'name' => $this->warehouse->name,
             ],
             'currency' => [
-                'id' =>$this->currency_id,
+                'id' => $this->currency_id,
                 'name' => $this->currency?->name ?? null,
             ],
             'grandTotal' => $this->total,
@@ -56,7 +56,9 @@ class PurchaseResource extends JsonResource
             'shipping' => $this->shipping,
             'paymentStatus' => $paymentStatus,
             'details' => $this->note,
-            'purchaseDetails' => $this->materials,
+            // 'purchaseDetails' => $this->materials,
+            'purchaseDetails' => PurchaseDetailResource::collection($this->materials),
+
         ];
     }
 }

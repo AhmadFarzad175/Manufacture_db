@@ -15,10 +15,11 @@ class PurchaseDetailResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'purchase_id' => $this->purchase_id,
-            'material_id' => $this->material_id,
-            'quantity' => $this->quantity,
-            'unit_cost' => $this->unit_cost,
+            'material_id' => $this->id,
+            'code' => $this->code,
+            'name' => $this->name,
+            'quantity' => $this->pivot->quantity,
+            'unit_cost' => $this->pivot->unit_cost,
         ];
     }
 }
