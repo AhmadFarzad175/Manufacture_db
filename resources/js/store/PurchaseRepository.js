@@ -19,7 +19,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             billExpense: reactive([]),
             wharehouseSuplier: reactive([]),
             searchFetch: reactive([]),
-            expenseProduct: reactive([]),
+            purchaseMaterial: reactive([]),
             symbol: ref(""),
 
             // ============Payment========\\\
@@ -131,9 +131,9 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
                     delete response.data.data.id;
                 }
                 console.log(response.data.data, "fetchProduct");
-                this.expenseProduct.push(response.data.data);
-                console.log(this.expenseProduct, "data");
-                this.billExpense.expenseDetails.push(response.data.data);
+                this.purchaseMaterial.push(response.data.data);
+                console.log(this.purchaseMaterial, "data");
+                this.purchase.purchaseDetails.push(response.data.data);
 
                 console.log("Fetched product data:", response.data.data); // Console log the fetched data
 
@@ -153,15 +153,24 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             this.totalItems = response.data.meta.total;
             this.loading = false;
         },
-        async getPurchaseById(id) {
+        async FetchPurchase(id) {
             try {
-                const response = await axios.get(`/purchases/${id}`);
-                return response.data;
+                const response = await axios.get(`purchases/${id}`);
+                console.log(response.data, "purchase");
+
+                this.purchase = response.data.data;
+                this.purchaseMaterial = response.data.data.purchaseDetails;
+
+                this.purchaseMaterial = this.purchaseMaterial.map((data) => {
+                    return { ...data, name: data.purchaseMaterial.name };
+                });
+
+                console.log(this.purchaseMaterial, "fetchpurchase");
             } catch (err) {
-                console.error("Error fetching purchase data:", err);
-                return null;
+                // this.error = err.message;
             }
         },
+
         async CreatePurchase(formData) {
             console.log(formData);
             try {
@@ -186,6 +195,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
                 // If there's an error, set the error in the stor
             }
         },
+
         async UpdatePurchase(id, data) {
             console.log(`Updating bill expense with id: ${id}`, data);
             try {

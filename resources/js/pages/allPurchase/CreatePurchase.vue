@@ -129,7 +129,7 @@
                                 <tr
                                     v-for="(
                                         pro, index
-                                    ) in PurchaseRepository.expenseProduct"
+                                    ) in PurchaseRepository.purchaseMaterial"
                                     :key="index"
                                 >
                                     <td class="px-3 py-3 text-start">
@@ -148,11 +148,7 @@
                                         ></v-text-field>
                                     </td>
                                     <td class="text-center text-green-500">
-                                        {{
-                                            pro.stock
-                                                ? pro.stock
-                                                : "Product Removed"
-                                        }}
+                                        {{ pro.stock }}
                                     </td>
                                     <td class="pt-8 text-start">
                                         <v-text-field
@@ -291,7 +287,7 @@ import { usePurchaseRepository } from "@/store/PurchaseRepository";
 
 const PurchaseRepository = usePurchaseRepository();
 const formData = reactive({
-    purchaseDetails: PurchaseRepository.expenseProduct,
+    purchaseDetails: PurchaseRepository.purchaseMaterial,
     warehouseId: "",
     supplierId: "",
     total: "",
@@ -319,7 +315,7 @@ const clearSearch = () => {
 };
 
 const removeProduct = (index) => {
-    PurchaseRepository.expenseProduct.splice(index, 1);
+    PurchaseRepository.purchaseMaterial.splice(index, 1);
 };
 
 const calculateSubtotal = (pro) => {
@@ -327,7 +323,7 @@ const calculateSubtotal = (pro) => {
 };
 
 const totalSum = computed(() => {
-    return PurchaseRepository.expenseProduct.reduce(
+    return PurchaseRepository.purchaseMaterial.reduce(
         (acc, item) => acc + calculateSubtotal(item),
         0
     );
@@ -355,10 +351,10 @@ watch(
 );
 
 const createEarning = async () => {
-    formData.purchaseDetails = PurchaseRepository.expenseProduct.map(
+    formData.purchaseDetails = PurchaseRepository.purchaseMaterial.map(
         (data) => ({
             ...data,
-            expenseProduct: data.productId,
+            purchaseMaterial: data.productId,
             unitCost: data.unitCost,
             quantity: data.quantity,
         })
