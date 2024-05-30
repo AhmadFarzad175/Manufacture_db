@@ -1,6 +1,6 @@
 <template>
     <CreateExpense v-if="PurchaseRepository.dailog" />
-    <UpdateExpense v-if="PurchaseRepository.updateDailog" />
+    <ShowExpense v-if="PurchaseRepository.ShowExpenseDailog" />
     <toolbar title="Purchase-" subtitle="All Purchase " />
 
     <div class="w-full d-flex">
@@ -126,6 +126,13 @@
                                                     >
                                                     Create Expense
                                                 </v-list-item-title>
+                                                <v-list-item-title
+                                                    class="cursor-pointer flex justify-start items-center gap-3 pb-3"
+                                                    @click="showExpense(item)"
+                                                >
+                                                    <v-icon>mdi-domain</v-icon>
+                                                    Show Expense
+                                                </v-list-item-title>
                                                 <v-list-item>
                                                     <router-link
                                                         :to="
@@ -178,6 +185,7 @@ import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
 import CreateButton from "../../Component/UI/CreateButton.vue";
 import CreateExpense from "./CreateExpense.vue";
+import ShowExpense from "./ShowExpense.vue";
 
 let PurchaseRepository = usePurchaseRepository();
 const getStatusClasses = (paymentStatus) => {
@@ -245,6 +253,10 @@ const headers = [
 const createExpense = (item) => {
     PurchaseRepository.dailog = true;
     PurchaseRepository.purchaseId.push({ id: item.id });
+};
+const showExpense = async (item) => {
+    PurchaseRepository.ShowExpenseDailog = true;
+    await PurchaseRepository.ShowExpense(item.id);
 };
 const createPopUp = () => {
     PurchaseRepository.createDailog = true;

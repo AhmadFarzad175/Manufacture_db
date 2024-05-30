@@ -24,7 +24,7 @@ const rules = {
 async function createExpense() {
     formRef.value.validate().then((validate) => {
         if (validate.valid) {
-            PurchaseRepository.CreateRefund(formData);
+            PurchaseRepository.CreateExpense(formData);
             console.log(formData);
         }
         PurchaseRepository.purchaseId = [];
@@ -63,7 +63,7 @@ async function createExpense() {
                             </v-col>
                             <v-col cols="6" sm="6" class="pb-2 pl-2">
                                 <v-autocomplete
-                                    v-model="formData.moneyAccount"
+                                    v-model="formData.amount"
                                     clearable
                                     variant="outlined"
                                     :label="'Company*'"

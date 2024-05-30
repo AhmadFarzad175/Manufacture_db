@@ -15,6 +15,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             purchases: reactive([]),
             purchase: reactive([]),
             purchaseId: reactive([]),
+            expense: reactive([]),
 
             billExpense: reactive([]),
             wharehouseSuplier: reactive([]),
@@ -31,7 +32,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             loading: false,
             createDailog: false,
             updateDailog: false,
-            showRefundDailog: false,
+            ShowExpenseDailog: false,
             page: 1,
             itemsPerPage: 5,
             selectedItems: [],
@@ -242,6 +243,42 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             } catch (err) {
                 this.error = err;
             }
+        },
+        async CreateExpense(formData) {
+            // Adding a custom header to the Axios request
+            setContentType("application/json");
+            const config = {
+                method: "POST",
+                url: "purchaseExpenses",
+                data: formData,
+            };
+
+            // Using Axios to make a GET request with async/await and custom headers
+            const response = await axios(config);
+            toast.success("Refund Succesfully Created", {
+                autoClose: 1000,
+            });
+
+            this.symbol = null;
+            this.dailog = false;
+            this.fetchCanceledBookings({
+                page: this.page,
+                itemsPerPage: this.itemsPerPage,
+            });
+        },
+        async ShowExpense(id) {
+            setContentType("application/json");
+            const response = await axios.get(`expenses/${id}`);
+
+            this.refunds = response.data.data; // Assign the fetched data directly to this.people
+            console.log(this.expense);
+        },
+        async fetchExpense(id) {
+            setContentType("application/json");
+
+            const response = await axios.get(`purchaseExpenses/${id}`);
+
+            this.expense = response.data.data; // Assign the fetched data directly to this.people
         },
     },
 });

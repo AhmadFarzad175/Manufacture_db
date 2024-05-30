@@ -426,7 +426,7 @@ watch(
 // Update function to handle form data
 const update = async () => {
     // console.log(formData);
-    formData.expenseDetails.map((data) => {
+    formData.purchaseDetails.map((data) => {
         if (data.purchaseMaterial && data.purchaseMaterial.id) {
             data.product = { id: data.purchaseMaterial.id };
         } else {

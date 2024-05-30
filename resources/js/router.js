@@ -31,6 +31,7 @@ import UpdateProduce from "./pages/produce/UpdateProduce.vue";
 import AllPurchase from "./pages/allPurchase/AllPurchase.vue";
 import CreatePurchase from "./pages/allPurchase/CreatePurchase.vue";
 import UpdatePurchase from "./pages/allPurchase/UpdatePurchase.vue";
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
