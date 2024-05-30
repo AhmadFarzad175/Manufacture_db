@@ -11,10 +11,10 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
         return {
             router: useRouter(),
 
-            // =======Billable Expense============\\
             purchaseSearch: ref(""),
             purchases: reactive([]),
             purchase: reactive([]),
+            purchaseId: reactive([]),
 
             billExpense: reactive([]),
             wharehouseSuplier: reactive([]),

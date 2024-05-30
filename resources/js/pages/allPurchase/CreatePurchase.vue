@@ -303,9 +303,9 @@ const formData = reactive({
 });
 
 const statusOptions = [
-    { id: 0, name: "pending" },
-    { id: 1, name: "received" },
-    { id: 2, name: "ordered" },
+    { id: 0, name: "ordered" },
+    { id: 1, name: "pending" },
+    { id: 2, name: "received" },
 ];
 
 const clearSearch = () => {

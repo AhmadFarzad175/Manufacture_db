@@ -1,5 +1,5 @@
 <template>
-    <CreateExpense v-if="PurchaseRepository.createDailog" />
+    <CreateExpense v-if="PurchaseRepository.dailog" />
     <UpdateExpense v-if="PurchaseRepository.updateDailog" />
     <toolbar title="Purchase-" subtitle="All Purchase " />
 
@@ -116,7 +116,16 @@
                                                 ></v-btn>
                                             </template>
 
-                                            <v-list>
+                                            <v-list class="px-4">
+                                                <v-list-item-title
+                                                    class="cursor-pointer flex justify-start items-center gap-3 pb-3"
+                                                    @click="createExpense(item)"
+                                                >
+                                                    <v-icon
+                                                        >mdi-currency-usd</v-icon
+                                                    >
+                                                    Create Expense
+                                                </v-list-item-title>
                                                 <v-list-item>
                                                     <router-link
                                                         :to="
@@ -168,6 +177,7 @@ import { usePurchaseRepository } from "../../store/PurchaseRepository";
 import Toolbar from "../../Component/UI/Toolbar.vue";
 import Search from "../../Component/UI/Search.vue";
 import CreateButton from "../../Component/UI/CreateButton.vue";
+import CreateExpense from "./CreateExpense.vue";
 
 let PurchaseRepository = usePurchaseRepository();
 const getStatusClasses = (paymentStatus) => {
@@ -232,7 +242,10 @@ const headers = [
         align: "end",
     },
 ];
-
+const createExpense = (item) => {
+    PurchaseRepository.dailog = true;
+    PurchaseRepository.purchaseId.push({ id: item.id });
+};
 const createPopUp = () => {
     PurchaseRepository.createDailog = true;
 };

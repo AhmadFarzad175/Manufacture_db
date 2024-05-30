@@ -53,7 +53,7 @@
                 ></v-autocomplete>
 
                 <v-text-field
-                    v-model="formData.invoice_number"
+                    v-model="formData.invoiceNumber"
                     variant="outlined"
                     label="Invice Number* "
                     class="pb-4 pl-4 input"
@@ -339,7 +339,8 @@ PurchaseRepository.FetchPurchase(routeParams.params.id).then((res) => {
         details: PurchaseRepository.purchase.details,
         supplier: PurchaseRepository.purchase.supplier,
         warehouse: PurchaseRepository.purchase.warehouse,
-        invoice_number: PurchaseRepository.purchase.invoice_number,
+        invoiceNumber: PurchaseRepository.purchase.invoiceNumber,
+        currency: PurchaseRepository.purchase.currency,
 
         shipping: PurchaseRepository.purchase.shipping,
         discount: PurchaseRepository.purchase.discount,
