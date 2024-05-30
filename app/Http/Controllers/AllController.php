@@ -8,6 +8,7 @@ use App\Models\Peoples\Supplier;
 use App\Models\Settings\Currency;
 use App\Models\Settings\Warehouse;
 use App\Models\Peoples\ExpensePeople;
+use App\Models\Settings\Account;
 use App\Models\Settings\ExpenseProduct;
 use App\Models\Settings\ExpenseCategory;
 use App\Models\Settings\MaterialCategory;
@@ -86,6 +87,16 @@ class AllController extends Controller
             'supplier' => Supplier::select('id', 'name')->get(),
             'warehouse' => Warehouse::select('id', 'name')->get(),
             'currency' => Currency::select('id', 'name', 'symbol')->get(),
+        ];
+
+        return response()->json(['data' => $allData]);
+    }
+
+    public function accountCategory()
+    {
+        $allData = [
+            'expenseCategory' => ExpenseCategory::select('id', 'name')->get(),
+            'account' => Account::select('id', 'name')->get(),
         ];
 
         return response()->json(['data' => $allData]);
