@@ -283,13 +283,14 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             setContentType("application/json");
             const response = await axios.get(`/expenses/${id}`);
 
-            this.expenses = response.data.data; // Assign the fetched data directly to this.people
-            console.log(this.expense);
+            this.expenses = response.data.data; // Assign the fetched data directly to
+            console.log(this.expenses, "expenes");
         },
         async fetchExpense(id) {
             setContentType("application/json");
 
             const response = await axios.get(`purchaseExpenses/${id}`);
+            console.log(response.data, "nenen");
 
             this.expense = response.data.data; // Assign the fetched data directly to this.people
         },

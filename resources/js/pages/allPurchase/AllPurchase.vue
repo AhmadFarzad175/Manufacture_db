@@ -128,10 +128,24 @@
                                                 </v-list-item-title>
                                                 <v-list-item-title
                                                     class="cursor-pointer flex justify-start items-center gap-3 pb-3"
+                                                    @click="createExpense(item)"
+                                                >
+                                                    <v-icon>mdi-cash</v-icon>
+                                                    Create Payment
+                                                </v-list-item-title>
+                                                <v-list-item-title
+                                                    class="cursor-pointer flex justify-start items-center gap-3 pb-3"
                                                     @click="showExpense(item)"
                                                 >
                                                     <v-icon>mdi-domain</v-icon>
                                                     Show Expense
+                                                </v-list-item-title>
+                                                <v-list-item-title
+                                                    class="cursor-pointer flex justify-start items-center gap-3 pb-3"
+                                                    @click="showExpense(item)"
+                                                >
+                                                    <v-icon>mdi-cash</v-icon>
+                                                    Show payment
                                                 </v-list-item-title>
                                                 <v-list-item>
                                                     <router-link

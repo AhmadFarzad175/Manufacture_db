@@ -39,14 +39,18 @@ const deleteRefund = async (expense) => {
                         ><v-icon> mdi-close </v-icon></v-btn
                     >
                 </v-card-title>
-                <v-divider></v-divider>
-                <v-card-text>
-                    <div class="overflow-x-auto rounded-lg mb-6">
+                <v-divider
+                    :thickness="1"
+                    class="border-opacity-100"
+                    color="success"
+                ></v-divider>
+                <v-card-text class="">
+                    <div class="mb-6">
                         <table
-                            class="w-full text-sm text-center border border-gary-500 rounded-lg"
+                            class="w-full text-sm border border-l-blue-400-500 rounded-lg"
                         >
                             <thead
-                                class="text-xs border border-dashed border-gary-200"
+                                class="text-xs border border-black bg-gray-200"
                             >
                                 <tr>
                                     <th scope="col" class="px-6 py-5">Date</th>
@@ -68,7 +72,7 @@ const deleteRefund = async (expense) => {
                             </thead>
                             <tbody>
                                 <tr
-                                    class=""
+                                    class="border bg-white"
                                     v-for="expense in PurchaseRepository.expenses"
                                     :key="expense.id"
                                 >
@@ -76,11 +80,12 @@ const deleteRefund = async (expense) => {
                                         {{ expense.date }}
                                     </td>
                                     <td class="px-6 py-3">
-                                        {{ expense.name }}
-                                    </td>
-                                    <td class="px-6 py-3">
                                         {{ expense.reference }}
                                     </td>
+                                    <td class="px-6 py-3">
+                                        {{ expense.addedBy }}
+                                    </td>
+
                                     <td class="px-6 py-3">
                                         {{ expense.amount }}
                                     </td>
@@ -88,20 +93,14 @@ const deleteRefund = async (expense) => {
                                     <td
                                         class="flex gap-3 justify-center items-center px-2"
                                     >
-                                        <v-icon color="gray" size="x-large"
-                                            >mdi-printer</v-icon
-                                        >
-                                        <v-icon
-                                            color="blue"
-                                            size="x-large"
-                                            @click="editPayment(expense.id)"
-                                            >mdi-pencil-circle</v-icon
+                                        <v-icon color="black" size="x-large"
+                                            >mdi-pencil</v-icon
                                         >
                                         <v-icon
                                             color="red"
                                             size="x-large"
                                             @click="deleteRefund(expense)"
-                                            >mdi-delete-circle</v-icon
+                                            >mdi-delete</v-icon
                                         >
                                     </td>
                                 </tr>
