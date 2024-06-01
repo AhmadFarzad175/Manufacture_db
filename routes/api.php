@@ -154,7 +154,6 @@ Route::get('personCategory',[AllController::class, 'personCategory'] );
 Route::get('personExpenseProduct',[AllController::class, 'personExpenseProduct'] );
 Route::get('expenseProduct',[AllController::class, 'expenseProduct'] );
 Route::get('wHouses',[AllController::class, 'wHouse'] );
-// Route::get('wHouseMaterials/{id}',[AllController::class, 'wHouseMaterial'] );
 Route::get('supplierWarehouse',[AllController::class, 'supplierWarehouse'] );
 Route::get('accountCategory',[AllController::class, 'accountCategory'] );
 
