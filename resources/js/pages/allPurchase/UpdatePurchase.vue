@@ -337,14 +337,14 @@ PurchaseRepository.FetchPurchase(routeParams.params.id).then((res) => {
 
         grandTotal: PurchaseRepository.purchase.grandTotal,
         details: PurchaseRepository.purchase.details,
-        supplier: PurchaseRepository.purchase.supplier,
-        warehouse: PurchaseRepository.purchase.warehouse,
+        supplier: PurchaseRepository.purchase.supplier.id,
+        warehouse: PurchaseRepository.purchase.warehouse.id,
         invoiceNumber: PurchaseRepository.purchase.invoiceNumber,
-        currency: PurchaseRepository.purchase.currency,
+        currency: PurchaseRepository.purchase.currency.id,
 
         shipping: PurchaseRepository.purchase.shipping,
         discount: PurchaseRepository.purchase.discount,
-        status: PurchaseRepository.purchase.status,
+        status: PurchaseRepository.purchase.status.id,
         tax: PurchaseRepository.purchase.tax,
         date: PurchaseRepository.purchase.date,
     });
@@ -352,9 +352,9 @@ PurchaseRepository.FetchPurchase(routeParams.params.id).then((res) => {
     // console.log(formData.expenseDetails, "man");
 });
 const statusOptions = [
-    { id: 0, name: "pending" },
-    { id: 1, name: "received" },
-    { id: 2, name: "ordered" },
+    { id: 0, name: "ordered" },
+    { id: 1, name: "pending" },
+    { id: 2, name: "received" },
 ];
 
 // console.log(getCurrencySymbol(), "man");
@@ -425,21 +425,34 @@ watch(
 
 // Update function to handle form data
 const update = async () => {
-    // console.log(formData);
-    formData.purchaseDetails.map((data) => {
-        if (data.purchaseMaterial && data.purchaseMaterial.id) {
-            data.product = { id: data.purchaseMaterial.id };
-        } else {
-            // Handle the case where purchaseMaterial or its id is not defined
-            console.error(
-                "purchaseMaterial or purchaseMaterial.id is undefined",
-                data
-            );
-        }
-    });
+    console.log(
+        "Original purchaseDetails:",
+        JSON.stringify(formData.purchaseDetails, null, 2)
+    );
+
+    formData.purchaseDetails = formData.purchaseDetails
+        .map((data) => {
+            // Assuming data already contains the required fields directly
+            if (data.id && data.quantity && data.unitCost) {
+                return {
+                    id: data.id,
+                    quantity: data.quantity,
+                    unitCost: data.unitCost,
+                };
+            } else {
+                console.error("Missing id, quantity, or unitCost", data);
+                return null;
+            }
+        })
+        .filter((data) => data !== null);
+
+    console.log(
+        "Updated purchaseDetails:",
+        JSON.stringify(formData.purchaseDetails, null, 2)
+    );
 
     try {
-        await PurchaseRepository.UpdateBillExpense(formData.id, formData);
+        await PurchaseRepository.UpdatePurchase(formData.id, formData);
     } catch (error) {
         console.error("Failed to update bill expense:", error);
     }

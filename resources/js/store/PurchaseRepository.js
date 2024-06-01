@@ -19,6 +19,8 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
 
             billExpense: reactive([]),
             wharehouseSuplier: reactive([]),
+            accountCategory: reactive([]),
+
             searchFetch: reactive([]),
             purchaseMaterial: reactive([]),
             symbol: ref(""),
@@ -198,7 +200,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
         },
 
         async UpdatePurchase(id, data) {
-            console.log(`Updating bill expense with id: ${id}`, data);
+            console.log(`Updating purchase with id: ${id}`, data);
             try {
                 const config = {
                     method: "PUT",
@@ -209,8 +211,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
                 const response = await axios(config);
 
                 console.log("Update response:", response);
-
-                router.push("/allpurchase");
+                this.router.push("/allpurchase");
 
                 // Assuming FetchPurchasesData is defined elsewhere in the store
                 FetchPurchasesData({
@@ -218,7 +219,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
                     itemsPerPage: this.itemsPerPage,
                 });
             } catch (err) {
-                console.error("Error updating bill expense:", err);
+                console.error("Error update purchase expense:", err);
             }
         },
 
@@ -244,6 +245,17 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
                 this.error = err;
             }
         },
+
+        // Purchase Expense========================
+        async GetAccountCategory() {
+            const config = {
+                url: "accountCategory",
+            };
+            const response = await axios(config);
+            this.accountCategory = response.data.data;
+            // console.log(this.expenseAllData, "man");
+        },
+
         async CreateExpense(formData) {
             // Adding a custom header to the Axios request
             setContentType("application/json");

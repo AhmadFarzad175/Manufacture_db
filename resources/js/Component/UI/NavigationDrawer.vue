@@ -14,19 +14,6 @@
                     ></v-list-item>
                 </template>
                 <div>
-                    <v-list-group value="Create Purchase" class="w-full">
-                        <template v-slot:activator="{ props }">
-                            <router-link to="/allConsume">
-                                <v-list-item
-                                    v-bind="props"
-                                    :append-icon="null"
-                                    title="Create Purchase"
-                                    class="-ml-12 w-full"
-                                >
-                                </v-list-item>
-                            </router-link>
-                        </template>
-                    </v-list-group>
                     <v-list-group value="All Purchase" class="w-full">
                         <template v-slot:activator="{ props }">
                             <router-link to="/allpurchase">

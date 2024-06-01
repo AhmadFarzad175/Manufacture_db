@@ -30,6 +30,7 @@ async function createExpense() {
         PurchaseRepository.purchaseId = [];
     });
 }
+PurchaseRepository.GetAccountCategory();
 </script>
 <template>
     <v-dialog
@@ -63,10 +64,14 @@ async function createExpense() {
                             </v-col>
                             <v-col cols="6" sm="6" class="pb-2 pl-2">
                                 <v-autocomplete
-                                    v-model="formData.amount"
+                                    :items="
+                                        PurchaseRepository.accountCategory
+                                            .expenseCategory
+                                    "
+                                    v-model="formData.expenseCategory"
                                     clearable
                                     variant="outlined"
-                                    :label="'Company*'"
+                                    :label="'Cotegory*'"
                                     density="compact"
                                     item-title="name"
                                     item-value="id"
@@ -77,7 +82,11 @@ async function createExpense() {
                             <v-col cols="12" sm="12" class="pb-2">
                                 <div class="d-flex gap-2">
                                     <v-autocomplete
-                                        v-model="formData.moneyAccount"
+                                        :items="
+                                            PurchaseRepository.accountCategory
+                                                .account
+                                        "
+                                        v-model="formData.account"
                                         clearable
                                         variant="outlined"
                                         :label="'Account*'"
@@ -89,7 +98,7 @@ async function createExpense() {
                                         :return-object="false"
                                     ></v-autocomplete>
                                     <v-text-field
-                                        v-model="formData.moneyAccount"
+                                        v-model="formData.amount"
                                         clearable
                                         variant="outlined"
                                         :label="'Amount*'"

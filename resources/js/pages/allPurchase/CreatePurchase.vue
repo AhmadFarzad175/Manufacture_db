@@ -19,7 +19,7 @@
                 ></v-text-field>
                 <v-autocomplete
                     :items="PurchaseRepository.wharehouseSuplier.supplier"
-                    v-model="formData.supplierId"
+                    v-model="formData.supplier"
                     variant="outlined"
                     label="Supplier*"
                     class="pb-4"
@@ -29,11 +29,11 @@
                 ></v-autocomplete>
                 <v-autocomplete
                     :items="PurchaseRepository.wharehouseSuplier.warehouse"
-                    v-model="formData.warehouseId"
+                    v-model="formData.warehouse"
                     @update:modelValue="
                         PurchaseRepository.GetCurrency(
                             PurchaseRepository.wharehouseSuplier.currency,
-                            formData.warehouseId
+                            formData.warehouse
                         )
                     "
                     variant="outlined"
@@ -288,8 +288,8 @@ import { usePurchaseRepository } from "@/store/PurchaseRepository";
 const PurchaseRepository = usePurchaseRepository();
 const formData = reactive({
     purchaseDetails: PurchaseRepository.purchaseMaterial,
-    warehouseId: "",
-    supplierId: "",
+    warehouse: "",
+    supplier: "",
     total: "",
     discount: "",
 
