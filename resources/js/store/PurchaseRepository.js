@@ -16,6 +16,7 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
             purchase: reactive([]),
             purchaseId: reactive([]),
             expense: reactive([]),
+            expenses: reactive({}),
 
             billExpense: reactive([]),
             wharehouseSuplier: reactive([]),
@@ -267,22 +268,22 @@ export let usePurchaseRepository = defineStore("PurchaseRepository", {
 
             // Using Axios to make a GET request with async/await and custom headers
             const response = await axios(config);
-            toast.success("Refund Succesfully Created", {
-                autoClose: 1000,
-            });
+            // toast.success("Refund Succesfully Created", {
+            //     autoClose: 1000,
+            // });
 
             this.symbol = null;
             this.dailog = false;
-            this.fetchCanceledBookings({
+            this.FetchPurchasesData({
                 page: this.page,
                 itemsPerPage: this.itemsPerPage,
             });
         },
         async ShowExpense(id) {
             setContentType("application/json");
-            const response = await axios.get(`expenses/${id}`);
+            const response = await axios.get(`/expenses/${id}`);
 
-            this.refunds = response.data.data; // Assign the fetched data directly to this.people
+            this.expenses = response.data.data; // Assign the fetched data directly to this.people
             console.log(this.expense);
         },
         async fetchExpense(id) {

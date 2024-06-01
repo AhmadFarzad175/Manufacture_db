@@ -32,7 +32,7 @@ const deleteRefund = async (expense) => {
         <template v-slot:default>
             <v-card class="px-3">
                 <v-card-title class="px-6 py-4 d-flex justify-space-between">
-                    <h2>Refunds</h2>
+                    <h2>Expenses</h2>
                     <v-btn
                         variant="text"
                         @click="PurchaseRepository.ShowExpenseDailog = false"
@@ -43,24 +43,23 @@ const deleteRefund = async (expense) => {
                 <v-card-text>
                     <div class="overflow-x-auto rounded-lg mb-6">
                         <table
-                            class="w-full text-sm text-center text-gray-500 dark:text-gray-400 border border-gary-500 rounded-lg"
+                            class="w-full text-sm text-center border border-gary-500 rounded-lg"
                         >
                             <thead
-                                class="text-xs border border-dashed border-gary-200 text-gray-700 uppercase dark:bg-gray-700 dark:text-gray-400"
+                                class="text-xs border border-dashed border-gary-200"
                             >
                                 <tr>
                                     <th scope="col" class="px-6 py-5">Date</th>
+
+                                    <th scope="col" class="px-6 py-3">
+                                        REFERENCE
+                                    </th>
+
                                     <th scope="col" class="px-6 py-3">
                                         ADDED BY
                                     </th>
                                     <th scope="col" class="px-6 py-3">
-                                        REFERENCE
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
                                         AMOUNT
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        PAID BY
                                     </th>
                                     <th scope="col" class="px-6 py-3">
                                         Action
@@ -69,24 +68,21 @@ const deleteRefund = async (expense) => {
                             </thead>
                             <tbody>
                                 <tr
-                                    class="bg-white border border-dashed border-gary-200 dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                                    v-for="expense in PurchaseRepository.refunds"
+                                    class=""
+                                    v-for="expense in PurchaseRepository.expenses"
                                     :key="expense.id"
                                 >
                                     <td class="px-6 py-3">
                                         {{ expense.date }}
                                     </td>
                                     <td class="px-6 py-3">
-                                        {{ expense.category.name }}
+                                        {{ expense.name }}
                                     </td>
                                     <td class="px-6 py-3">
                                         {{ expense.reference }}
                                     </td>
                                     <td class="px-6 py-3">
                                         {{ expense.amount }}
-                                    </td>
-                                    <td class="px-6 py-3">
-                                        {{ expense.moneyAccount.name }}
                                     </td>
 
                                     <td
