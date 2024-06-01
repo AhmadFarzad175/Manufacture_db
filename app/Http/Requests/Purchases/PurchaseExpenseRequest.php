@@ -20,9 +20,8 @@ class PurchaseExpenseRequest extends FormRequest
     public function prepareForValidation()
     {
         return $this->merge([
-            'expense_category_id' => $this->input('expenseCategoryId'),
-            'user_id' => $this->input('addedById'),
-            'account_id' => $this->input('accountId'),
+            'expense_category_id' => $this->input('expenseCategory'),
+            'account_id' => $this->input('account'),
 
         ]);
     }
@@ -38,7 +37,6 @@ class PurchaseExpenseRequest extends FormRequest
             'date' => 'required|date',
             'expense_category_id' => 'required',
             'account_id' => 'required|exists:accounts,id',
-            'user_id' => 'required|exists:users,id',
             'amount' => 'required|numeric|min:0',
             'details' => 'nullable|string',
         ];

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Settings\Account;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Purchases\PurchaseExpense;
 use App\Http\Requests\Purchases\PurchaseExpenseRequest;
 use App\Http\Resources\Purchases\PurchaseExpenseResource;
@@ -34,6 +35,8 @@ class PurchaseExpenseController extends Controller
     public function store(PurchaseExpenseRequest $request)
     {
         $validated = $request->validated();
+        $validated['user_id'] = Auth::id() ?? 1;
+
 
         DB::beginTransaction();
 
