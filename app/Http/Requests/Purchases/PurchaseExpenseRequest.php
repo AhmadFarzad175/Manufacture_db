@@ -22,6 +22,7 @@ class PurchaseExpenseRequest extends FormRequest
         return $this->merge([
             'expense_category_id' => $this->input('expenseCategory'),
             'account_id' => $this->input('account'),
+            'purchase_id' => $this->input('purchaseId'),
 
         ]);
     }

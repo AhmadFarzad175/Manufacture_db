@@ -41,12 +41,12 @@ class SaleResource extends JsonResource
                 'name' => $this->user->name,
             ],
             'warehouse' => [
-                $this->warehouse_id,
-                $this->warehouse->name,
+                'id' => $this->warehouse_id,
+                'name' => $this->warehouse->name,
             ],
             'currency' => [
-                $this->currency_id,
-                $this->currency->name,
+                'id' => $this->currency_id,
+                'name' => $this->currency->name,
             ],
             'grandTotal' => $this->total,
             'paid' => $this->paid,
