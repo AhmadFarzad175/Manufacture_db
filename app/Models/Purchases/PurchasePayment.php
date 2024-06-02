@@ -24,27 +24,25 @@ class PurchasePayment extends Model
     ];
 
 
-    public function scopeSearch($query, $search)
+    public function scopeSearch($query, $search, $purchase)
     {
-        if (!$search) {
+        if (!$search && !$purchase) {
             return $query;
         }
 
-        return $query->where(function ($query) use ($search) {
-            $query->where('date', 'like', '%' . $search . '%')
-                ->orWhere('reference', 'like', '%' . $search . '%')
-                ->orWhere('amount', 'like', '%' . $search . '%')
-                ->orWhere('details', 'like', '%' . $search . '%')
-                ->orWhereHas('account', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('account', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('user', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                });
-        });
+        if(!$search){
+            $query->where(function ($query) use ($search) {
+               $query->where('date', 'like', '%' . $search . '%')
+                   ->orWhere('reference', 'like', '%' . $search . '%');
+           });
+
+        }
+
+        if($purchase){
+            $query->where('purchase_id', $purchase);
+        };
+
+        return $query;
     }
 
 

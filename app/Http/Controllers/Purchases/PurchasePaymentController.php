@@ -20,9 +20,10 @@ class PurchasePaymentController extends Controller
     {
         $perPage = $request->input('perPage');
         $search = $request->input('search');
-
+        $purchase = $request->input('purchase');
+        
         // Eager load relationships and apply search
-        $purchasePayments = PurchasePayment::with(['account', 'user'])->search($search);
+        $purchasePayments = PurchasePayment::with(['account', 'user'])->search($search, $purchase);
 
         $purchasePayments = $perPage ? $purchasePayments->latest()->paginate($perPage) : $purchasePayments->latest()->get();
 

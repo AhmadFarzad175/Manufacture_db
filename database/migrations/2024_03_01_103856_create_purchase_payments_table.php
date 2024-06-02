@@ -2,7 +2,6 @@
 
 use App\Models\Peoples\User;
 use App\Models\Settings\Account;
-use App\Models\Settings\Currency;
 use App\Models\Purchases\Purchase;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;

@@ -16,6 +16,7 @@ class PurchasePaymentResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'purchaseId' => $this->purchase_id,
             'reference' => $this->reference,
             'date' => $this->date,
             'amount' => $this->amount,
