@@ -17,6 +17,7 @@ class PurchaseExpense extends Model
     protected $fillable = [
         'date',
         'reference',
+        'purchase_id',
         'account_id',
         'expense_category_id',
         'user_id',
@@ -25,35 +26,39 @@ class PurchaseExpense extends Model
     ];
 
 
-    public function scopeSearch($query, $search)
+    public function scopeSearch($query, $search, $purchase)
     {
-        if (!$search) {
+        if (!$search && !$purchase) {
             return $query;
         }
 
-        return $query->where(function ($query) use ($search) {
-            $query->where('date', 'like', '%' . $search . '%')
-                ->orWhere('reference', 'like', '%' . $search . '%')
-                ->orWhere('amount', 'like', '%' . $search . '%')
-                ->orWhere('details', 'like', '%' . $search . '%')
-                ->orWhereHas('account', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('category', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('user', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                });
-        });
+        if($search){
+            $query->where(function ($query) use ($search) {
+               $query->where('date', 'like', '%' . $search . '%')
+                   ->orWhere('reference', 'like', '%' . $search . '%');
+           }); 
+        }
+
+        if($purchase){
+            $query->where('purchase_id', $purchase);
+        };
+
+        return $query;
+
     }
+
 
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($purchaseExpense) {
-            $purchaseExpense->reference = 'PREX_' . (self::max('id') + 1);
+            // Get the latest purchase$purchaseExpense that is not soft deleted
+            $lastPurchase = self::withTrashed()->latest('id')->first();
+
+            // Generate reference based on the latest purchase$purchaseExpense id
+            $newId = $lastPurchase ? $lastPurchase->id + 1 : 1;
+            $purchaseExpense->reference = 'PRE_' . $newId;
         });
     }
 

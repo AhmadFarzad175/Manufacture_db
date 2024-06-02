@@ -19,6 +19,7 @@ class PurchaseExpenseFactory extends Factory
         return [
             'date' => $this->faker->date,
             'expense_category_id' => rand(1,10),
+            'purchase_id' => rand(1,10),
             'account_id' => rand(1,10),
             'user_id' => rand(1,10),
             'amount' => $this->faker->randomFloat(2, 0, 1000),

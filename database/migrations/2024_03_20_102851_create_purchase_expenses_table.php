@@ -2,6 +2,7 @@
 
 use App\Models\Peoples\User;
 use App\Models\Settings\Account;
+use App\Models\Purchases\Purchase;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Settings\ExpenseCategory;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,6 +19,7 @@ return new class extends Migration
             $table->id();
             $table->date('date');
             $table->string('reference')->unique();
+            $table->foreignIdFor(Purchase::class)->constrained();
             $table->foreignIdFor(ExpenseCategory::class)->constrained();
             $table->foreignIdFor(Account::class)->constrained();
             $table->foreignIdFor(User::class)->constrained();

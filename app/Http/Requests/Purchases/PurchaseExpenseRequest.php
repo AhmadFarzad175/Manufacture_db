@@ -35,8 +35,9 @@ class PurchaseExpenseRequest extends FormRequest
     {
         $rules = [
             'date' => 'required|date',
+            'purchase_id' => 'required',
             'expense_category_id' => 'required',
-            'account_id' => 'required|exists:accounts,id',
+            'account_id' => 'required',
             'amount' => 'required|numeric|min:0',
             'details' => 'nullable|string',
         ];

@@ -73,18 +73,18 @@ class Purchase extends Model
     }
 
     protected static function boot()
-{
-    parent::boot();
+    {
+        parent::boot();
 
-    static::creating(function ($purchase) {
-        // Get the latest purchase that is not soft deleted
-        $lastPurchase = self::withTrashed()->latest('id')->first();
-        
-        // Generate reference based on the latest purchase id
-        $newId = $lastPurchase ? $lastPurchase->id + 1 : 1;
-        $purchase->reference = 'PR_' . $newId;
-    });
-}
+        static::creating(function ($purchase) {
+            // Get the latest purchase that is not soft deleted
+            $lastPurchase = self::withTrashed()->latest('id')->first();
+            
+            // Generate reference based on the latest purchase id
+            $newId = $lastPurchase ? $lastPurchase->id + 1 : 1;
+            $purchase->reference = 'PR_' . $newId;
+        });
+    }
 
 
     public function supplier()

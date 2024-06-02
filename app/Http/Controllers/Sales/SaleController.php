@@ -25,7 +25,7 @@ class SaleController extends Controller
         $search = $request->input('search');
 
         // Eager load relationships and apply search
-        $sales = Sale::with(['products', 'user', 'currency', 'customer'])->search($search);
+        $sales = Sale::with(['warehouse','products', 'user', 'currency', 'customer'])->search($search);
 
         $sales = $sales->latest()->paginate($perPage);
 

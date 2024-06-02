@@ -57,7 +57,7 @@ class SaleResource extends JsonResource
             'shipping' => $this->shipping,
             'paymentStatus' => $paymentStatus,
             'details' => $this->note,
-            'saleDetails' => $this->products,
+            'saleDetails' => SaleDetailResource::collection($this->products),
         ];
     }
 }
