@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Settings\Unit;
+use App\Models\Peoples\Customer;
 use App\Models\Peoples\Supplier;
+use App\Models\Settings\Account;
 use App\Models\Settings\Currency;
 use App\Models\Settings\Warehouse;
 use App\Models\Peoples\ExpensePeople;
-use App\Models\Settings\Account;
 use App\Models\Settings\ExpenseProduct;
 use App\Models\Settings\ExpenseCategory;
 use App\Models\Settings\MaterialCategory;
@@ -96,6 +97,17 @@ class AllController extends Controller
     {
         $allData = [
             'expenseCategory' => ExpenseCategory::select('id', 'name')->get(),
+            'account' => Account::select('id', 'name')->get(),
+        ];
+
+        return response()->json(['data' => $allData]);
+    }
+
+    public function customerWarehouseAccount()
+    {
+        $allData = [
+            'customer' => Customer::select('id', 'name')->get(),
+            'warehouse' => Warehouse::select('id', 'name')->get(),
             'account' => Account::select('id', 'name')->get(),
         ];
 
