@@ -47,6 +47,7 @@ class SaleResource extends JsonResource
             'currency' => [
                 'id' => $this->currency_id,
                 'name' => $this->currency->name,
+                'symbol' => $this->currency->symbol,
             ],
             'grandTotal' => $this->total,
             'paid' => $this->paid,
