@@ -49,26 +49,8 @@ class Purchase extends Model
         return $query->where(function ($query) use ($search) {
             $query->where('date', 'like', '%' . $search . '%')
                 ->orWhere('supplier', 'like', '%' . $search . '%')
-                ->orWhere('invoice_number', 'like', '%' . $search . '%')
-                ->orWhere('paid', 'like', '%' . $search . '%')
-                ->orWhere('total', 'like', '%' . $search . '%')
-                ->orWhere('status', 'like', '%' . $search . '%')
-                ->orWhere('shipping', 'like', '%' . $search . '%')
-                ->orWhere('discount', 'like', '%' . $search . '%')
-                ->orWhere('tax', 'like', '%' . $search . '%')
-                ->orWhere('details', 'like', '%' . $search . '%')
-                ->orWhereHas('warehouse', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('supplier', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('user', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('currency', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                });
+                ->orWhere('invoice_number', 'like', '%' . $search . '%');
+                
         });
     }
 

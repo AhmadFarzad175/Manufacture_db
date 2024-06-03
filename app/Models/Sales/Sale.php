@@ -56,8 +56,8 @@ class Sale extends Model
 
         return $query->where(function ($query) use ($search) {
             $query->where('date', 'like', '%' . $search . '%')
-                ->orWhere('supplier', 'like', '%' . $search . '%')
                 ->orWhere('invoice_number', 'like', '%' . $search . '%')
+                ->orWhere('reference', 'like', '%' . $search . '%')
                 ->orWhere('paid', 'like', '%' . $search . '%')
                 ->orWhere('total', 'like', '%' . $search . '%')
                 ->orWhere('status', 'like', '%' . $search . '%')
@@ -72,9 +72,6 @@ class Sale extends Model
                     $query->where('name', 'like', '%' . $search . '%');
                 })
                 ->orWhereHas('user', function ($query) use ($search) {
-                    $query->where('name', 'like', '%' . $search . '%');
-                })
-                ->orWhereHas('currency', function ($query) use ($search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 });
         });

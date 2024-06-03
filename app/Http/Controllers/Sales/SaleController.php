@@ -5,14 +5,15 @@ namespace App\Http\Controllers\Sales;
 use App\Models\Sales\Sale;
 use Illuminate\Http\Request;
 use App\Models\Settings\Account;
+use App\Models\Sales\SaleDetails;
 use App\Models\Sales\SalePayment;
 use App\Models\Purchases\Purchase;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Sales\SaleRequest;
 use App\Models\Settings\WarehouseProduct;
 use App\Http\Resources\Sales\SaleResource;
-use App\Models\Sales\SaleDetails;
 
 class SaleController extends Controller
 {
@@ -37,16 +38,17 @@ class SaleController extends Controller
      */
     public function store(SaleRequest $request)
     {
-        // DB::beginTransaction();
-
-        // try {
-        // return $request;
         $validated = $request->validated();
-        $sale = Sale::create($validated);
+        $validated['user_id'] = Auth::id() ?? 1;
+        
+        // DB::beginTransaction();
+        
+        // try {
+            $sale = Sale::create($validated);
 
         //INSERT INTO PIVOT TABLE
         foreach ($request->input('saleDetails') as $saleDetail) {
-            $saleDetail['product_id'] = $saleDetail['productId'];
+            $saleDetail['product_id'] = $saleDetail['id'];
             $saleDetail['unit_cost'] = $saleDetail['unitCost'];
 
             $sale->products()->attach($saleDetail['product_id'], [
@@ -101,16 +103,19 @@ class SaleController extends Controller
      */
     public function update(SaleRequest $request, Sale $sale)
     {
+        $validated = $request->validated();
+        $validated['user_id'] = Auth::id() ?? 1;
+        
         // DB::beginTransaction();
 
         // try {
-        $validated = $request->validated();
+
         $oldPrice = $sale->paid;
         $sale->update($validated);
 
         $syncData = [];
         foreach ($request->input('saleDetails') as $saleDetail) {
-            $saleDetail['product_id'] = $saleDetail['productId'];
+            $saleDetail['product_id'] = $saleDetail['id'];
             $saleDetail['unit_cost'] = $saleDetail['unitCost'];
 
             // 1_ old quantity update for warehouse product 

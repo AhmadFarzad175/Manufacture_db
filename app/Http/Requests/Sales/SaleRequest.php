@@ -20,10 +20,10 @@ class SaleRequest extends FormRequest
     {
         $this->merge([
             'user_id' => $this->input('addedById'),
-            'account_id' => $this->input('accountId'),
-            'warehouse_id' => $this->input('warehouseId'),
-            'customer_id' => $this->input('customerId'),
-            'currency_id' => $this->input('currencyId'),
+            'account_id' => $this->input('account'),
+            'warehouse_id' => $this->input('warehouse'),
+            'customer_id' => $this->input('customer'),
+            'currency_id' => $this->input('currency'),
             'invoice_number' => $this->input('invoiceNumber'),
         ]);
     }
@@ -50,10 +50,10 @@ class SaleRequest extends FormRequest
             'shipping' => 'nullable|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
             'tax' => 'nullable|numeric|min:0',
-            'currency_id' => 'required|exists:currencies,id',
+            'currency_id' => 'nullable',
             'account_id' => 'required|exists:accounts,id',
             'note' => 'nullable',
-            'materialDetails.*.productId' => 'required|exists:products,id',
+            'materialDetails.*.id' => 'required',
             'materialDetails.*.quantity' => 'required|integer|min:1',
             'materialDetails.*.unitCost' => 'required|numeric|min:0',
         ];
