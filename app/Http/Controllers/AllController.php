@@ -109,6 +109,8 @@ class AllController extends Controller
             'customer' => Customer::select('id', 'name')->get(),
             'warehouse' => Warehouse::select('id', 'name')->get(),
             'account' => Account::select('id', 'name')->get(),
+            'currency' => Currency::select('id', 'name', 'symbol')->get(),
+
         ];
 
         return response()->json(['data' => $allData]);
