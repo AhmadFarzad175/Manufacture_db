@@ -35,6 +35,17 @@ class Sale extends Model
         'details',
     ];
 
+    public function getStatusAttribute($value)
+    {
+        $statusMap = [
+            0 => 'ordered',
+            1 => 'pending',
+            2 => 'received',
+        ];
+
+        return $statusMap[$value] ?? 'unknown';
+    }
+
 
     protected static function boot()
     {
