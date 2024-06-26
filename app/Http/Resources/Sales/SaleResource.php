@@ -29,7 +29,7 @@ class SaleResource extends JsonResource
             'id' => $this->id,
             'date' => $this->date,
             'reference' => $this->reference,
-            'invoice_number' => $this->invoice_number,
+            'invoiceNumber' => $this->invoice_number,
             'customer' => [
                 'id' => $this->customer->id,
                 'name' => $this->customer->name,

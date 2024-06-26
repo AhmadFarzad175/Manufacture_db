@@ -4,10 +4,8 @@ namespace App\Models\Sales;
 
 use App\Models\Peoples\User;
 use App\Models\Peoples\Customer;
-use App\Models\Peoples\Supplier;
 use App\Models\Settings\Product;
 use App\Models\Settings\Currency;
-use App\Models\Settings\Material;
 use App\Models\Purchases\Shipment;
 use App\Models\Settings\Warehouse;
 use Illuminate\Database\Eloquent\Model;
