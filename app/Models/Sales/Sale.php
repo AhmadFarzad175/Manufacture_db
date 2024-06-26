@@ -52,7 +52,12 @@ class Sale extends Model
         parent::boot();
 
         static::creating(function ($sale) {
-            $sale->reference = 'SEL_' . (self::max('id') + 1);
+            // Get the latest sale that is not soft deleted
+            $lastSale = self::withTrashed()->latest('id')->first();
+            
+            // Generate reference based on the latest sale id
+            $newId = $lastSale ? $lastSale->id + 1 : 1;
+            $sale->reference = 'SLS_' . $newId;
         });
 
     }
