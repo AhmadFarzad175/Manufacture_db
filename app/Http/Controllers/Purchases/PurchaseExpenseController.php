@@ -24,7 +24,7 @@ class PurchaseExpenseController extends Controller
 
 
         // Eager load relationships and apply search
-        $purchaseExpenses = PurchaseExpense::with(['account', 'expenseCategory', 'user'])->search($search, $purchase);
+        $purchaseExpenses = PurchaseExpense::with(['user'])->search($search, $purchase);
 
         $purchaseExpenses = $perPage ? $purchaseExpenses->latest()->paginate($perPage) : $purchaseExpenses->latest()->get();
 

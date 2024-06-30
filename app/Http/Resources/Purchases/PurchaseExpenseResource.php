@@ -21,14 +21,6 @@ class PurchaseExpenseResource extends JsonResource
             'reference' => $this->reference,
             'amount' => $this->amount,
             'details' => $this->details,
-            'category' => [
-                'id' => $this->expense_category_id,
-                'name' => $this->expenseCategory->name,
-            ],
-            'account' => [
-                'id' => $this->account_id,
-                'name' => $this->account->name,
-            ],
             'addedBy' => [
                 'id' => $this->user_id,
                 'name' => $this->user->name,

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Sales\Sale;
 use App\Models\Peoples\User;
 use App\Models\Settings\Account;
 use Illuminate\Support\Facades\Schema;
@@ -18,6 +19,7 @@ return new class extends Migration
             $table->id();
             $table->date('date');
             $table->string('reference')->unique();
+            $table->foreignIdFor(Sale::class)->constrained();
             $table->foreignIdFor(ExpenseCategory::class)->constrained();
             $table->foreignIdFor(Account::class)->constrained();
             $table->foreignIdFor(User::class)->constrained();

@@ -7,6 +7,7 @@ namespace App\Models\Peoples;
 use App\Models\PaymentSent;
 use App\Models\PaymentReceived;
 use App\Models\Expenses\Expense;
+use App\Models\Sales\SaleExpense;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Purchases\Purchase;
 use App\Models\Expenses\BillableExpense;
@@ -104,6 +105,11 @@ class User extends Authenticatable
     public function purchaseExpenses()
     {
         return $this->hasMany(PurchaseExpense::class);
+    }
+
+    public function saleExpenses()
+    {
+        return $this->hasMany(SaleExpense::class);
     }
 
     public function expensePaymentSents()

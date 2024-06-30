@@ -18,6 +18,7 @@ class SaleExpenseFactory extends Factory
     {
         return [
             'date' => $this->faker->date,
+            'sale_id' => rand(1,10),
             'expense_category_id' => rand(1,10),
             'account_id' => rand(1,10),
             'user_id' => rand(1,10),

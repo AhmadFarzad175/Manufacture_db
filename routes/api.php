@@ -157,7 +157,7 @@ Route::get('wHouses',[AllController::class, 'wHouse'] );
 Route::get('supplierWarehouse',[AllController::class, 'supplierWarehouse'] );
 Route::get('accountCategory',[AllController::class, 'accountCategory'] );
 Route::get('customerWarehouseAccount',[AllController::class, 'customerWarehouseAccount'] );
-
+Route::get('expensePeopleAccount',[AllController::class, 'expensePeopleAccount'] );
 
 
 

@@ -17,6 +17,7 @@ class SaleExpense extends Model
     protected $fillable = [
         'date',
         'reference',
+        'sale_id',
         'account_id',
         'expense_category_id',
         'user_id',
@@ -25,13 +26,14 @@ class SaleExpense extends Model
     ];
 
 
-    public function scopeSearch($query, $search)
+    public function scopeSearch($query, $search, $sale)
     {
-        if (!$search) {
+        if (!$search && !$sale) {
             return $query;
         }
 
-        return $query->where(function ($query) use ($search) {
+        if($search){
+         $query->where(function ($query) use ($search) {
             $query->where('date', 'like', '%' . $search . '%')
                 ->orWhere('reference', 'like', '%' . $search . '%')
                 ->orWhere('amount', 'like', '%' . $search . '%')
@@ -48,13 +50,24 @@ class SaleExpense extends Model
         });
     }
 
+        if($sale){
+            $query->where('sale_id', $sale);
+        };
+    }
+
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($saleExpense) {
-            $saleExpense->reference = 'SREX_' . (self::max('id') + 1);
+            // Get the latest saleExpense that is not soft deleted
+            $lastSaleExpense = self::withTrashed()->latest('id')->first();
+            
+            // Generate reference based on the latest saleExpense id
+            $newId = $lastSaleExpense ? $lastSaleExpense->id + 1 : 1;
+            $saleExpense->reference = 'SAE_' . $newId;
         });
+
     }
 
 

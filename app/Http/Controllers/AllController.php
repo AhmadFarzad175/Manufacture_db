@@ -115,4 +115,16 @@ class AllController extends Controller
 
         return response()->json(['data' => $allData]);
     }
+
+    public function expensePeopleAccount()
+    {
+        $allData = [
+            'account' => Account::select('id', 'name')->get(),
+            'expensePeople' => ExpensePeople::select('id', 'name')->get(),
+
+
+        ];
+
+        return response()->json(['data' => $allData]);
+    }
 }

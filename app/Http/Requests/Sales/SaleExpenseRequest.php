@@ -22,6 +22,7 @@ class SaleExpenseRequest extends FormRequest
         return $this->merge([
             'expense_category_id' => $this->input('expenseCategoryId'),
             'user_id' => $this->input('addedById'),
+            'sale_id' => $this->input('saleId'),
             'account_id' => $this->input('accountId'),
 
         ]);
@@ -36,6 +37,7 @@ class SaleExpenseRequest extends FormRequest
     {
         $rules = [
             'date' => 'required|date',
+            'sale_id' => 'required',
             'expense_category_id' => 'required',
             'account_id' => 'required|exists:accounts,id',
             'user_id' => 'required|exists:users,id',

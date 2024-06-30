@@ -16,7 +16,20 @@ class SaleExpenseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    
+    public function index(Request $request)
+    {
+        $perPage = $request->input('perPage');
+        $search = $request->input('search');
+        $sale = $request->input('sale');
+
+
+        // Eager load relationships and apply search
+        $saleExpenses = SaleExpense::with(['user'])->search($search, $sale);
+
+        $saleExpenses = $perPage ? $saleExpenses->latest()->paginate($perPage) : $saleExpenses->latest()->get();
+
+        return SaleExpenseResource::collection($saleExpenses);
+    }
     
 
     /**
@@ -55,9 +68,9 @@ class SaleExpenseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(SaleExpense $saleExpense)
+    public function show(SaleExpense $saleEpense)
     {
-        return SaleExpenseResource::make($saleExpense);
+        return SaleExpenseResource::make($saleEpense);
     }
 
     /**
