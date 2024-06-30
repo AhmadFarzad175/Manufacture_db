@@ -28,7 +28,7 @@ class LoanPaymentReceivedResource extends JsonResource
                 'id' => $this->user_id,
                 'name' => $this->user->name,
             ],
-            'people' => [
+            'loanPeople' => [
                 'id' => $this->loan_people_id,
                 'name' => $this->loanPeople->name,
             ]

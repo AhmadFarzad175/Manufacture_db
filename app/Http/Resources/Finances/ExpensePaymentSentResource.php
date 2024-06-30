@@ -28,7 +28,7 @@ class ExpensePaymentSentResource extends JsonResource
                 'id' => $this->user_id,
                 'name' => $this->user->name,
             ],
-            'people' => [
+            'expensePeople' => [
                 'id' => $this->expense_people_id,
                 'name' => $this->expensePeople->name,
             ]

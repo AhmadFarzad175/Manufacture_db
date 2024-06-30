@@ -92,7 +92,7 @@ class LoanPaymentSentController extends Controller
                 DB::rollback();
                 return response()->json(['message' => 'Insufficient balance.'], 403);
             }
-            // Check if the account has enough balance to update
+            
 
             // Increment the old amount back to the account balance
             $account->decrement('price', $difference);
