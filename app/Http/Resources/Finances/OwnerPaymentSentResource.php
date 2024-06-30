@@ -18,7 +18,7 @@ class OwnerPaymentSentResource extends JsonResource
             'id' => $this->id,
             'reference' => $this->reference,
             'date' => $this->date,
-            'paid' => $this->amount,
+            'amount' => $this->amount,
             'details' => $this->details,
             'account' => [
                 'id' => $this->account->id,
