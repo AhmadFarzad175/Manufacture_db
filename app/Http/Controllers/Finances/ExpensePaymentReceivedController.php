@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Settings\Account;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Finances\ExpensePaymentReceived;
 use App\Http\Requests\Finances\ExpensePaymentReceivedRequest;
 use App\Http\Resources\Finances\ExpensePaymentReceivedResource;
@@ -34,6 +35,8 @@ class ExpensePaymentReceivedController extends Controller
     public function store(ExpensePaymentReceivedRequest $request)
     {
         $validated = $request->validated();
+        $validated['user_id'] = Auth::id() ?? 1;
+
 
         // DB::beginTransaction();
 
@@ -73,6 +76,8 @@ class ExpensePaymentReceivedController extends Controller
     public function update(ExpensePaymentReceivedRequest $request, ExpensePaymentReceived $expensePaymentReceived)
     {
         $validated = $request->validated();
+        $validated['user_id'] = Auth::id() ?? 1;
+
 
         DB::beginTransaction();
 
@@ -135,7 +140,6 @@ class ExpensePaymentReceivedController extends Controller
             $account = Account::findOrFail($totalAmount->account_id);
             $account->increment('price', $totalAmount->total_price);
         }
-
 
         ExpensePaymentReceived::destroy($expensePaymentReceiveds);
     }

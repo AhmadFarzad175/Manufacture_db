@@ -12,9 +12,8 @@ class LoanPaymentSentRequest extends FormRequest
     public function prepareForValidation()
     {
         return $this->merge([
-            'loan_people_id' => $this->input('loanPeopleId'),
-            'user_id' => $this->input('addedById'),
-            'account_id' => $this->input('accountId'),
+            'loan_people_id' => $this->input('loanPeople'),
+            'account_id' => $this->input('account'),
         ]);
     }
 
@@ -36,8 +35,6 @@ class LoanPaymentSentRequest extends FormRequest
     {
         $rules = [
             'date' => 'required|date',
-            'reference' => 'required|string|max:192',
-            'user_id' => 'required|exists:users,id',
             'loan_people_id' => 'required|exists:loan_peoples,id',
             'account_id' => 'required|exists:accounts,id',
             'amount' => 'required|numeric|min:0',

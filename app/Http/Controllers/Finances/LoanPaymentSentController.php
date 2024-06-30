@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Settings\Account;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Finances\LoanPaymentSent;
 use App\Http\Requests\Finances\LoanPaymentSentRequest;
 use App\Http\Resources\Finances\LoanPaymentSentResource;
@@ -35,6 +36,7 @@ class LoanPaymentSentController extends Controller
     public function store(LoanPaymentSentRequest $request)
     {
         $validated = $request->validated();
+        $validated['user_id'] = Auth::id() ?? 1;
 
         // DB::beginTransaction();
 
@@ -74,6 +76,8 @@ class LoanPaymentSentController extends Controller
     public function update(LoanPaymentSentRequest $request, LoanPaymentSent $loanPaymentSent)
     {
         $validated = $request->validated();
+        $validated['user_id'] = Auth::id() ?? 1;
+
 
         DB::beginTransaction();
 

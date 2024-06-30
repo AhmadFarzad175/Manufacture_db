@@ -52,8 +52,13 @@ class LoanPaymentReceived extends Model
     {
         parent::boot();
 
-        static::creating(function ($loanPaymentSent) {
-            $loanPaymentSent->reference = 'EPR_' . (self::max('id') + 1);
+        static::creating(function ($purchase) {
+            // Get the latest purchase that is not soft deleted
+            $lastPurchase = self::withTrashed()->latest('id')->first();
+            
+            // Generate reference based on the latest purchase id
+            $newId = $lastPurchase ? $lastPurchase->id + 1 : 1;
+            $purchase->reference = 'PR_' . $newId;
         });
     }
 

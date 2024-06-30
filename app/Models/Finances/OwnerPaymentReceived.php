@@ -52,8 +52,13 @@ class OwnerPaymentReceived extends Model
     {
         parent::boot();
 
-        static::creating(function ($ownerPaymentReceived) {
-            $ownerPaymentReceived->reference = 'OPR_' . (self::max('id') + 1);
+        static::creating(function ($paymentReceived) {
+            // Get the latest paymentReceived that is not soft deleted
+            $lastPaymentReceived = self::withTrashed()->latest('id')->first();
+            
+            // Generate reference based on the latest paymentReceived id
+            $newId = $lastPaymentReceived ? $lastPaymentReceived->id + 1 : 1;
+            $paymentReceived->reference = 'OPR_' . $newId;
         });
     }
 

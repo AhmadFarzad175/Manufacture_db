@@ -52,8 +52,13 @@ class ExpensePaymentSent extends Model
     {
         parent::boot();
 
-        static::creating(function ($expensePaymentSent) {
-            $expensePaymentSent->reference = 'EPS_' . (self::max('id') + 1);
+        static::creating(function ($paymentSent) {
+            // Get the latest paymentSent that is not soft deleted
+            $lastPaymentSent = self::withTrashed()->latest('id')->first();
+            
+            // Generate reference based on the latest paymentSent id
+            $newId = $lastPaymentSent ? $lastPaymentSent->id + 1 : 1;
+            $paymentSent->reference = 'EPS_' . $newId;
         });
     }
 
