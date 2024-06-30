@@ -18,7 +18,7 @@ class ExpensePaymentReceivedResource extends JsonResource
             'id' => $this->id,
             'reference' => $this->reference,
             'date' => $this->date,
-            'received' => $this->amount,
+            'amount' => $this->amount,
             'details' => $this->details,
             'account' => [
                 'id' => $this->account->id,

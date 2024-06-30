@@ -78,9 +78,9 @@ class ExpensePaymentSentController extends Controller
         $validated = $request->validated();
         $validated['user_id'] = Auth::id() ?? 1;
 
-        DB::beginTransaction();
+        // DB::beginTransaction();
 
-        try {
+        // try {
             $account = Account::firstWhere('id', $validated['account_id']);
 
             $oldAmount = $expensePaymentSent->amount;
@@ -103,10 +103,10 @@ class ExpensePaymentSentController extends Controller
             DB::commit();
 
             return ExpensePaymentSentResource::make($expensePaymentSent);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json(['message' => 'Transaction failed.'], 500);
-        }
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+        //     return response()->json(['message' => 'Transaction failed.'], 500);
+        // }
     }
 
     /**
