@@ -13,7 +13,6 @@ class ExpensePaymentSentRequest extends FormRequest
     {
         return $this->merge([
             'expense_people_id' => $this->input('expensePeopleId'),
-            'user_id' => $this->input('addedById'),
             'account_id' => $this->input('accountId'),
 
         ]);
@@ -37,8 +36,6 @@ class ExpensePaymentSentRequest extends FormRequest
     {
         $rules = [
             'date' => 'required|date',
-            'reference' => 'required|string|max:192',
-            'user_id' => 'required|exists:users,id',
             'expense_people_id' => 'required|exists:expense_peoples,id',
             'account_id' => 'required|exists:accounts,id',
             'amount' => 'required|numeric|min:0',
