@@ -12,8 +12,8 @@ class ExpensePaymentSentRequest extends FormRequest
     public function prepareForValidation()
     {
         return $this->merge([
-            'expense_people_id' => $this->input('expensePeopleId'),
-            'account_id' => $this->input('accountId'),
+            'expense_people_id' => $this->input('expensePeople'),
+            'account_id' => $this->input('account'),
 
         ]);
     }
