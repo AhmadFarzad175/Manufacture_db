@@ -12,9 +12,8 @@ class OwnerPaymentSentRequest extends FormRequest
     public function prepareForValidation()
     {
         return $this->merge([
-            'owner_id' => $this->input('ownerId'),
-            'user_id' => $this->input('addedById'),
-            'account_id' => $this->input('accountId'),
+            'owner_id' => $this->input('owner'),
+            'account_id' => $this->input('account'),
         ]);
     }
 
@@ -37,9 +36,8 @@ class OwnerPaymentSentRequest extends FormRequest
         $rules = [
             'date' => 'required|date',
             'reference' => 'required|string|max:192',
-            'user_id' => 'required|exists:users,id',
-            'owner_id' => 'required|exists:owners,id',
-            'account_id' => 'required|exists:accounts,id',
+            'owner_id' => 'required',
+            'account_id' => 'required',
             'amount' => 'required|numeric|min:0',
             'details' => 'nullable|string',
         ];

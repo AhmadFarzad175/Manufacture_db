@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Settings\Account;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Finances\OwnerPaymentSent;
 use App\Http\Requests\Finances\OwnerPaymentSentRequest;
 use App\Http\Resources\Finances\OwnerPaymentSentResource;
@@ -35,6 +36,8 @@ class OwnerPaymentSentController extends Controller
     public function store(OwnerPaymentSentRequest $request)
     {
         $validated = $request->validated();
+        $validated['user_id'] = Auth::id() ?? 1;
+
 
         // DB::beginTransaction();
 
@@ -74,6 +77,8 @@ class OwnerPaymentSentController extends Controller
     public function update(OwnerPaymentSentRequest $request, OwnerPaymentSent $ownerPaymentSent)
     {
         $validated = $request->validated();
+        $validated['user_id'] = Auth::id() ?? 1;
+
 
         DB::beginTransaction();
 

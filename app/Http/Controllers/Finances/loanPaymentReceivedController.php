@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Settings\Account;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Finances\LoanPaymentReceived;
 use App\Http\Requests\Finances\LoanPaymentReceivedRequest;
 use App\Http\Resources\Finances\LoanPaymentReceivedResource;
@@ -35,6 +36,8 @@ class LoanPaymentReceivedController extends Controller
     public function store(LoanPaymentReceivedRequest $request)
     {
         $validated = $request->validated();
+        $validated['user_id'] = Auth::id() ?? 1;
+
 
         // DB::beginTransaction();
 
@@ -74,6 +77,8 @@ class LoanPaymentReceivedController extends Controller
     public function update(LoanPaymentReceivedRequest $request, LoanPaymentReceived $loanPaymentReceived)
     {
         $validated = $request->validated();
+        $validated['user_id'] = Auth::id() ?? 1;
+
 
         DB::beginTransaction();
 

@@ -35,8 +35,8 @@ class LoanPaymentSentRequest extends FormRequest
     {
         $rules = [
             'date' => 'required|date',
-            'loan_people_id' => 'required|exists:loan_peoples,id',
-            'account_id' => 'required|exists:accounts,id',
+            'loan_people_id' => 'required',
+            'account_id' => 'required',
             'amount' => 'required|numeric|min:0',
             'details' => 'nullable|string',
         ];
